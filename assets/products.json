@@ -1,0 +1,32 @@
+{
+    "products": [
+        {
+            "name": "Royale Aspira",
+            "imageURL": "https://yespainter.com/wp-content/uploads/2017/11/royal-aspira-200x201.jpg",
+            "brand": "PIECES",
+            "price": 1900,
+            "size" : ["S","M","L"]
+        },
+        {
+            "name": "Royale Luxury Emulsion",
+            "imageURL": "https://yespainter.com/wp-content/uploads/2017/11/Royal-Luxury-Emulsion-150x150.jpg",
+            "brand": "TAURUS",
+            "price": 490,
+            "size" : ["S","XL"]
+        },
+        {
+            "name": "Apcolite Advanced",
+            "imageURL": "https://yespainter.com/wp-content/uploads/2017/11/Interior-Finish-Lustre-200x200.jpg",
+            "brand": "ANTELOPE",
+            "price": 1200,
+            "size" : ["S","M","L","XL"]
+        },
+        {
+            "name": "Apcolite Premium",
+            "imageURL": "https://yespainter.com/wp-content/uploads/2017/11/Royal-Luxury-Emulsion-1-150x150.jpg",
+            "brand": "LOLIPOP",
+            "price": 1700,
+            "size" : ["S","M","XL"]
+        }
+    ]
+}
