@@ -138,8 +138,8 @@ class ForgetpassValidationState extends State<Forgetpass> {
                                             decoration: BoxDecoration(
                                                 gradient: LinearGradient(
                                                   colors: [
-                                                    Colors.blueGrey.shade200,
-                                                    Colors.blueGrey.shade400
+                                                    Colors.purple.shade300,
+                                                    Colors.purple.shade300,
                                                   ],
                                                   begin: Alignment.centerLeft,
                                                   end: Alignment.centerRight,
@@ -156,7 +156,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
                                                 "Get OTP",
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    color: Colors.black),
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ),
@@ -221,7 +221,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
                 validator: MultiValidator([
                   RequiredValidator(errorText: "* Required"),
                   MinLengthValidator(4,
-                      errorText: "OTP should be 4 characters"),
+                      errorText: "OTP should be atleast 4 characters"),
                 ])),
           ),
           Padding(
@@ -281,8 +281,8 @@ class ForgetpassValidationState extends State<Forgetpass> {
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Colors.blueGrey.shade200,
-                        Colors.blueGrey.shade400
+                        Colors.purple.shade300,
+                        Colors.purple.shade300,
                       ],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
@@ -294,7 +294,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
                   child: Text(
                     "Reset Password",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),

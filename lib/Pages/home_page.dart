@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
+import 'package:shenbagam_paints/Pages/wallet.dart';
 
 class Homepage extends StatefulWidget {
   static const String routeName = "/Homepage";
@@ -215,15 +216,27 @@ class HomepageValidationState extends State<Homepage> {
                         size: Size(90, 90), // button width and height
                         child: ClipOval(
                           child: Material(
-                            color: Colors.orange, // button color
+                            color: Colors.purple, // button color
                             child: InkWell(
                               splashColor: Colors.blueGrey, // splash color
-                              onTap: () {}, // button pressed
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(wallet.routeName)
+                                    .then((result) async {
+                                  print(result);
+                                });
+                              }, // button pressed
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(Icons.wallet_giftcard), // icon
-                                  Text("Wallet"), // text
+                                  Icon(
+                                    Icons.wallet_giftcard,
+                                    color: Colors.white,
+                                  ), // icon
+                                  Text(
+                                    "Wallet",
+                                    style: TextStyle(color: Colors.white),
+                                  ), // text
                                 ],
                               ),
                             ),
@@ -247,7 +260,7 @@ class HomepageValidationState extends State<Homepage> {
                 height: MediaQuery.of(context).size.height * 0.25,
                 width: MediaQuery.of(context).size.width,
                 child: UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(color: Colors.blueGrey.shade200),
+                  decoration: BoxDecoration(color: Colors.white),
                   accountName: Text(
                     "Jain Immanual Wilson",
                     style: TextStyle(color: Colors.black),

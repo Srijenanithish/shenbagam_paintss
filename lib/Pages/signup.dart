@@ -470,8 +470,8 @@ class SignupValidationState extends State<SignUp> {
                                             decoration: BoxDecoration(
                                                 gradient: LinearGradient(
                                                   colors: [
-                                                    Colors.blueGrey.shade200,
-                                                    Colors.blueGrey.shade400
+                                                    Colors.purple.shade300,
+                                                    Colors.purple.shade300,
                                                   ],
                                                   begin: Alignment.centerLeft,
                                                   end: Alignment.centerRight,
@@ -488,7 +488,7 @@ class SignupValidationState extends State<SignUp> {
                                                 "Sign UP",
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    color: Colors.black),
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ),
