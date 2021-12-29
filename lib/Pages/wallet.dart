@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shenbagam_paints/Pages/profile.dart';
 
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 
@@ -59,11 +60,15 @@ class walletValidationState extends State<wallet> {
             actions: <Widget>[
               IconButton(
                 icon: Icon(
-                  Icons.settings,
+                  Icons.person,
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  // do something
+                  Navigator.of(context)
+                      .pushNamed(profile.routeName)
+                      .then((result) async {
+                    print(result);
+                  });
                 },
               )
             ],

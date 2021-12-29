@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
+import 'package:shenbagam_paints/Pages/profile.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:shenbagam_paints/Pages/wallet.dart';
 
@@ -32,6 +33,21 @@ class HomepageValidationState extends State<Homepage> {
         title: Text(
           "Shenbagam Paints",
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamed(profile.routeName)
+                  .then((result) async {
+                print(result);
+              });
+            },
+          )
+        ],
         // backgroundColor: Colors.white10.withOpacity(0.01),
       ),
       body: Container(
@@ -273,6 +289,13 @@ class HomepageValidationState extends State<Homepage> {
                     "Painter",
                     style: TextStyle(color: Colors.black),
                   ),
+                  onDetailsPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(profile.routeName)
+                        .then((result) async {
+                      print(result);
+                    });
+                  },
                 ),
               ),
               Card(
@@ -324,6 +347,45 @@ class HomepageValidationState extends State<Homepage> {
                 child: ListTile(
                   leading: Icon(Icons.person),
                   title: const Text('My Partners'),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(my_partners.routeName)
+                        .then((result) async {
+                      print(result);
+                    });
+                  },
+                ),
+              ),
+              Card(
+                color: Colors.blueGrey.shade100,
+                shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+                borderOnForeground: true,
+                elevation: 0,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: ListTile(
+                  leading: Icon(Icons.feedback),
+                  title: const Text('Feedback'),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              Card(
+                color: Colors.white,
+                shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+                borderOnForeground: true,
+                elevation: 0,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: ListTile(
+                  leading: Icon(Icons.settings),
+                  title: const Text('Settings'),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed(my_partners.routeName)

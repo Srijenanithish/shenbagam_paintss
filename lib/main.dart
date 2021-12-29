@@ -6,9 +6,9 @@ import 'package:shenbagam_paints/Pages/forget_password.dart';
 import 'package:shenbagam_paints/Pages/home_page.dart';
 import 'package:shenbagam_paints/Pages/login_form.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
+import 'package:shenbagam_paints/Pages/profile.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
 import 'package:shenbagam_paints/Pages/wallet.dart';
-import 'package:shenbagam_paints/Pages/wallet_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         my_partners.routeName: (context) => my_partners(),
         ExplorePage.routeName: (context) => ExplorePage(),
         wallet.routeName: (context) => wallet(),
-        wallet_view.routeName: (context) => wallet_view(),
+        profile.routeName: (context) => profile(),
       },
 
       title: 'Shenbagam Paints',

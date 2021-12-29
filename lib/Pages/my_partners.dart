@@ -33,10 +33,11 @@ class my_partnersValidationState extends State<my_partners> {
         child: FadeAnimation(
           1.4,
           Card(
+            color: Colors.white.withOpacity(0.2),
             semanticContainer: true,
 
             //color: Colors.black.withOpacity(0.2),
-            elevation: 30,
+            elevation: 100,
             margin: EdgeInsets.fromLTRB(45, 80, 45, 85),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
@@ -117,12 +118,13 @@ class EntryItem extends StatelessWidget {
   Widget _buildTiles(Entry root) {
     if (root.children.isEmpty) {
       return Container(
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: BoxDecoration(color: Colors.black12),
         child: ListTile(
           title: Text(
             root.title,
             style: TextStyle(
               fontSize: 20,
+              color: Colors.white,
             ),
           ),
         ),
@@ -135,6 +137,7 @@ class EntryItem extends StatelessWidget {
         title: Text(
           root.title,
           style: TextStyle(
+            color: Colors.white,
             fontSize: 20,
           ),
         ),
