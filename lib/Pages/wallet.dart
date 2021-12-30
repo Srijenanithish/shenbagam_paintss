@@ -110,338 +110,347 @@ class walletValidationState extends State<wallet> {
           ),
           body: TabBarView(
             children: [
-              Expanded(
-                child: ListView.builder(
-                    itemCount: _textEditingController!.text.isNotEmpty
-                        ? PartyListSearch!.length
-                        : PartyList.length,
-                    itemBuilder: (ctx, index) {
-                      return InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  scrollable: true,
-                                  title: Center(
-                                    child: Text(
-                                      'Ledger Details',
-                                      style: TextStyle(fontSize: 23),
+              FadeAnimation(
+                1.4,
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: _textEditingController!.text.isNotEmpty
+                          ? PartyListSearch!.length
+                          : PartyList.length,
+                      itemBuilder: (ctx, index) {
+                        return InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    scrollable: true,
+                                    title: Center(
+                                      child: Text(
+                                        'Ledger Details',
+                                        style: TextStyle(fontSize: 23),
+                                      ),
                                     ),
-                                  ),
-                                  content: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text("Invoice No :\n 123456789"),
-                                          Text("date\n08-08-2020")
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                              "Transport\nNEW MAHAVEER(C.C ATTACHED)"),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("No.of cartons: "),
-                                              Text("6")
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text("Packing Slip Nos: "),
-                                              Text("SD -00034")
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text("Order Nos  "),
-                                              Text("291, 272")
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
+                                    content: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("Invoice No :\n 123456789"),
+                                            Text("date\n08-08-2020")
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "Transport\nNEW MAHAVEER(C.C ATTACHED)"),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("No.of cartons: "),
+                                                Text("6")
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Packing Slip Nos: "),
+                                                Text("SD -00034")
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Order Nos  "),
+                                                Text("291, 272")
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Center(
+                                            child: Text("Rupees : 1,37232.59",
+                                                style: TextStyle(
+                                                  fontSize: 23,
+                                                ))),
+                                      ],
+                                    ),
+                                    actions: [
                                       Center(
-                                          child: Text("Rupees : 1,37232.59",
-                                              style: TextStyle(
-                                                fontSize: 23,
-                                              ))),
+                                        child: RaisedButton(
+                                            child: Text("Claim Now"),
+                                            onPressed: () {
+                                              // your code
+                                            }),
+                                      )
                                     ],
-                                  ),
-                                  actions: [
-                                    Center(
-                                      child: RaisedButton(
-                                          child: Text("Claim Now"),
-                                          onPressed: () {
-                                            // your code
-                                          }),
-                                    )
+                                  );
+                                });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.black12,
+                                    Colors.black12,
                                   ],
-                                );
-                              });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.black12,
-                                  Colors.black12,
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                              height: 90,
+                              child: Column(
+                                children: [],
                               ),
                             ),
-                            height: 90,
-                            child: Column(
-                              children: [],
-                            ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                ),
               ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: _textEditingController!.text.isNotEmpty
-                        ? PartyListSearch!.length
-                        : PartyList.length,
-                    itemBuilder: (ctx, index) {
-                      return InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  scrollable: true,
-                                  title: Center(
-                                    child: Text(
-                                      'Outstanding Details',
-                                      style: TextStyle(fontSize: 23),
+              FadeAnimation(
+                1.4,
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: _textEditingController!.text.isNotEmpty
+                          ? PartyListSearch!.length
+                          : PartyList.length,
+                      itemBuilder: (ctx, index) {
+                        return InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    scrollable: true,
+                                    title: Center(
+                                      child: Text(
+                                        'Outstanding Details',
+                                        style: TextStyle(fontSize: 23),
+                                      ),
                                     ),
-                                  ),
-                                  content: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text("Invoice No :\n 123456789"),
-                                          Text("date\n08-08-2020")
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                              "Transport\nNEW MAHAVEER(C.C ATTACHED)"),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("No.of cartons: "),
-                                              Text("6")
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text("Packing Slip Nos: "),
-                                              Text("SD -00034")
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text("Order Nos  "),
-                                              Text("291, 272")
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
+                                    content: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("Invoice No :\n 123456789"),
+                                            Text("date\n08-08-2020")
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "Transport\nNEW MAHAVEER(C.C ATTACHED)"),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("No.of cartons: "),
+                                                Text("6")
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Packing Slip Nos: "),
+                                                Text("SD -00034")
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Order Nos  "),
+                                                Text("291, 272")
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Center(
+                                            child: Text("Rupees : 1,37232.59",
+                                                style: TextStyle(
+                                                  fontSize: 23,
+                                                ))),
+                                      ],
+                                    ),
+                                    actions: [
                                       Center(
-                                          child: Text("Rupees : 1,37232.59",
-                                              style: TextStyle(
-                                                fontSize: 23,
-                                              ))),
+                                        child: RaisedButton(
+                                            child: Text("Claim Now"),
+                                            onPressed: () {
+                                              // your code
+                                            }),
+                                      )
                                     ],
-                                  ),
-                                  actions: [
-                                    Center(
-                                      child: RaisedButton(
-                                          child: Text("Claim Now"),
-                                          onPressed: () {
-                                            // your code
-                                          }),
-                                    )
+                                  );
+                                });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.black12,
+                                    Colors.black12,
                                   ],
-                                );
-                              });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.black12,
-                                  Colors.black12,
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                              height: 90,
+                              child: Column(
+                                children: [],
                               ),
                             ),
-                            height: 90,
-                            child: Column(
-                              children: [],
-                            ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                ),
               ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: _textEditingController!.text.isNotEmpty
-                        ? PartyListSearch!.length
-                        : PartyList.length,
-                    itemBuilder: (ctx, index) {
-                      return InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  scrollable: true,
-                                  title: Center(
-                                    child: Text(
-                                      'Invoice Summary',
-                                      style: TextStyle(fontSize: 23),
+              FadeAnimation(
+                1.4,
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: _textEditingController!.text.isNotEmpty
+                          ? PartyListSearch!.length
+                          : PartyList.length,
+                      itemBuilder: (ctx, index) {
+                        return InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    scrollable: true,
+                                    title: Center(
+                                      child: Text(
+                                        'Invoice Summary',
+                                        style: TextStyle(fontSize: 23),
+                                      ),
                                     ),
-                                  ),
-                                  content: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text("Invoice No :\n 123456789"),
-                                          Text("date\n08-08-2020")
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                              "Transport\nNEW MAHAVEER(C.C ATTACHED)"),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("No.of cartons: "),
-                                              Text("6")
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text("Packing Slip Nos: "),
-                                              Text("SD -00034")
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text("Order Nos  "),
-                                              Text("291, 272")
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
+                                    content: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("Invoice No :\n 123456789"),
+                                            Text("date\n08-08-2020")
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "Transport\nNEW MAHAVEER(C.C ATTACHED)"),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("No.of cartons: "),
+                                                Text("6")
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Packing Slip Nos: "),
+                                                Text("SD -00034")
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Order Nos  "),
+                                                Text("291, 272")
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Center(
+                                            child: Text("Rupees : 1,37232.59",
+                                                style: TextStyle(
+                                                  fontSize: 23,
+                                                ))),
+                                      ],
+                                    ),
+                                    actions: [
                                       Center(
-                                          child: Text("Rupees : 1,37232.59",
-                                              style: TextStyle(
-                                                fontSize: 23,
-                                              ))),
+                                        child: RaisedButton(
+                                            child: Text("Claim Now"),
+                                            onPressed: () {
+                                              // your code
+                                            }),
+                                      )
                                     ],
-                                  ),
-                                  actions: [
-                                    Center(
-                                      child: RaisedButton(
-                                          child: Text("Claim Now"),
-                                          onPressed: () {
-                                            // your code
-                                          }),
-                                    )
+                                  );
+                                });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.black12,
+                                    Colors.black12,
                                   ],
-                                );
-                              });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.black12,
-                                  Colors.black12,
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                              height: 90,
+                              child: Column(
+                                children: [],
                               ),
                             ),
-                            height: 90,
-                            child: Column(
-                              children: [],
-                            ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                ),
               ),
             ],
           ),

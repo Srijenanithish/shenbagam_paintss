@@ -33,7 +33,6 @@ class _ExplorePageState extends State<ExplorePage>
         pinned: true,
         floating: true,
         stretch: true,
-        backgroundColor: Colors.blueGrey.shade100,
         flexibleSpace: FlexibleSpaceBar(
           background: Image(
             image: NetworkImage(
