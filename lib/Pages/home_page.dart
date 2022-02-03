@@ -64,7 +64,7 @@ class homeValidationState extends State<home> {
                     "Shenbagam Paints Welcomes You !",
                     style: GoogleFonts.raleway(
                       textStyle: TextStyle(
-                          color: Colors.black54,
+                          color: Colors.orange.shade400,
                           fontSize: 20,
                           letterSpacing: .5),
                     ),

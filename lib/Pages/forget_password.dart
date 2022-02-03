@@ -137,7 +137,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
                                     child: Text('SEND OTP'),
                                     onPressed: () {
                                       if (formkey.currentState!.validate()) {
-                                        forget(Mobilenum);
+                                        send_otp(Mobilenum);
                                         setState(() {
                                           _hasBeenPressed = false;
                                         });
@@ -244,7 +244,9 @@ class ForgetpassValidationState extends State<Forgetpass> {
           FlatButton(
             minWidth: 170,
             child: Text('RESET PASSWORD'),
-            onPressed: () {},
+            onPressed: () {
+              reset_pass(Otp, password_);
+            },
             color: Colors.purple.shade200,
             splashColor: Colors.green,
           ),
@@ -262,24 +264,37 @@ class ForgetpassValidationState extends State<Forgetpass> {
     }
   }
 
-  void forget(mobile_no) async {
-    var headers = {
-      'Content-Type': 'application/json',
-      'Cookie':
-          'full_name=Sudarshan; sid=eeac97f12794ef7c8c1fc70f82ffddf19327d27d6686b022f549bff1; system_user=yes; user_id=frankel9675%40gmail.com; user_image='
-    };
+  void send_otp(mobile_no) async {
+    var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
         'GET',
         Uri.parse(
-            'http://test_senbagam.aerele.in/api/method/senbagam.api.send_otp'));
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.send_otp'));
     request.body = json.encode({
-      "args": [
-        [
-          {
-            "mobile_no": mobile_no.text.toString().trim(),
-          }
-        ]
-      ]
+      "args": {"mobile_no": mobile_no.text.toString().trim()}
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  void reset_pass(otp, password) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.reset_password'));
+    request.body = json.encode({
+      "args": {
+        "otp": otp.text.toString().trim(),
+        "new_password": password.text.toString().trim()
+      }
     });
     request.headers.addAll(headers);
 
@@ -288,12 +303,48 @@ class ForgetpassValidationState extends State<Forgetpass> {
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
       Mapresponse = await json.decode(res);
-      // dataResponse = Mapresponse['message'];
-      print(Mapresponse);
-
-      // print(await response.stream.bytesToString());
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.black26,
+        content: Text(
+          Mapresponse['message']['message'],
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
+      print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
     }
   }
 }
+//  var headers = {
+//       'Content-Type': 'application/json',
+//       'Cookie':
+//           'full_name=Sudarshan; sid=eeac97f12794ef7c8c1fc70f82ffddf19327d27d6686b022f549bff1; system_user=yes; user_id=frankel9675%40gmail.com; user_image='
+//     };
+//     var request = http.Request(
+//         'GET',
+//         Uri.parse(
+//             'http://test_senbagam.aerele.in/api/method/senbagam.api.send_otp'));
+//     request.body = json.encode({
+//       "args": [
+//         [
+//           {
+//             "mobile_no": mobile_no.text.toString().trim(),
+//           }
+//         ]
+//       ]
+//     });
+//     request.headers.addAll(headers);
+
+//     http.StreamedResponse response = await request.send();
+
+//     if (response.statusCode == 200) {
+//       var res = await response.stream.bytesToString();
+//       Mapresponse = await json.decode(res);
+//       // dataResponse = Mapresponse['message'];
+//       print(Mapresponse);
+
+//       // print(await response.stream.bytesToString());
+//     } else {
+//       print(response.reasonPhrase);
+//     }

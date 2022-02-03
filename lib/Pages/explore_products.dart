@@ -272,7 +272,7 @@ class _ExplorePageState extends State<ExplorePage>
                 FadeAnimation(
                   1.4,
                   Text(
-                    "COLOR 2",
+                    "EZHIL",
                     style: TextStyle(fontSize: 19),
                   ),
                 ),
