@@ -49,7 +49,9 @@ class SignupValidationState extends State<SignUp> {
   TextEditingController District = TextEditingController();
   TextEditingController Pincode = TextEditingController();
   TextEditingController password_ = TextEditingController();
+  TextEditingController _controller = TextEditingController();
   bool _passwordVisible = false;
+  var items = ["Arthur", "Benjo", "ossssuur"];
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
@@ -161,8 +163,8 @@ class SignupValidationState extends State<SignUp> {
                                                   context: context,
                                                   initialDate: DateTime.now(),
                                                   firstDate: DateTime(
-                                                      2000), //DateTime.now() - not to allow to choose before today.
-                                                  lastDate: DateTime(2101));
+                                                      1950), //DateTime.now() - not to allow to choose before today.
+                                                  lastDate: DateTime.now());
 
                                           if (pickedDate != null) {
                                             print(
@@ -279,6 +281,55 @@ class SignupValidationState extends State<SignUp> {
                                             contentPadding: EdgeInsets.all(16),
                                             labelText: 'District',
                                             hintText: 'Enter your District'),
+                                        validator: MultiValidator([
+                                          RequiredValidator(
+                                              errorText: "* Required"),
+                                          MinLengthValidator(4,
+                                              errorText:
+                                                  "Username should be atleast 4 characters"),
+                                        ])),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        40, 10, 40, 0),
+                                    child: TextField(
+                                      controller: _controller,
+                                      decoration: InputDecoration(
+                                        prefixIcon:
+                                            prefixIcon ?? Icon(Icons.person),
+                                        labelText: 'Referred by ',
+                                        suffixIcon: PopupMenuButton<String>(
+                                          icon:
+                                              const Icon(Icons.arrow_drop_down),
+                                          onSelected: (String value) {
+                                            _controller.text = value;
+                                          },
+                                          itemBuilder: (BuildContext context) {
+                                            return items
+                                                .map<PopupMenuItem<String>>(
+                                                    (String value) {
+                                              return new PopupMenuItem(
+                                                  child: new Text(value),
+                                                  value: value);
+                                            }).toList();
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        40, 10, 40, 0),
+                                    child: TextFormField(
+                                        controller: Pincode,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                            prefixIcon: prefixIcon ??
+                                                Icon(Icons.confirmation_number),
+                                            border: UnderlineInputBorder(),
+                                            contentPadding: EdgeInsets.all(16),
+                                            labelText: 'GSTN',
+                                            hintText: 'Enter your GSTN'),
                                         validator: MultiValidator([
                                           RequiredValidator(
                                               errorText: "* Required"),

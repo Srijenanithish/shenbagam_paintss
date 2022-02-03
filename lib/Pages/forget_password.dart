@@ -212,7 +212,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
                           color: Colors.purple.shade200,
                         ),
                     border: UnderlineInputBorder(),
-                    labelText: 'Password',
+                    labelText: 'New Password',
                     suffixIcon: GestureDetector(
                       onTap: () {
                         setState(() {
