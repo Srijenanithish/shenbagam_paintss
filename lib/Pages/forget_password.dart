@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -29,6 +30,8 @@ class ForgetpassValidationState extends State<Forgetpass> {
   }
 
   @override
+  Map Mapresponse = {};
+  Map dataResponse = {};
   TextEditingController Mobilenum = TextEditingController();
 
   TextEditingController Otp = TextEditingController();
@@ -37,161 +40,142 @@ class ForgetpassValidationState extends State<Forgetpass> {
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(
-                "Forget Password",
-              ),
-              // backgroundColor: Colors.white10.withOpacity(0.01),
-            ),
-            // By defaut, Scaffold background is white
-            // Set its value to transparent
-            backgroundColor: Color(0xfff2f3f7),
             body: Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/login/forgetbg.jpeg"),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.6), BlendMode.dstATop),
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Stack(
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: SingleChildScrollView(
-                            child: FadeAnimation(
-                              1.4,
-                              Card(
-                                elevation: 30,
-                                margin: EdgeInsets.fromLTRB(25, 120, 25, 80),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                clipBehavior: Clip.antiAlias,
-                                child: Form(
-                                  autovalidate: true,
-                                  key: formkey,
-                                  child: Column(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15),
-                                        child: TextFormField(
-                                            controller: Mobilenum,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                                prefixIcon: prefixIcon ??
-                                                    Icon(Icons.phone),
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  borderSide: BorderSide(
-                                                    width: 0,
-                                                    style: BorderStyle.none,
-                                                  ),
-                                                ),
-                                                filled: true,
-                                                contentPadding:
-                                                    EdgeInsets.all(16),
-                                                isDense: true,
-                                                fillColor: Colors.black12,
-                                                labelText: 'Mobile Number',
-                                                hintText:
-                                                    'Enter your Mobile Number'),
-                                            validator: MultiValidator([
-                                              RequiredValidator(
-                                                  errorText: "* Required"),
-                                              MinLengthValidator(10,
-                                                  errorText:
-                                                      "Mobile Number should be 10 characters"),
-                                            ])),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Container(
-                                        height: 50.0,
-                                        child: RaisedButton(
-                                          onPressed: () {
-                                            if (formkey.currentState!
-                                                .validate()) {
-                                              setState(() {
-                                                _hasBeenPressed = false;
-                                              });
-                                            }
-                                          },
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(80.0)),
-                                          padding: EdgeInsets.all(0.0),
-                                          child: Ink(
-                                            decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.purple.shade300,
-                                                    Colors.purple.shade300,
-                                                  ],
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        30.0)),
-                                            child: Container(
-                                              constraints: BoxConstraints(
-                                                  maxWidth: 100.0,
-                                                  minHeight: 50.0),
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Get OTP",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 10, 0, 0),
-                                        child: Center(
-                                          child: Container(
-                                              width: 300,
-                                              child: _hasBeenPressed
-                                                  ? getOTP()
-                                                  : getOTP()),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+      width: double.infinity,
+      height: double.infinity,
+      child: SingleChildScrollView(
+        child: Stack(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FadeAnimation(
+                  1.4,
+                  Row(
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+                          child: new IconButton(
+                            icon: new Icon(Icons.arrow_back),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 60, 50, 0),
+                        child: Text(
+                          'Senbagam Paints',
+                          style: GoogleFonts.raleway(
+                            textStyle: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 35,
+                                letterSpacing: .5),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )));
+                FadeAnimation(
+                  1.4,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 100, 0),
+                    child: Text(
+                      'FORGET PASSWORD',
+                      style: GoogleFonts.raleway(
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 22,
+                            letterSpacing: .5),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: SingleChildScrollView(
+                    child: FadeAnimation(
+                      1.4,
+                      Card(
+                        margin: EdgeInsets.fromLTRB(25, 40, 25, 80),
+                        clipBehavior: Clip.antiAlias,
+                        child: Form(
+                          autovalidate: true,
+                          key: formkey,
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                child: TextFormField(
+                                    controller: Mobilenum,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                        prefixIcon:
+                                            prefixIcon ?? Icon(Icons.phone),
+                                        border: UnderlineInputBorder(),
+                                        contentPadding: EdgeInsets.all(16),
+                                        labelText: 'Mobile Number',
+                                        hintText: 'Enter your Mobile Number'),
+                                    validator: MultiValidator([
+                                      RequiredValidator(
+                                          errorText: "* Required"),
+                                      MinLengthValidator(10,
+                                          errorText:
+                                              "Mobile Number should be 10 characters"),
+                                    ])),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              FadeAnimation(
+                                  1.4,
+                                  FlatButton(
+                                    minWidth: 170,
+                                    child: Text('SEND OTP'),
+                                    onPressed: () {
+                                      if (formkey.currentState!.validate()) {
+                                        forget(Mobilenum);
+                                        setState(() {
+                                          _hasBeenPressed = false;
+                                        });
+                                      }
+                                      ;
+                                    },
+                                    color: Colors.purple.shade200,
+                                    splashColor: Colors.green,
+                                  )),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                child: Center(
+                                  child: Container(
+                                      width: 300,
+                                      child: _hasBeenPressed
+                                          ? getOTP()
+                                          : getOTP()),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    )));
   }
 
   Widget getOTP() {
@@ -205,17 +189,8 @@ class ForgetpassValidationState extends State<Forgetpass> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                     prefixIcon: prefixIcon ?? Icon(Icons.format_list_numbered),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        width: 0,
-                        style: BorderStyle.none,
-                      ),
-                    ),
-                    filled: true,
+                    border: UnderlineInputBorder(),
                     contentPadding: EdgeInsets.all(16),
-                    isDense: true,
-                    fillColor: Colors.black12,
                     labelText: 'Enter OTP',
                     hintText: 'Enter your Generated OTP'),
                 validator: MultiValidator([
@@ -225,35 +200,35 @@ class ForgetpassValidationState extends State<Forgetpass> {
                 ])),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 15, bottom: 0),
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 0),
             child: TextFormField(
                 controller: password_,
                 obscureText: !_passwordVisible,
                 decoration: InputDecoration(
-                    prefixIcon: prefixIcon ?? Icon(Icons.password_sharp),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        width: 0,
-                        style: BorderStyle.none,
-                      ),
-                    ),
+                    prefixIcon: prefixIcon ??
+                        Icon(
+                          Icons.password_sharp,
+                          color: Colors.purple.shade200,
+                        ),
+                    border: UnderlineInputBorder(),
+                    labelText: 'Password',
                     suffixIcon: GestureDetector(
                       onTap: () {
                         setState(() {
                           _passwordVisible = !_passwordVisible;
                         });
                       },
-                      child: Icon(_passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off),
+                      child: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.purple.shade200,
+                      ),
                     ),
-                    filled: true,
                     contentPadding: EdgeInsets.all(16),
                     fillColor: Colors.black12,
-                    labelText: 'New Password',
-                    hintText: 'Enter New secure password'),
+                    hintText: 'Enter secure password'),
                 validator: MultiValidator([
                   RequiredValidator(errorText: "* Required"),
                   MinLengthValidator(4,
@@ -266,39 +241,12 @@ class ForgetpassValidationState extends State<Forgetpass> {
           SizedBox(
             height: 10,
           ),
-          Container(
-            height: 50.0,
-            child: RaisedButton(
-              onPressed: () {
-                setState(() {
-                  _hasBeenPressed = false;
-                });
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(80.0)),
-              padding: EdgeInsets.all(0.0),
-              child: Ink(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.purple.shade300,
-                        Colors.purple.shade300,
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-                    borderRadius: BorderRadius.circular(30.0)),
-                child: Container(
-                  constraints: BoxConstraints(maxWidth: 100.0, minHeight: 50.0),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Reset Password",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
+          FlatButton(
+            minWidth: 170,
+            child: Text('RESET PASSWORD'),
+            onPressed: () {},
+            color: Colors.purple.shade200,
+            splashColor: Colors.green,
           ),
           SizedBox(
             height: 10,
@@ -311,6 +259,41 @@ class ForgetpassValidationState extends State<Forgetpass> {
         "Get OTP to Change your Password !",
         style: TextStyle(color: Colors.red),
       ));
+    }
+  }
+
+  void forget(mobile_no) async {
+    var headers = {
+      'Content-Type': 'application/json',
+      'Cookie':
+          'full_name=Sudarshan; sid=eeac97f12794ef7c8c1fc70f82ffddf19327d27d6686b022f549bff1; system_user=yes; user_id=frankel9675%40gmail.com; user_image='
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam.api.send_otp'));
+    request.body = json.encode({
+      "args": [
+        [
+          {
+            "mobile_no": mobile_no.text.toString().trim(),
+          }
+        ]
+      ]
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res = await response.stream.bytesToString();
+      Mapresponse = await json.decode(res);
+      // dataResponse = Mapresponse['message'];
+      print(Mapresponse);
+
+      // print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -6,17 +7,17 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
-
+import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 
-class SignUp extends StatefulWidget {
-  static const String routeName = "/Signup";
+class edit extends StatefulWidget {
+  static const String routeName = "/edit";
 
   @override
-  SignupValidationState createState() => SignupValidationState();
+  editValidationState createState() => editValidationState();
 }
 
-class SignupValidationState extends State<SignUp> {
+class editValidationState extends State<edit> {
   @override
   void initState() {
     dateinput.text = ""; //set the initial value of text field
@@ -24,7 +25,8 @@ class SignupValidationState extends State<SignUp> {
   }
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-
+  late PickedFile _imageFile;
+  final ImagePicker _picker = ImagePicker();
   get prefixIcon => null;
 
   String? validatePassword(String value) {
@@ -56,6 +58,14 @@ class SignupValidationState extends State<SignUp> {
             body: Container(
       width: double.infinity,
       height: double.infinity,
+      // decoration: BoxDecoration(
+      //   image: DecorationImage(
+      //     image: AssetImage("assets/login/SignUpBG.jpg"),
+      //     fit: BoxFit.cover,
+      //     colorFilter: ColorFilter.mode(
+      //         Colors.black.withOpacity(0.6), BlendMode.dstATop),
+      //   ),
+      // ),
       child: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
@@ -102,7 +112,7 @@ class SignupValidationState extends State<SignUp> {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 170, 0),
                               child: Text(
-                                'SIGN UP',
+                                'EDIT PROFILE',
                                 style: GoogleFonts.raleway(
                                   textStyle: TextStyle(
                                       color: Colors.black,
@@ -121,6 +131,41 @@ class SignupValidationState extends State<SignUp> {
                                 children: <Widget>[
                                   SizedBox(
                                     height: 20,
+                                  ),
+                                  Container(
+                                    child: FadeAnimation(
+                                      1.4,
+                                      Container(
+                                        alignment: Alignment(0.0, 2.5),
+                                        width: double.infinity,
+                                        height: 100,
+                                        child: Stack(children: <Widget>[
+                                          CircleAvatar(
+                                              radius: 80.0,
+                                              backgroundColor: Colors.white,
+                                              backgroundImage: AssetImage(
+                                                  "assets/login/usericonn.png")),
+                                          Positioned(
+                                            bottom: 20.0,
+                                            right: 20.0,
+                                            child: InkWell(
+                                              onTap: () {
+                                                showModalBottomSheet(
+                                                  context: context,
+                                                  builder: ((builder) =>
+                                                      bottomSheet()),
+                                                );
+                                              },
+                                              child: Icon(
+                                                Icons.camera_alt,
+                                                color: Colors.teal,
+                                                size: 28.0,
+                                              ),
+                                            ),
+                                          ),
+                                        ]),
+                                      ),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
@@ -308,41 +353,6 @@ class SignupValidationState extends State<SignUp> {
                                                   "Username should be atleast 6 characters"),
                                         ])),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                        controller: password_,
-                                        obscureText: !_passwordVisible,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.password_sharp),
-                                            border: UnderlineInputBorder(),
-                                            suffixIcon: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _passwordVisible =
-                                                      !_passwordVisible;
-                                                });
-                                              },
-                                              child: Icon(_passwordVisible
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off),
-                                            ),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Password',
-                                            hintText: 'Enter secure password'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Password should be atleast 6 characters"),
-                                          MaxLengthValidator(15,
-                                              errorText:
-                                                  "Password should not be greater than 15 characters")
-                                        ])),
-                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),
@@ -350,7 +360,7 @@ class SignupValidationState extends State<SignUp> {
                                       1.4,
                                       FlatButton(
                                         minWidth: 190,
-                                        child: Text('SIGN UP'),
+                                        child: Text('SAVE'),
                                         onPressed: () {},
                                         color: Colors.purple.shade200,
                                         splashColor: Colors.green,
@@ -373,6 +383,55 @@ class SignupValidationState extends State<SignUp> {
         ),
       ),
     )));
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Choose Profile photo",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.camera),
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              label: Text("Camera"),
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.image),
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              label: Text("Gallery"),
+            ),
+          ])
+        ],
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(
+      source: source,
+    );
+    setState(() {
+      _imageFile = PickedFile as PickedFile;
+    });
   }
 
   Signup123(username_, dateinput, Mobilenum, Address, City, District, Pincode,

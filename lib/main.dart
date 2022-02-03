@@ -1,17 +1,28 @@
 // @dart=2.9
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
 import 'package:shenbagam_paints/Pages/forget_password.dart';
+import 'package:shenbagam_paints/Pages/home.dart';
 import 'package:shenbagam_paints/Pages/home_page.dart';
 import 'package:shenbagam_paints/Pages/login_form.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
 import 'package:shenbagam_paints/Pages/profile.dart';
+import 'package:shenbagam_paints/Pages/qr_page.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
 import 'package:shenbagam_paints/Pages/wallet.dart';
 
-void main() {
-  runApp(MyApp());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -27,14 +38,22 @@ class MyApp extends StatelessWidget {
         SignUp.routeName: (context) => SignUp(),
         Forgetpass.routeName: (context) => Forgetpass(),
         Homepage.routeName: (context) => Homepage(),
+        home.routeName: (context) => home(),
         my_partners.routeName: (context) => my_partners(),
         ExplorePage.routeName: (context) => ExplorePage(),
         wallet.routeName: (context) => wallet(),
         profile.routeName: (context) => profile(),
+        qr_page.routeName: (context) => qr_page(),
+        edit.routeName: (context) => edit(),
       },
 
-      title: 'Shenbagam Paints',
+      title: 'Senbagam Paints',
+
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: GoogleFonts.latoTextTheme(
+          Theme.of(context).textTheme,
+        ),
         primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
@@ -61,6 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.white, child: Image.asset("assets/login/shenbagam.gif"));
+        color: Colors.white, child: Image.asset("assets/login/senn.gif"));
   }
 }

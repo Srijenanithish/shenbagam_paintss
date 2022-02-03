@@ -1,439 +1,250 @@
-import 'dart:async';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flip_card/flip_card.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shenbagam_paints/Pages/explore_products.dart';
-import 'package:shenbagam_paints/Pages/my_partners.dart';
-import 'package:shenbagam_paints/Pages/profile.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
-import 'package:shenbagam_paints/Pages/wallet.dart';
 
-class Homepage extends StatefulWidget {
-  static const String routeName = "/Homepage";
+class home extends StatefulWidget {
+  static const String routeName = "/homee";
 
   @override
-  HomepageValidationState createState() => HomepageValidationState();
+  homeValidationState createState() => homeValidationState();
 }
 
-class HomepageValidationState extends State<Homepage> {
-  final List<String> imageList = [
-    "assets/login/home1.jpg",
-    "assets/login/home2.jpeg",
-    "assets/login/home3.jpeg",
-    "assets/login/home4.jpeg",
-    "assets/login/home5.jpeg",
+class homeValidationState extends State<home> {
+  List<String> images = [
+    'assets/login/homee1.jpg',
+    'assets/login/homee2.jpg',
+    'assets/login/homee3.png',
   ];
+  List<String> image_name = [
+    'Grey Mark One Color',
+    'BlueGrey Shade Color',
+    'Pista Green Color'
+  ];
+
+  List<List> color_list = [
+    [
+      Colors.grey.shade50,
+      Colors.grey.shade100,
+      Colors.grey.shade200,
+      Colors.grey.shade300,
+      Colors.grey.shade400,
+    ],
+    [
+      Colors.blueGrey.shade50,
+      Colors.blueGrey.shade100,
+      Colors.blueGrey.shade200,
+      Colors.blueGrey.shade300,
+      Colors.blueGrey.shade400,
+    ],
+    [
+      Colors.green.shade50,
+      Colors.green.shade100,
+      Colors.green.shade200,
+      Colors.green.shade300,
+      Colors.green.shade400,
+    ],
+  ];
+
+  int _selectedColor = 0;
+  int _selectedSize = 1;
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Shenbagam Paints",
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context)
-                  .pushNamed(profile.routeName)
-                  .then((result) async {
-                print(result);
-              });
-            },
-          )
-        ],
-        // backgroundColor: Colors.white10.withOpacity(0.01),
-      ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/login/homebg1.jpeg"),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.3), BlendMode.dstATop),
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Stack(
-            children: <Widget>[
-              FadeAnimation(
-                1.4,
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 32, 0, 0),
-                      child: CarouselSlider(
-                        options: CarouselOptions(
-                          enlargeCenterPage: true,
-                          //enableInfiniteScroll: false,
-                          autoPlay: true,
-                        ),
-                        items: imageList
-                            .map((e) => ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: <Widget>[
-                                      Image.asset(
-                                        e,
-                                        width: 1050,
-                                        height: 350,
-                                        fit: BoxFit.cover,
-                                      )
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
-                      ),
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black54,
+              title: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: FadeAnimation(
+                  1.4,
+                  Text(
+                    "Shenbagam Paints Welcomes You !",
+                    style: GoogleFonts.raleway(
+                      textStyle: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 20,
+                          letterSpacing: .5),
                     ),
-                  ],
-                ),
-              ),
-              FadeAnimation(
-                1.4,
-                Card(
-                  elevation: 10,
-                  clipBehavior: Clip.hardEdge,
-                  margin: EdgeInsets.fromLTRB(0, 270, 0, 0),
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(15),
-                  // ),
-                  // clipBehavior: Clip.antiAlias,
-                  child: Row(
-                    children: [
-                      FadeAnimation(
-                        1.6,
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 40, 0, 40),
-                          child: Container(
-                            child: RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(ExplorePage.routeName)
-                                    .then((result) async {
-                                  print(result);
-                                });
-                              },
-                              padding: EdgeInsets.all(0.0),
-                              child: Ink(
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth: 170.0, minHeight: 50.0),
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.fromLTRB(20, 10, 45, 15),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(
-                                          Icons
-                                              .production_quantity_limits_sharp,
-                                          color: Colors.black54,
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            " Explore\nProducts",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      FadeAnimation(
-                        1.6,
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 40, 0, 40),
-                          child: Container(
-                            child: RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(my_partners.routeName)
-                                    .then((result) async {
-                                  print(result);
-                                });
-                              },
-                              // shape: RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.circular(80.0)),
-                              padding: EdgeInsets.all(0.0),
-                              child: Ink(
-                                // decoration: BoxDecoration(
-                                //     gradient: LinearGradient(
-                                //       colors: [
-                                //         Colors.blueGrey.shade200,
-                                //         Colors.blueGrey.shade400
-                                //       ],
-                                //       begin: Alignment.centerLeft,
-                                //       end: Alignment.centerRight,
-                                //     ),
-                                //     borderRadius: BorderRadius.circular(30.0)),
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth: 150.0, minHeight: 50.0),
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.fromLTRB(10, 10, 15, 15),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(
-                                          Icons.person_add,
-                                          color: Colors.black54,
-                                        ),
-                                        Text(
-                                          "My Partners",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ),
+              bottom: TabBar(
+                tabs: [
+                  FadeAnimation(
+                    1.4,
+                    Text(
+                      'WELCOME',
+                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                    ),
+                  ),
+                  FadeAnimation(
+                    1.4,
+                    Text(
+                      'STORES',
+                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            body: TabBarView(children: [
               FadeAnimation(
                 1.4,
-                Padding(
-                  padding: const EdgeInsets.only(top: 480),
-                  child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox.fromSize(
-                        size: Size(90, 90), // button width and height
-                        child: ClipOval(
-                          child: Material(
-                            color: Colors.purple, // button color
-                            child: InkWell(
-                              splashColor: Colors.blueGrey, // splash color
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(wallet.routeName)
-                                    .then((result) async {
-                                  print(result);
-                                });
-                              }, // button pressed
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.wallet_giftcard,
-                                    color: Colors.white,
-                                  ), // icon
-                                  Text(
-                                    "Wallet",
-                                    style: TextStyle(color: Colors.white),
-                                  ), // text
+                ListView.builder(
+                    itemCount: images.length,
+                    itemBuilder: (ctx, index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white,
+                                  Colors.white,
                                 ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
                               ),
+                            ),
+                            height: 400,
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  images[index],
+                                  width: 600.0,
+                                  height: 240.0,
+                                  fit: BoxFit.cover,
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 150, 0),
+                                  child: Text(
+                                    image_name[index],
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Container(
+                                    height: 60,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: color_list[index].length,
+                                      itemBuilder: (context, index1) {
+                                        return GestureDetector(
+                                          onTap: () {},
+                                          child: AnimatedContainer(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            margin: EdgeInsets.only(right: 10),
+                                            decoration: BoxDecoration(
+                                                color: color_list[index]
+                                                    [index1],
+                                                shape: BoxShape.circle),
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      )),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-      drawer: Container(
-          width: 250.0,
-          color: Colors.white,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: ListTile.divideTiles(context: context, tiles: [
-              Container(
-                decoration: BoxDecoration(color: Colors.blueGrey.shade100),
-                height: MediaQuery.of(context).size.height * 0.25,
-                width: MediaQuery.of(context).size.width,
-                child: UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(color: Colors.white),
-                  accountName: Text(
-                    "Jain Immanual Wilson",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    radius: 50.0,
-                    child: Image.asset("assets/login/usericonn.png"),
-                  ),
-                  accountEmail: Text(
-                    "Painter",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  onDetailsPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(profile.routeName)
-                        .then((result) async {
-                      print(result);
-                    });
-                  },
-                ),
+                      );
+                    }),
               ),
-              Card(
-                color: Colors.white,
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-                borderOnForeground: true,
-                elevation: 0,
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: ListTile(
-                  leading: Icon(Icons.production_quantity_limits_sharp),
-                  title: const Text('Explore Products'),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    Navigator.pop(context);
-                  },
-                ),
+              FadeAnimation(
+                1.4,
+                ListView.builder(
+                    itemCount: images.length,
+                    itemBuilder: (ctx, index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white,
+                                  Colors.white,
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                            ),
+                            height: 400,
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  images[index],
+                                  width: 600.0,
+                                  height: 240.0,
+                                  fit: BoxFit.cover,
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 150, 0),
+                                  child: Text(
+                                    image_name[index],
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Container(
+                                    height: 60,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: color_list[index].length,
+                                      itemBuilder: (context, index1) {
+                                        return GestureDetector(
+                                          onTap: () {},
+                                          child: AnimatedContainer(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            margin: EdgeInsets.only(right: 10),
+                                            decoration: BoxDecoration(
+                                                color: color_list[index]
+                                                    [index1],
+                                                shape: BoxShape.circle),
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
               ),
-              Card(
-                color: Colors.blueGrey.shade100,
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-                borderOnForeground: true,
-                elevation: 0,
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: ListTile(
-                  leading: Icon(Icons.wallet_giftcard),
-                  title: const Text('Wallet'),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              Card(
-                color: Colors.white,
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-                borderOnForeground: true,
-                elevation: 0,
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: ListTile(
-                  leading: Icon(Icons.person),
-                  title: const Text('My Partners'),
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(my_partners.routeName)
-                        .then((result) async {
-                      print(result);
-                    });
-                  },
-                ),
-              ),
-              Card(
-                color: Colors.blueGrey.shade100,
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-                borderOnForeground: true,
-                elevation: 0,
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: ListTile(
-                  leading: Icon(Icons.feedback),
-                  title: const Text('Feedback'),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              Card(
-                color: Colors.white,
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-                borderOnForeground: true,
-                elevation: 0,
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: ListTile(
-                  leading: Icon(Icons.settings),
-                  title: const Text('Settings'),
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(my_partners.routeName)
-                        .then((result) async {
-                      print(result);
-                    });
-                  },
-                ),
-              ),
-            ]).toList(),
-          )),
-    );
+            ])));
   }
 }
-
-
-
-
-
-
-// LiteRollingSwitch(
-//                 value: true,
-//                 textOn: 'active',
-//                 textOff: 'inactive',
-//                 colorOn: Colors.deepOrange,
-//                 colorOff: Colors.blueGrey,
-//                 iconOn: Icons.lightbulb_outline,
-//                 iconOff: Icons.power_settings_new,
-//                 onChanged: (bool state) {
-//                   print('turned ${(state) ? 'on' : 'off'}');
-//                 },
-//               ),
-
-// Padding(
-//                 padding: const EdgeInsets.fromLTRB(0, 350, 0, 0),
-//                 child: Center(
-//                   child: FlipCard(
-//                     direction: FlipDirection.HORIZONTAL,
-//                     front: Container(
-//                       width: 200,
-//                       height: 60,
-//                       color: Colors.red,
-//                     ),
-//                     back: Container(
-//                       width: 200,
-//                       height: 60,
-//                       color: Colors.blue,
-//                     ),
-//                   ),
-//                 ),
-//               ),

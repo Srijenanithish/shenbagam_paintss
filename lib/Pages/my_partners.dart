@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 
 class my_partners extends StatefulWidget {
@@ -12,45 +13,39 @@ class my_partnersValidationState extends State<my_partners> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "My Partners",
-        ),
-        // backgroundColor: Colors.white10.withOpacity(0.01),
-      ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/login/partnersbg.jpeg"),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.white30.withOpacity(0.8), BlendMode.dstATop),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 25,
           ),
-        ),
-        child: FadeAnimation(
-          1.4,
-          Card(
-            color: Colors.white.withOpacity(0.2),
-            semanticContainer: true,
-
-            //color: Colors.black.withOpacity(0.2),
-            elevation: 100,
-            margin: EdgeInsets.fromLTRB(45, 80, 45, 85),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (BuildContext context, int index) => EntryItem(
-                data[index],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 150, 0),
+            child: FadeAnimation(
+              1.4,
+              Text(
+                "All Products",
+                style: GoogleFonts.raleway(
+                  textStyle: TextStyle(
+                      color: Colors.black54, fontSize: 23, letterSpacing: .5),
+                ),
               ),
             ),
           ),
-        ),
+          SizedBox(
+            height: 25,
+          ),
+          Expanded(
+            child: FadeAnimation(
+              1.4,
+              ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int index) => EntryItem(
+                  data[index],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -118,26 +113,36 @@ class EntryItem extends StatelessWidget {
   Widget _buildTiles(Entry root) {
     if (root.children.isEmpty) {
       return Container(
-        decoration: BoxDecoration(color: Colors.black12),
+        decoration: BoxDecoration(color: Colors.white12),
         child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Colors.white,
+            backgroundImage: AssetImage(
+                "assets/login/usericonn.png"), // no matter how big it is, it won't overflow
+          ),
           title: Text(
             root.title,
             style: TextStyle(
               fontSize: 20,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
         ),
       );
     }
     return Container(
-      decoration: BoxDecoration(color: Colors.black26),
+      decoration: BoxDecoration(color: Colors.white12),
       child: ExpansionTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.white,
+          backgroundImage: AssetImage(
+              "assets/login/usericonn.png"), // no matter how big it is, it won't overflow
+        ),
         key: PageStorageKey<Entry>(root),
         title: Text(
           root.title,
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 20,
           ),
         ),
