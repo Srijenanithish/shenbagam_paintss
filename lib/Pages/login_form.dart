@@ -192,8 +192,24 @@ class LoginFormValidationState extends State<LoginForm> {
                                         ])),
                                   ),
                                 ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  child: Container(
+                                      child: FlatButton(
+                                    child: Text('Forget Password ?'),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed(Forgetpass.routeName)
+                                          .then((result) async {
+                                        print(result);
+                                      });
+                                    },
+                                    textColor: Colors.blueAccent,
+                                  )),
+                                ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 10,
                                 ),
                                 FadeAnimation(
                                     1.4,
@@ -215,36 +231,6 @@ class LoginFormValidationState extends State<LoginForm> {
                                     )),
                                 SizedBox(
                                   height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          24, 0, 0, 0),
-                                      child: Container(
-                                          child: FlatButton(
-                                        child: Text('Forget Password'),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pushNamed(Forgetpass.routeName)
-                                              .then((result) async {
-                                            print(result);
-                                          });
-                                        },
-                                        textColor: Colors.blueAccent,
-                                      )),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          60, 0, 0, 0),
-                                      child: Container(
-                                          child: FlatButton(
-                                        child: Text('Login With OTP'),
-                                        onPressed: () {},
-                                        textColor: Colors.blueAccent,
-                                      )),
-                                    ),
-                                  ],
                                 ),
                                 Container(
                                     child: FlatButton(

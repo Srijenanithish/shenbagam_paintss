@@ -76,14 +76,14 @@ class homeValidationState extends State<home> {
                   FadeAnimation(
                     1.4,
                     Text(
-                      'WELCOME',
+                      'WELCOME\n',
                       style: TextStyle(fontSize: 16, color: Colors.black54),
                     ),
                   ),
                   FadeAnimation(
                     1.4,
                     Text(
-                      'STORES',
+                      'STORES\n',
                       style: TextStyle(fontSize: 16, color: Colors.black54),
                     ),
                   ),
