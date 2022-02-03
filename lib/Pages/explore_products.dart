@@ -21,29 +21,115 @@ class _ExplorePageState extends State<ExplorePage>
   List<ProductModel> products = [
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
-        "Color 1",
+        "PUGAZH\n(INTERIOR)\n1  Litre",
+        "PU21-1",
         false),
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
-        "Color 2",
+        "PUGAZH\n(INTERIOR)\n4  Litre",
+        "PU21-4",
         false),
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
-        "Color 3",
+        "PUGAZH\n(INTERIOR)\n10  Litre",
+        "PU21-10",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n20  Litre",
+        "PU21-20",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n1  Litre",
+        "PU15-1",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n4  Litre",
+        "PU15-4",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n10  Litre",
+        "PU15-10",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n20  Litre",
+        "PU15-20",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n1  Litre",
+        "PU13-1",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n4  Litre",
+        "PU13-4",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n10  Litre",
+        "PU13-10",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n20  Litre",
+        "PU13-20",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n1  Litre",
+        "PU10-1",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n4  Litre",
+        "PU10-4",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n10  Litre",
+        "PU10-10",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n20  Litre",
+        "PU10-20",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n1  Litre",
+        "PU1-1",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n10  Litre",
+        "PU1-10",
+        false),
+    ProductModel(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP1b7euDnl5smNxe7kv3PpIMdJdpTZB6wnfg&usqp=CAU",
+        "PUGAZH\n(INTERIOR)\n20  Litre",
+        "PU1-20",
         false),
   ];
 
   List<ProductModel> products1 = [
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsHx2KqKOjjaRqnfp61bfqEfoyXneCTmqW-g&usqp=CAU",
+        "",
         "Color 1",
         false),
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsHx2KqKOjjaRqnfp61bfqEfoyXneCTmqW-g&usqp=CAU",
+        "",
         "Color 2",
         false),
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsHx2KqKOjjaRqnfp61bfqEfoyXneCTmqW-g&usqp=CAU",
+        "",
         "Color 3",
         false),
   ];
@@ -104,7 +190,7 @@ class _ExplorePageState extends State<ExplorePage>
                 FadeAnimation(
                   1.4,
                   Text(
-                    "COLOR 1",
+                    "PUGAZH",
                     style: TextStyle(fontSize: 19),
                   ),
                 ),
@@ -128,7 +214,7 @@ class _ExplorePageState extends State<ExplorePage>
                       1.4,
                       ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 3,
+                        itemCount: products.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
@@ -138,6 +224,7 @@ class _ExplorePageState extends State<ExplorePage>
                                 if (products[index].isSelected == true) {
                                   selectedProducts.add(ProductModel(
                                       products[index].name,
+                                      products[index].code,
                                       products[index].color_type,
                                       true));
                                 } else if (products[index].isSelected ==
@@ -156,7 +243,7 @@ class _ExplorePageState extends State<ExplorePage>
                                   child: Image.network(products[index].name,
                                       fit: BoxFit.cover),
                                 ),
-                                Text(products[index].color_type),
+                                Text(products[index].code),
                                 Container(
                                   child: products[index].isSelected
                                       ? Icon(
@@ -219,6 +306,7 @@ class _ExplorePageState extends State<ExplorePage>
                                 if (products1[index].isSelected == true) {
                                   selectedProducts.add(ProductModel(
                                       products1[index].name,
+                                      products[index].code,
                                       products1[index].color_type,
                                       true));
                                 } else if (products1[index].isSelected ==
