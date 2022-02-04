@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:wc_form_validators/wc_form_validators.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -26,19 +27,29 @@ class SignupValidationState extends State<SignUp> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   get prefixIcon => null;
+  get suffixIcon => null;
 
   String? validatePassword(String value) {
+    RegExp regex =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
     if (value.isEmpty) {
       return "* Required";
     } else if (value.length < 4) {
       return "Password should be atleast 6 characters";
     } else if (value.length > 15) {
       return "Password should not be greater than 15 characters";
+    } else if (value.isEmpty) {
+      return 'Please enter password';
+    } else if (!regex.hasMatch(value)) {
+      return 'Password should contains Special characters,numbers and letters.';
     } else
       return null;
   }
 
   @override
+  Map Mapresponse_ref = {};
+  Map Mapresponse = {};
+  List dataResponse = [];
   TextEditingController username_ = TextEditingController();
   TextEditingController dateinput = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -49,9 +60,11 @@ class SignupValidationState extends State<SignUp> {
   TextEditingController District = TextEditingController();
   TextEditingController Pincode = TextEditingController();
   TextEditingController password_ = TextEditingController();
+  TextEditingController gstn = TextEditingController();
   TextEditingController _controller = TextEditingController();
   bool _passwordVisible = false;
-  var items = ["Arthur", "Benjo", "ossssuur"];
+  bool isPressed = false;
+  var items = ["Click ✓ in Mobile Number"];
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
@@ -198,6 +211,30 @@ class SignupValidationState extends State<SignUp> {
                                         decoration: InputDecoration(
                                             prefixIcon:
                                                 prefixIcon ?? Icon(Icons.phone),
+                                            suffixIcon: suffixIcon ??
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      isPressed = !isPressed;
+                                                    });
+
+                                                    if (isPressed == true) {
+                                                      items.clear();
+                                                      dataResponse.clear();
+                                                      Referral(Mobilenum);
+                                                    } else if (isPressed ==
+                                                        false) {
+                                                      setState(() {
+                                                        items.clear();
+                                                        dataResponse.clear();
+                                                      });
+                                                    }
+                                                  },
+                                                  icon: Icon(Icons.check,
+                                                      color: (isPressed)
+                                                          ? Colors.green
+                                                          : Colors.red),
+                                                ),
                                             border: UnderlineInputBorder(),
                                             contentPadding: EdgeInsets.all(16),
                                             labelText: 'Mobile Number',
@@ -321,7 +358,7 @@ class SignupValidationState extends State<SignUp> {
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
                                     child: TextFormField(
-                                        controller: Pincode,
+                                        controller: gstn,
                                         keyboardType: TextInputType.number,
                                         decoration: InputDecoration(
                                             prefixIcon: prefixIcon ??
@@ -363,27 +400,31 @@ class SignupValidationState extends State<SignUp> {
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
                                     child: TextFormField(
-                                        controller: password_,
-                                        obscureText: !_passwordVisible,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.password_sharp),
-                                            border: UnderlineInputBorder(),
-                                            suffixIcon: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _passwordVisible =
-                                                      !_passwordVisible;
-                                                });
-                                              },
-                                              child: Icon(_passwordVisible
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off),
-                                            ),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Password',
-                                            hintText: 'Enter secure password'),
-                                        validator: MultiValidator([
+                                      controller: password_,
+                                      obscureText: !_passwordVisible,
+                                      decoration: InputDecoration(
+                                          prefixIcon: prefixIcon ??
+                                              Icon(Icons.password_sharp),
+                                          border: UnderlineInputBorder(),
+                                          suffixIcon: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _passwordVisible =
+                                                    !_passwordVisible;
+                                              });
+                                            },
+                                            child: Icon(_passwordVisible
+                                                ? Icons.visibility
+                                                : Icons.visibility_off),
+                                          ),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: 'Password',
+                                          hintText: 'Enter secure password'),
+                                      validator: Validators.compose([
+                                        Validators.patternString(
+                                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                                            'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                                        MultiValidator([
                                           RequiredValidator(
                                               errorText: "* Required"),
                                           MinLengthValidator(4,
@@ -392,7 +433,9 @@ class SignupValidationState extends State<SignUp> {
                                           MaxLengthValidator(15,
                                               errorText:
                                                   "Password should not be greater than 15 characters")
-                                        ])),
+                                        ])
+                                      ]),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 20,
@@ -402,7 +445,31 @@ class SignupValidationState extends State<SignUp> {
                                       FlatButton(
                                         minWidth: 190,
                                         child: Text('SIGN UP'),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: Colors.black26,
+                                            duration:
+                                                const Duration(seconds: 30),
+                                            content: Text(
+                                              "Please Wait while Loading .....",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ));
+                                          Signup123(
+                                              username_,
+                                              dateinput,
+                                              Mobilenum,
+                                              email,
+                                              Address,
+                                              City,
+                                              District,
+                                              _controller,
+                                              gstn,
+                                              Pincode,
+                                              password_);
+                                        },
                                         color: Colors.purple.shade200,
                                         splashColor: Colors.green,
                                       )),
@@ -426,39 +493,89 @@ class SignupValidationState extends State<SignUp> {
     )));
   }
 
-  Signup123(username_, dateinput, Mobilenum, Address, City, District, Pincode,
-      password_, email) async {
-    var headers = {
-      'Content-Type': 'application/json',
-      'Cookie': 'sid=0036eae681f1a55d3a8e3f21b13ad4c82d0dc54044a519d750355095'
-    };
+  void Referral(mobile_no) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.get_referrals'));
+    request.body = json.encode({
+      "args": {
+        "mobile_no": mobile_no.text.toString().trim(),
+      }
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    // ignore: avoid_print
+
+    if (response.statusCode == 200) {
+      var res = await response.stream.bytesToString();
+
+      Mapresponse_ref = await json.decode(res);
+
+      dataResponse = Mapresponse_ref['message']['refered_by'];
+
+      setState(() {
+        for (int i = 0; i < dataResponse.length; i++) {
+          items.add(dataResponse[i].toString());
+        }
+      });
+
+      //print(json.decode(await response.stream.bytesToString()));
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  Signup123(username_, dateinput, Mobilenum, email, Address, City, District,
+      _controller, gstn, Pincode, password_) async {
+    var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
         'POST',
         Uri.parse(
-            'http://test_senbagam.aerele.in/api/method/senbagam.api.sign_up'));
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.signup'));
     request.body = json.encode({
-      "args": [
-        [
-          {
-            "name": dateinput.text.toString().trim(),
-            "dob": Mobilenum.text.toString().trim(),
-            "mobile_no": Address.text.toString().trim(),
-            "address": City.text.toString().trim(),
-            "city": District.text.toString().trim(),
-            "district": Pincode.text.toString().trim(),
-            "pincode": password_.text.toString().trim(),
-            "email": username_.text.toString().trim(),
-            "password": email.text.toString().trim(),
-          }
-        ]
-      ]
+      "args": {
+        "name": username_.text.toString().trim(),
+        "dob": dateinput.text.toString().trim(),
+        "mobile_no": Mobilenum.text.toString().trim(),
+        "email": email.text.toString().trim(),
+        "address": Address.text.toString().trim(),
+        "city": City.text.toString().trim(),
+        "district": District.text.toString().trim(),
+        "refered_by": _controller.text.toString().trim(),
+        "gstin": gstn.text.toString().trim(),
+        "pincode": Pincode.text.toString().trim(),
+        "password": password_.text.toString().trim()
+      }
     });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      var res = await response.stream.bytesToString();
+      Mapresponse = await json.decode(res);
+      if (Mapresponse['message']['message'] == 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 30),
+          content: Text(
+            "Your response has taken Successfully ",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 30),
+          content: Text(
+            " Please fill the correct information or\n The Password has already taken or\n The Password should be of Example@321.",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+      }
     } else {
       print(response.reasonPhrase);
     }

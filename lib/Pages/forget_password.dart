@@ -303,13 +303,15 @@ class ForgetpassValidationState extends State<Forgetpass> {
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
       Mapresponse = await json.decode(res);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.black26,
-        content: Text(
-          Mapresponse['message']['message'],
-          style: TextStyle(color: Colors.white),
-        ),
-      ));
+      if (Mapresponse['message']['message'] == 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.black26,
+          content: Text(
+            "Password has changed Successfully ",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+      }
       print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
