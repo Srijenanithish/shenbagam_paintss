@@ -8,6 +8,7 @@ import 'package:share/share.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shenbagam_paints/Pages/bank_details.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/qr_page.dart';
 
@@ -216,38 +217,47 @@ class profileValidationState extends State<profile> {
               1.4,
               Row(
                 children: [
-                  Card(
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                      child: Column(
-                        children: [
-                          Column(
-                            children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Icon(
-                                Icons.book,
-                                size: 22,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 7,
-                          ),
-                          Text(
-                            "Bank Account",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18.0,
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(bank.routeName)
+                          .then((result) async {
+                        print(result);
+                      });
+                    },
+                    child: Card(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Icon(
+                                  Icons.book,
+                                  size: 22,
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                        ],
+                            SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              "Bank Account",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -437,4 +447,27 @@ class profileValidationState extends State<profile> {
       ),
     ));
   }
+
+  // void Share() async {
+  //   var headers = {
+  //     'Authorization': 'token 5102343d3e2956a:274bedee26908bd',
+  //     'Content-Type': 'application/json'
+  //   };
+  //   var request = http.Request(
+  //       'POST',
+  //       Uri.parse(
+  //           'http://test_senbagam.aerele.in/api/method/senbagam_api.api.add_referral'));
+  //   request.body = json.encode({
+  //     "args": {"name": "Me", "mobile_no": "9876543210"}
+  //   });
+  //   request.headers.addAll(headers);
+
+  //   http.StreamedResponse response = await request.send();
+
+  //   if (response.statusCode == 200) {
+  //     print(await response.stream.bytesToString());
+  //   } else {
+  //     print(response.reasonPhrase);
+  //   }
+  // }
 }

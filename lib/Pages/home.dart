@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:http/http.dart' as http;
 import 'package:flashy_tab_bar/flashy_tab_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flip_card/flip_card.dart';
@@ -6,9 +7,11 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shenbagam_paints/Pages/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
 import 'package:shenbagam_paints/Pages/home_page.dart';
+import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
 import 'package:shenbagam_paints/Pages/profile.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
@@ -26,13 +29,13 @@ class HomepageValidationState extends State<Homepage> {
   late PageController _pageController;
   int _selectedPage = 0;
 
-  List<Widget> pages = [
-    home(),
-    ExplorePage(),
-    wallet(),
-    my_partners(),
-    profile()
-  ];
+  // List<Widget> pages = [
+  //   home(),
+  //   ExplorePage(),
+  //   wallet(),
+  //   my_partners(),
+  //   profile()
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -41,13 +44,27 @@ class HomepageValidationState extends State<Homepage> {
     });
   }
 
+  late List<Note> details;
+  bool isLoading = false;
+
   @override
   void initState() {
     _pageController = PageController(initialPage: 0);
     super.initState();
+    refreshNote();
+  }
+
+  Future refreshNote() async {
+    this.details = await NotesDatabase.instance.readAllNotes();
   }
 
   Widget build(BuildContext context) {
+    final routes =
+        ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
+    String api_key = routes['api_key'];
+    String api_secret = routes['api_secret'];
+    List welcome = routes['welcome'];
+    List stores = routes['stores'];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -69,7 +86,18 @@ class HomepageValidationState extends State<Homepage> {
           _selectedPage = index;
         }),
         controller: _pageController,
-        children: [...pages],
+        children: [
+          home(
+              welcome: welcome.toList(),
+              stores: stores.toList(),
+              api_key: api_key.toString(),
+              api_secret: api_secret.toString()),
+          ExplorePage(
+              api_key: api_key.toString(), api_secret: api_secret.toString()),
+          wallet(),
+          my_partners(),
+          profile()
+        ],
       ),
       bottomNavigationBar: FlashyTabBar(
         selectedIndex: _selectedPage,
@@ -198,16 +226,36 @@ class HomepageValidationState extends State<Homepage> {
                   leading: Icon(Icons.settings),
                   title: const Text('Sign Out'),
                   onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(profile.routeName)
-                        .then((result) async {
-                      print(result);
-                    });
+                    logout(details[details.length - 1].api_key,
+                        details[details.length - 1].api_secret);
                   },
                 ),
               ),
             ]).toList(),
           )),
     );
+  }
+
+  Future<void> logout(x, y) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.logout'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 }

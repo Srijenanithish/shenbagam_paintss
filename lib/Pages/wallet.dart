@@ -1,8 +1,10 @@
 import 'dart:async';
-
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shenbagam_paints/Pages/db/database_helper.dart';
+import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/Pages/profile.dart';
 
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
@@ -15,8 +17,30 @@ class wallet extends StatefulWidget {
 }
 
 class walletValidationState extends State<wallet> {
-  TextEditingController? _textEditingController = TextEditingController();
+  late List<Note> details;
+  bool isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+
+    refreshNote();
+  }
+
+  Future refreshNote() async {
+    this.details = await NotesDatabase.instance.readAllNotes();
+    print(details[details.length - 1].api_key);
+    print(details[details.length - 1].api_secret);
+    wallet_call(details[details.length - 1].api_key,
+        details[details.length - 1].api_secret);
+  }
+
+  TextEditingController? _textEditingController = TextEditingController();
+  Map leger_response = {};
+  List ledger_details = [];
+
+  List order_details = [];
+  List invoice_details = [];
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -86,7 +110,7 @@ class walletValidationState extends State<wallet> {
             FadeAnimation(
               1.4,
               ListView.builder(
-                  itemCount: 5,
+                  itemCount: ledger_details.length,
                   itemBuilder: (ctx, index) {
                     return InkWell(
                       onTap: () {
@@ -184,15 +208,62 @@ class walletValidationState extends State<wallet> {
                               end: Alignment.centerRight,
                             ),
                           ),
-                          height: 90,
+                          height: 120,
                           child: Column(
                             children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 40),
+                                child: Text(ledger_details[index]['voucher_no'],
+                                    style: TextStyle(fontSize: 20)),
+                              ),
+                              Text(ledger_details[index]['date'],
+                                  style: TextStyle(fontSize: 15)),
                               Row(
                                 children: [
                                   Text(
-                                    'Click for Sample',
-                                    style: TextStyle(fontSize: 19),
+                                    'Amount : ',
+                                    style: TextStyle(fontSize: 15),
                                   ),
+                                  Text(
+                                    ledger_details[index]['amount'],
+                                    style: TextStyle(fontSize: 15),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Earning : ',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  Text(
+                                    ledger_details[index]['amount_earned'],
+                                    style: TextStyle(fontSize: 15),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Credited : ',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  Text(
+                                    ledger_details[index]['credited_amount'],
+                                    style: TextStyle(fontSize: 15),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Balance : ',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  Text(
+                                    ledger_details[index]['balance'],
+                                    style: TextStyle(fontSize: 15),
+                                  )
                                 ],
                               ),
                             ],
@@ -205,7 +276,7 @@ class walletValidationState extends State<wallet> {
             FadeAnimation(
               1.4,
               ListView.builder(
-                  itemCount: 5,
+                  itemCount: order_details.length,
                   itemBuilder: (ctx, index) {
                     return InkWell(
                       onTap: () {
@@ -303,17 +374,62 @@ class walletValidationState extends State<wallet> {
                               end: Alignment.centerRight,
                             ),
                           ),
-                          height: 90,
+                          height: 150,
                           child: Column(
                             children: [
+                              Text(ledger_details[index]['voucher_no'],
+                                  style: TextStyle(fontSize: 20)),
+                              Text(ledger_details[index]['date'],
+                                  style: TextStyle(fontSize: 15)),
                               Row(
                                 children: [
                                   Text(
-                                    'Click for Sample',
+                                    'Amount : ',
                                     style: TextStyle(fontSize: 19),
                                   ),
+                                  Text(
+                                    ledger_details[index]['amount'],
+                                    style: TextStyle(fontSize: 1),
+                                  )
                                 ],
                               ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Earning : ',
+                                    style: TextStyle(fontSize: 19),
+                                  ),
+                                  Text(
+                                    ledger_details[index]['amount_earned'],
+                                    style: TextStyle(fontSize: 1),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Credited : ',
+                                    style: TextStyle(fontSize: 19),
+                                  ),
+                                  Text(
+                                    ledger_details[index]['credited_amount'],
+                                    style: TextStyle(fontSize: 1),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Balance : ',
+                                    style: TextStyle(fontSize: 19),
+                                  ),
+                                  Text(
+                                    ledger_details[index]['balance'],
+                                    style: TextStyle(fontSize: 1),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 10),
                             ],
                           ),
                         ),
@@ -444,5 +560,39 @@ class walletValidationState extends State<wallet> {
         ),
       ),
     );
+  }
+
+  void wallet_call(x, y) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.get_wallet'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res = await response.stream.bytesToString();
+      leger_response = await json.decode(res);
+
+      setState(() {
+        ledger_details = leger_response['message']['ledger'];
+        order_details = leger_response['message']['quotation'];
+        invoice_details = leger_response['message']['sales_invoice'];
+      });
+      print(ledger_details);
+      print(order_details);
+      print(invoice_details);
+      // print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 }

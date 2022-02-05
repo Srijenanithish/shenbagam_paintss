@@ -5,12 +5,21 @@ import 'package:http/http.dart' as http;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shenbagam_paints/Pages/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/forget_password.dart';
 import 'package:shenbagam_paints/Pages/home.dart';
+import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
+import 'package:shenbagam_paints/Pages/utils/constants.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 
 class LoginForm extends StatefulWidget {
+  final Note? note;
+  const LoginForm({
+    Key? key,
+    this.note,
+  }) : super(key: key);
   static const String routeName = "/login";
 
   @override
@@ -21,6 +30,9 @@ class LoginFormValidationState extends State<LoginForm> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   get prefixIcon => null;
+  late bool isImportant;
+  late String api_key;
+  late String api_secret;
 
   String? validatePassword(String value) {
     if (value.isEmpty) {
@@ -34,9 +46,19 @@ class LoginFormValidationState extends State<LoginForm> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    isImportant = widget.note?.isImportant ?? false;
+    api_key = widget.note?.api_key ?? '';
+    api_secret = widget.note?.api_secret ?? '';
+  }
+
   String stringResponse = '0';
   Map Mapresponse = {};
   Map dataResponse = {};
+  List Welcome = [];
+  List store = [];
   TextEditingController mobilenum = TextEditingController();
 
   TextEditingController password_ = TextEditingController();
@@ -221,12 +243,25 @@ class LoginFormValidationState extends State<LoginForm> {
                                       child: Text('LOGIN'),
                                       onPressed: () {
                                         if (formkey.currentState!.validate()) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: Colors.black26,
+                                            duration:
+                                                const Duration(seconds: 10),
+                                            content: Text(
+                                              "Please Wait while Loading .....",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ));
                                           loginup(mobilenum, password_);
                                           // Navigator.of(context)
                                           //     .pushNamed(Homepage.routeName)
                                           //     .then((result) async {
                                           //   print(result);
-                                          // });
+                                          // // });
+                                          // Welcome();
+                                          // Stores();
                                         }
                                       },
                                       color: Colors.purple.shade200,
@@ -269,6 +304,7 @@ class LoginFormValidationState extends State<LoginForm> {
   }
 
   loginup(mobilenum, password_) async {
+    print("hello");
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
         'GET',
@@ -285,33 +321,98 @@ class LoginFormValidationState extends State<LoginForm> {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      Constants.prefs!.setBool("LoggedIn", true);
       var res = await response.stream.bytesToString();
       Mapresponse = await json.decode(res);
       dataResponse = Mapresponse['message'];
-      print(res);
-      Navigator.of(context).pushNamed(Homepage.routeName, arguments: {
-        "api_key": dataResponse['api_key'],
-        "api_secret": dataResponse['api_secret'],
-        "name": dataResponse['name'],
-        "dob": dataResponse['dob'],
-        "mobile": dataResponse['mobile_no'],
-        "email": dataResponse['email'],
-        "address": dataResponse['address'],
-        "city": dataResponse['city'],
-        "district": dataResponse['district'],
-        "referred_by": dataResponse['Refered_by'],
-        "gstin": dataResponse['gstin'],
-        "pincode": dataResponse['pincode'],
-        "roles": dataResponse['roles']
-      }).then((result) async {
-        print(result);
-      });
-
-      //  print(await response.stream.bytesToString());
+      api_key = dataResponse['api_key'].toString();
+      api_secret = dataResponse['api_secret'].toString();
+      print(api_secret);
+      print(Mapresponse['message']);
+      if (Mapresponse['message']['message'] == 'Success') {
+        Navigator.of(context)
+            .pushReplacementNamed(Homepage.routeName, arguments: {
+          "api_key": dataResponse['api_key'],
+          "api_secret": dataResponse['api_secret'],
+          "name": dataResponse['name'],
+          "dob": dataResponse['dob'],
+          "mobile": dataResponse['mobile_no'],
+          "email": dataResponse['email'],
+          "address": dataResponse['address'],
+          "city": dataResponse['city'],
+          "district": dataResponse['district'],
+          "referred_by": dataResponse['Refered_by'],
+          "gstin": dataResponse['gstin'],
+          "pincode": dataResponse['pincode'],
+          "roles": dataResponse['roles'],
+          "welcome": dataResponse['welcome'],
+          "stores": dataResponse['store']
+        }).then((result) async {
+          print(result);
+        });
+        addOrUpdateNote();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Invalid Data",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+      }
+      // print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
     }
   }
+
+  void addOrUpdateNote() async {
+    final isUpdating = widget.note != null;
+
+    if (isUpdating) {
+      await updateNote();
+    } else {
+      await addNote();
+    }
+  }
+
+  Future updateNote() async {
+    final note = widget.note!.copy(
+        isImportant: isImportant, api_key: api_key, api_secret: api_secret);
+
+    await NotesDatabase.instance.update(note);
+  }
+
+  Future addNote() async {
+    print("added");
+    final note = Note(
+      isImportant: true,
+      api_key: api_key,
+      api_secret: api_secret,
+      createdTime: DateTime.now(),
+    );
+
+    await NotesDatabase.instance.create(note);
+  }
+
+  // void Welcome(x, y) async {
+  //   var headers = {'Authorization': 'token 5102343d3e2956a:45105fbd19d0d81'};
+  //   var request = http.Request(
+  //       'GET',
+  //       Uri.parse(
+  //           'http://test_senbagam.aerele.in/api/method/senbagam_api.api.welcome'));
+
+  //   request.headers.addAll(headers);
+
+  //   http.StreamedResponse response = await request.send();
+
+  //   if (response.statusCode == 200) {
+  //     print(await response.stream.bytesToString());
+  //   } else {
+  //     print(response.reasonPhrase);
+  //   }
+  // }
 // var headers = {
 //       'Content-Type': 'application/json',
 //       'Cookie':

@@ -47,6 +47,7 @@ class SignupValidationState extends State<SignUp> {
   }
 
   @override
+  bool button_active = true;
   Map Mapresponse_ref = {};
   Map Mapresponse = {};
   List dataResponse = [];
@@ -65,6 +66,7 @@ class SignupValidationState extends State<SignUp> {
   bool _passwordVisible = false;
   bool isPressed = false;
   var items = ["Click ✓ in Mobile Number"];
+  var referred_by_cus = [];
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
@@ -211,30 +213,6 @@ class SignupValidationState extends State<SignUp> {
                                         decoration: InputDecoration(
                                             prefixIcon:
                                                 prefixIcon ?? Icon(Icons.phone),
-                                            suffixIcon: suffixIcon ??
-                                                IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      isPressed = !isPressed;
-                                                    });
-
-                                                    if (isPressed == true) {
-                                                      items.clear();
-                                                      dataResponse.clear();
-                                                      Referral(Mobilenum);
-                                                    } else if (isPressed ==
-                                                        false) {
-                                                      setState(() {
-                                                        items.clear();
-                                                        dataResponse.clear();
-                                                      });
-                                                    }
-                                                  },
-                                                  icon: Icon(Icons.check,
-                                                      color: (isPressed)
-                                                          ? Colors.green
-                                                          : Colors.red),
-                                                ),
                                             border: UnderlineInputBorder(),
                                             contentPadding: EdgeInsets.all(16),
                                             labelText: 'Mobile Number',
@@ -329,31 +307,92 @@ class SignupValidationState extends State<SignUp> {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
-                                    child: TextField(
-                                      controller: _controller,
-                                      decoration: InputDecoration(
-                                        prefixIcon:
-                                            prefixIcon ?? Icon(Icons.person),
-                                        labelText: 'Referred by ',
-                                        suffixIcon: PopupMenuButton<String>(
-                                          icon:
-                                              const Icon(Icons.arrow_drop_down),
-                                          onSelected: (String value) {
-                                            _controller.text = value;
-                                          },
-                                          itemBuilder: (BuildContext context) {
-                                            return items
-                                                .map<PopupMenuItem<String>>(
-                                                    (String value) {
-                                              return new PopupMenuItem(
-                                                  child: new Text(value),
-                                                  value: value);
-                                            }).toList();
-                                          },
+                                    child: FlatButton(
+                                      disabledColor: Colors.black12,
+                                      disabledTextColor: Colors.blueGrey,
+                                      color: Colors.purple.shade100,
+                                      child: Text(
+                                        'Get Referrals',
+                                        style: TextStyle(
+                                          //fontSize: 18,
+                                          color: Colors.black,
+                                          wordSpacing: 4,
                                         ),
                                       ),
+                                      onPressed: button_active
+                                          ? () {
+                                              items.clear();
+                                              dataResponse.clear();
+                                              Referral(Mobilenum);
+                                              setState(() {
+                                                button_active = false;
+                                              });
+                                            }
+                                          : null,
+                                      textColor: Colors.blueGrey,
                                     ),
                                   ),
+                                  Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          40, 10, 40, 0),
+                                      child: !button_active
+                                          ? TextField(
+                                              controller: _controller,
+                                              decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.person),
+                                                labelText: 'Referred by ',
+                                                suffixIcon:
+                                                    PopupMenuButton<String>(
+                                                  icon: const Icon(
+                                                      Icons.arrow_drop_down),
+                                                  onSelected: (String value) {
+                                                    _controller.text = value;
+                                                  },
+                                                  itemBuilder:
+                                                      (BuildContext context) {
+                                                    return items.map<
+                                                            PopupMenuItem<
+                                                                String>>(
+                                                        (String value) {
+                                                      return new PopupMenuItem(
+                                                          child:
+                                                              new Text(value),
+                                                          value: value);
+                                                    }).toList();
+                                                  },
+                                                ),
+                                              ),
+                                            )
+                                          : TextField(
+                                              enabled: false,
+                                              controller: _controller,
+                                              decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.person),
+                                                labelText: 'Referred by ',
+                                                suffixIcon:
+                                                    PopupMenuButton<String>(
+                                                  icon: const Icon(
+                                                      Icons.arrow_drop_down),
+                                                  onSelected: (String value) {
+                                                    _controller.text = value;
+                                                  },
+                                                  itemBuilder:
+                                                      (BuildContext context) {
+                                                    return items.map<
+                                                            PopupMenuItem<
+                                                                String>>(
+                                                        (String value) {
+                                                      return new PopupMenuItem(
+                                                          child:
+                                                              new Text(value),
+                                                          value: value);
+                                                    }).toList();
+                                                  },
+                                                ),
+                                              ),
+                                            )),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
@@ -376,26 +415,51 @@ class SignupValidationState extends State<SignUp> {
                                         ])),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                        controller: Pincode,
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            prefixIcon:
-                                                prefixIcon ?? Icon(Icons.code),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Pincode',
-                                            hintText: 'Enter your Pincode'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(6,
-                                              errorText:
-                                                  "Username should be atleast 6 characters"),
-                                        ])),
-                                  ),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          40, 10, 40, 0),
+                                      child: button_active
+                                          ? TextFormField(
+                                              controller: Pincode,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              decoration: InputDecoration(
+                                                  prefixIcon: prefixIcon ??
+                                                      Icon(Icons.code),
+                                                  border:
+                                                      UnderlineInputBorder(),
+                                                  contentPadding:
+                                                      EdgeInsets.all(16),
+                                                  labelText: 'Pincode',
+                                                  hintText:
+                                                      'Enter your Pincode'),
+                                              validator: MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                                MinLengthValidator(6,
+                                                    errorText:
+                                                        "Username should be atleast 6 characters"),
+                                              ]))
+                                          : TextFormField(
+                                              controller: Pincode,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              decoration: InputDecoration(
+                                                  prefixIcon: prefixIcon ??
+                                                      Icon(Icons.code),
+                                                  border:
+                                                      UnderlineInputBorder(),
+                                                  contentPadding:
+                                                      EdgeInsets.all(16),
+                                                  labelText: 'Pincode',
+                                                  hintText:
+                                                      'Enter your Pincode'),
+                                              validator: MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                                MinLengthValidator(6,
+                                                    errorText:
+                                                        "Username should be atleast 6 characters"),
+                                              ]))),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
@@ -515,10 +579,11 @@ class SignupValidationState extends State<SignUp> {
       Mapresponse_ref = await json.decode(res);
 
       dataResponse = Mapresponse_ref['message']['refered_by'];
-
+      print(dataResponse);
       setState(() {
         for (int i = 0; i < dataResponse.length; i++) {
-          items.add(dataResponse[i].toString());
+          items.add(dataResponse[i][0].toString());
+          referred_by_cus.add(dataResponse[i][1].toString());
         }
       });
 
@@ -557,25 +622,15 @@ class SignupValidationState extends State<SignUp> {
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
       Mapresponse = await json.decode(res);
-      if (Mapresponse['message']['message'] == 'success') {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.black26,
-          duration: const Duration(seconds: 30),
-          content: Text(
-            "Your response has taken Successfully ",
-            style: TextStyle(color: Colors.white),
-          ),
-        ));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.black26,
-          duration: const Duration(seconds: 30),
-          content: Text(
-            " Please fill the correct information or\n The Password has already taken or\n The Password should be of Example@321.",
-            style: TextStyle(color: Colors.white),
-          ),
-        ));
-      }
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.black26,
+        duration: const Duration(seconds: 30),
+        content: Text(
+          Mapresponse['message']['message'],
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
     } else {
       print(response.reasonPhrase);
     }

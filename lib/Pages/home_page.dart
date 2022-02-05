@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:form_field_validator/form_field_validator.dart';
+import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shenbagam_paints/Pages/db/database_helper.dart';
+import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
+import 'package:http/http.dart' as http;
 
 class home extends StatefulWidget {
+  String api_key;
+  String api_secret;
+  List welcome;
+  List stores;
+  home(
+      {Key? key,
+      required this.welcome,
+      required this.stores,
+      required this.api_key,
+      required this.api_secret})
+      : super(key: key);
   static const String routeName = "/homee";
 
   @override
@@ -10,17 +29,10 @@ class home extends StatefulWidget {
 }
 
 class homeValidationState extends State<home> {
-  List<String> images = [
-    'assets/login/homee1.jpg',
-    'assets/login/homee2.jpg',
-    'assets/login/homee3.png',
-  ];
-  List<String> image_name = [
-    'Grey Mark One Color',
-    'BlueGrey Shade Color',
-    'Pista Green Color'
-  ];
-
+  Map Mapresponse = {};
+  List Welcome_details = [];
+  Map dataresponse = {};
+  List Store_details = [];
   List<List> color_list = [
     [
       Colors.grey.shade50,
@@ -47,7 +59,27 @@ class homeValidationState extends State<home> {
 
   int _selectedColor = 0;
   int _selectedSize = 1;
+
+  late List<Note> details;
+  bool isLoading = false;
+
   @override
+  void initState() {
+    super.initState();
+
+    refreshNote();
+  }
+
+  Future refreshNote() async {
+    this.details = await NotesDatabase.instance.readAllNotes();
+    print(details[details.length - 1].api_key);
+    print(details[details.length - 1].api_secret);
+    Welcome(details[details.length - 1].api_key,
+        details[details.length - 1].api_secret);
+    Stores(details[details.length - 1].api_key,
+        details[details.length - 1].api_secret);
+  }
+
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 2,
@@ -91,87 +123,91 @@ class homeValidationState extends State<home> {
               ),
             ),
             body: TabBarView(children: [
-              FadeAnimation(
-                1.4,
-                ListView.builder(
-                    itemCount: images.length,
-                    itemBuilder: (ctx, index) {
-                      return InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.white,
-                                  Colors.white,
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                            ),
-                            height: 400,
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  images[index],
-                                  width: 600.0,
-                                  height: 240.0,
-                                  fit: BoxFit.cover,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 150, 0),
-                                  child: Text(
-                                    image_name[index],
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Container(
-                                    height: 60,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: color_list[index].length,
-                                      itemBuilder: (context, index1) {
-                                        return GestureDetector(
-                                          onTap: () {},
-                                          child: AnimatedContainer(
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            margin: EdgeInsets.only(right: 10),
-                                            decoration: BoxDecoration(
-                                                color: color_list[index]
-                                                    [index1],
-                                                shape: BoxShape.circle),
-                                            width: 40,
-                                            height: 40,
-                                          ),
-                                        );
-                                      },
+              Welcome_details.length == 0
+                  ? Text("Loading")
+                  : FadeAnimation(
+                      1.4,
+                      ListView.builder(
+                          itemCount: widget.welcome.length,
+                          itemBuilder: (ctx, index) {
+                            return InkWell(
+                              onTap: () {
+                                print(details[0].api_key);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.white,
+                                        Colors.white,
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
                                     ),
                                   ),
+                                  height: 400,
+                                  child: Column(
+                                    children: [
+                                      Image.network(
+                                        Welcome_details[index]['image'],
+                                        width: 600.0,
+                                        height: 240.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 150, 0),
+                                        child: Text(
+                                          Welcome_details[index]['content'],
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      // Padding(
+                                      //   padding:
+                                      //       const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      //   child: Container(
+                                      //     height: 60,
+                                      //     child: ListView.builder(
+                                      //       scrollDirection: Axis.horizontal,
+                                      //       itemCount: color_list[index].length,
+                                      //       itemBuilder: (context, index1) {
+                                      //         return GestureDetector(
+                                      //           onTap: () {},
+                                      //           child: AnimatedContainer(
+                                      //             duration:
+                                      //                 Duration(milliseconds: 300),
+                                      //             margin: EdgeInsets.only(right: 10),
+                                      //             decoration: BoxDecoration(
+                                      //                 color: color_list[index]
+                                      //                     [index1],
+                                      //                 shape: BoxShape.circle),
+                                      //             width: 40,
+                                      //             height: 40,
+                                      //           ),
+                                      //         );
+                                      //       },
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
+                              ),
+                            );
+                          }),
+                    ),
               FadeAnimation(
                 1.4,
                 ListView.builder(
-                    itemCount: images.length,
+                    itemCount: widget.stores.length,
                     itemBuilder: (ctx, index) {
                       return InkWell(
                         onTap: () {},
@@ -191,8 +227,8 @@ class homeValidationState extends State<home> {
                             height: 400,
                             child: Column(
                               children: [
-                                Image.asset(
-                                  images[index],
+                                Image.network(
+                                  Store_details[index]['image'],
                                   width: 600.0,
                                   height: 240.0,
                                   fit: BoxFit.cover,
@@ -204,40 +240,40 @@ class homeValidationState extends State<home> {
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 0, 150, 0),
                                   child: Text(
-                                    image_name[index],
+                                    Store_details[index]['address'],
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
                                 SizedBox(
                                   height: 20,
                                 ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Container(
-                                    height: 60,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: color_list[index].length,
-                                      itemBuilder: (context, index1) {
-                                        return GestureDetector(
-                                          onTap: () {},
-                                          child: AnimatedContainer(
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            margin: EdgeInsets.only(right: 10),
-                                            decoration: BoxDecoration(
-                                                color: color_list[index]
-                                                    [index1],
-                                                shape: BoxShape.circle),
-                                            width: 40,
-                                            height: 40,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding:
+                                //       const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                //   child: Container(
+                                //     height: 60,
+                                //     child: ListView.builder(
+                                //       scrollDirection: Axis.horizontal,
+                                //       itemCount: color_list[index].length,
+                                //       itemBuilder: (context, index1) {
+                                //         return GestureDetector(
+                                //           onTap: () {},
+                                //           child: AnimatedContainer(
+                                //             duration:
+                                //                 Duration(milliseconds: 300),
+                                //             margin: EdgeInsets.only(right: 10),
+                                //             decoration: BoxDecoration(
+                                //                 color: color_list[index]
+                                //                     [index1],
+                                //                 shape: BoxShape.circle),
+                                //             width: 40,
+                                //             height: 40,
+                                //           ),
+                                //         );
+                                //       },
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
@@ -246,5 +282,90 @@ class homeValidationState extends State<home> {
                     }),
               ),
             ])));
+  }
+
+  void Welcome(x, y) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    print(headers);
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.welcome'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res = await response.stream.bytesToString();
+      Mapresponse = await json.decode(res);
+      print(Mapresponse['message']['welcome']);
+      setState(() {
+        Welcome_details = Mapresponse['message']['content'];
+      });
+
+      // print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+
+    // print(details[details.length - 1].api_key);
+    // print(details[details.length - 1].api_secret);
+    // var headers = {
+    //   'Authorization': 'token ' +
+    //       details[details.length - 1].api_key +
+    //       ':' +
+    //       details[details.length - 1].api_secret
+    // };
+    // var request = http.Request(
+    //     'GET',
+    //     Uri.parse(
+    //         'http://test_senbagam.aerele.in/api/method/senbagam_api.api.welcome'));
+    // request.headers.addAll(headers);
+
+    // http.StreamedResponse response = await request.send();
+
+    // if (response.statusCode == 200) {
+    //   var res = await response.stream.bytesToString();
+    //   Mapresponse = await json.decode(res);
+    //   setState(() {
+    //     Welcome_details = Mapresponse['message']['welcome'];
+    //   });
+
+    //   print(await response.stream.bytesToString());
+    // } else {
+    //   print(response.reasonPhrase);
+    // }
+  }
+
+  void Stores(x, y) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    print(headers);
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.store'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res_ = await response.stream.bytesToString();
+      dataresponse = await json.decode(res_);
+      Store_details = dataresponse['message']['content'];
+      // print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 }

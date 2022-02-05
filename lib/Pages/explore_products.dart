@@ -1,5 +1,9 @@
 import 'dart:convert';
-//import 'dart:html';
+
+import 'dart:async';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:form_field_validator/form_field_validator.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,13 +15,17 @@ import 'package:shenbagam_paints/models/products.dart';
 
 class ExplorePage extends StatefulWidget {
   static const String routeName = "/login";
-
+  String api_key;
+  String api_secret;
+  ExplorePage({Key? key, required this.api_key, required this.api_secret})
+      : super(key: key);
   @override
   _ExplorePageState createState() => _ExplorePageState();
 }
 
 class _ExplorePageState extends State<ExplorePage>
     with TickerProviderStateMixin {
+  Map Mapresponse = {};
   List<ProductModel> products1 = [
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvVmaCIuus40EIkFJdltxAOODXGl_QPnm8tA&usqp=CAU",
@@ -720,7 +728,7 @@ class _ExplorePageState extends State<ExplorePage>
   ];
 
   List<ProductModel> selectedProducts = [];
-
+  List<String> selected_items = [];
   @override
   void initState() {
     super.initState();
@@ -760,7 +768,18 @@ class _ExplorePageState extends State<ExplorePage>
                           Icon(Icons.border_right),
                           InkWell(
                             onTap: () {
-                              print(selectedProducts[0].color_type);
+                              // selected_items.clear();
+                              // for (int i = 0;
+                              //     i < selectedProducts.length;
+                              //     i++) {
+                              //   setState(() {
+                              //     selected_items.add(selectedProducts[i]
+                              //         .color_type
+                              //         .toString());
+                              //   });
+                              // }
+                              print(selected_items);
+                              getquotation(selected_items);
                             },
                             child: Text("Get Quotation"),
                           ),
@@ -812,6 +831,16 @@ class _ExplorePageState extends State<ExplorePage>
                                       products1[index].code,
                                       products1[index].color_type,
                                       true));
+                                  selected_items.clear();
+                                  for (int i = 0;
+                                      i < selectedProducts.length;
+                                      i++) {
+                                    setState(() {
+                                      selected_items.add(
+                                          (selectedProducts[i].color_type)
+                                              .toString());
+                                    });
+                                  }
                                 } else if (products1[index].isSelected ==
                                     false) {
                                   selectedProducts.removeWhere((element) =>
@@ -894,6 +923,16 @@ class _ExplorePageState extends State<ExplorePage>
                                       products2[index].code,
                                       products2[index].color_type,
                                       true));
+                                  selected_items.clear();
+                                  for (int i = 0;
+                                      i < selectedProducts.length;
+                                      i++) {
+                                    setState(() {
+                                      selected_items.add(selectedProducts[i]
+                                          .color_type
+                                          .toString());
+                                    });
+                                  }
                                 } else if (products2[index].isSelected ==
                                     false) {
                                   selectedProducts.removeWhere((element) =>
@@ -970,12 +1009,22 @@ class _ExplorePageState extends State<ExplorePage>
                               setState(() {
                                 products3[index].isSelected =
                                     !products3[index].isSelected;
-                                if (products1[index].isSelected == true) {
+                                if (products3[index].isSelected == true) {
                                   selectedProducts.add(ProductModel(
                                       products3[index].name,
                                       products3[index].code,
                                       products3[index].color_type,
                                       true));
+                                  selected_items.clear();
+                                  for (int i = 0;
+                                      i < selectedProducts.length;
+                                      i++) {
+                                    setState(() {
+                                      selected_items.add(selectedProducts[i]
+                                          .color_type
+                                          .toString());
+                                    });
+                                  }
                                 } else if (products3[index].isSelected ==
                                     false) {
                                   selectedProducts.removeWhere((element) =>
@@ -1058,6 +1107,16 @@ class _ExplorePageState extends State<ExplorePage>
                                       products4[index].code,
                                       products4[index].color_type,
                                       true));
+                                  selected_items.clear();
+                                  for (int i = 0;
+                                      i < selectedProducts.length;
+                                      i++) {
+                                    setState(() {
+                                      selected_items.add(selectedProducts[i]
+                                          .color_type
+                                          .toString());
+                                    });
+                                  }
                                 } else if (products4[index].isSelected ==
                                     false) {
                                   selectedProducts.removeWhere((element) =>
@@ -1140,6 +1199,16 @@ class _ExplorePageState extends State<ExplorePage>
                                       products5[index].code,
                                       products5[index].color_type,
                                       true));
+                                  selected_items.clear();
+                                  for (int i = 0;
+                                      i < selectedProducts.length;
+                                      i++) {
+                                    setState(() {
+                                      selected_items.add(selectedProducts[i]
+                                          .color_type
+                                          .toString());
+                                    });
+                                  }
                                 } else if (products5[index].isSelected ==
                                     false) {
                                   selectedProducts.removeWhere((element) =>
@@ -1222,6 +1291,16 @@ class _ExplorePageState extends State<ExplorePage>
                                       products6[index].code,
                                       products6[index].color_type,
                                       true));
+                                  selected_items.clear();
+                                  for (int i = 0;
+                                      i < selectedProducts.length;
+                                      i++) {
+                                    setState(() {
+                                      selected_items.add(selectedProducts[i]
+                                          .color_type
+                                          .toString());
+                                    });
+                                  }
                                 } else if (products6[index].isSelected ==
                                     false) {
                                   selectedProducts.removeWhere((element) =>
@@ -1270,6 +1349,40 @@ class _ExplorePageState extends State<ExplorePage>
         ),
       ),
     );
+  }
+
+  void getquotation(selected_items) async {
+    var headers = {
+      'Authorization': 'token ' + widget.api_key + ':' + widget.api_secret,
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.add_quotation'));
+    request.body = json.encode({
+      "args": [selected_items]
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res = await response.stream.bytesToString();
+      Mapresponse = await json.decode(res);
+      if (Mapresponse['message']['message'] == 'Success') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.black26,
+          content: Text(
+            Mapresponse['message']['message'],
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+      }
+      //print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 }
 

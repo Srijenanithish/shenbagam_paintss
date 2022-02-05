@@ -1,9 +1,13 @@
 // @dart=2.9
+import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shenbagam_paints/Pages/bank_details.dart';
+import 'package:shenbagam_paints/Pages/utils/constants.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
 import 'package:shenbagam_paints/Pages/forget_password.dart';
@@ -18,11 +22,13 @@ import 'package:shenbagam_paints/Pages/wallet.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Constants.prefs = await SharedPreferences.getInstance();
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(MyApp());
   });
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -45,6 +51,7 @@ class MyApp extends StatelessWidget {
         profile.routeName: (context) => profile(),
         qr_page.routeName: (context) => qr_page(),
         edit.routeName: (context) => edit(),
+        bank.routeName: (context) => bank()
       },
 
       title: 'Senbagam Paints',
@@ -57,7 +64,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: Constants.prefs.getBool('isLoggedIn') == false
+          ? Homepage()
+          : MyHomePage(),
     );
   }
 }
