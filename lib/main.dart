@@ -35,18 +35,6 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-  List<Note> details;
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    refreshNote();
-  }
-
-  Future refreshNote() async {
-    this.details = await NotesDatabase.instance.readAllNotes();
-  }
-
   var status;
 
   MyApp({

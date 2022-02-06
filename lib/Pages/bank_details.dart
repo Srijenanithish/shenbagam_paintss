@@ -408,51 +408,49 @@ class bankValidationState extends State<bank> {
             margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(30, 15, 30, 4),
-              child:
-                  // dataresponse.length == 0
-                  //     ? Image.asset("assets/login/loadingg1.gif")
-                  //     :
-                  Column(
-                children: [
-                  Text("Existing Account"),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    children: [
-                      Text("Bank : "),
-                      // Text(dataresponse[0]['bank'])
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    children: [
-                      Text("Account Holder Name : "),
-                      //  Text(dataresponse[0]['account_holder_name'])
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    children: [
-                      Text("Account Number : "),
-                      // Text(dataresponse[0]['account_no'])
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    children: [
-                      Text("IFSC Code : "),
-                      // Text(dataresponse[0]['ifsc_code'])
-                    ],
-                  )
-                ],
-              ),
+              child: dataresponse.length == 0
+                  ? Image.asset("assets/login/loadingg1.gif")
+                  : Column(
+                      children: [
+                        Text("Existing Account"),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Row(
+                          children: [
+                            Text("Bank : "),
+                            Text(dataresponse[0]['bank'])
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            Text("Account Holder Name : "),
+                            //  Text(dataresponse[0]['account_holder_name'])
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            Text("Account Number : "),
+                            Text(dataresponse[0]['account_no'])
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            Text("IFSC Code : "),
+                            Text(dataresponse[0]['ifsc_code'])
+                          ],
+                        )
+                      ],
+                    ),
             ),
           ),
         ),
