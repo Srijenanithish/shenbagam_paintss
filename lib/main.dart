@@ -28,7 +28,6 @@ Future main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(MyApp());
   });
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -64,7 +63,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Constants.prefs.getBool('isLoggedIn') == false
+      home: Constants.prefs.getBool('isLoggedIn') == true
           ? Homepage()
           : MyHomePage(),
     );

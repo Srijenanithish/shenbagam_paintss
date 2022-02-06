@@ -121,7 +121,7 @@ class walletValidationState extends State<wallet> {
                                 scrollable: true,
                                 title: Center(
                                   child: Text(
-                                    'Ledger Details',
+                                    ledger_details[index]['voucher_no'],
                                     style: TextStyle(fontSize: 23),
                                   ),
                                 ),
@@ -129,69 +129,68 @@ class walletValidationState extends State<wallet> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text("Invoice No :\n 123456789"),
-                                        Text("date\n08-08-2020")
+                                        Text(
+                                          'Date : ',
+                                          style: TextStyle(fontSize: 19),
+                                        ),
+                                        Text(
+                                          ledger_details[index]['date'],
+                                          style: TextStyle(fontSize: 17),
+                                        )
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
                                     ),
                                     Row(
                                       children: [
                                         Text(
-                                            "Transport\nNEW MAHAVEER(C.C ATTACHED)"),
+                                          'Amount : ',
+                                          style: TextStyle(fontSize: 19),
+                                        ),
+                                        Text(
+                                          ledger_details[index]['amount'],
+                                          style: TextStyle(fontSize: 17),
+                                        )
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Column(
+                                    Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            Text("No.of cartons: "),
-                                            Text("6")
-                                          ],
+                                        Text(
+                                          'Earning : ',
+                                          style: TextStyle(fontSize: 19),
                                         ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text("Packing Slip Nos: "),
-                                            Text("SD -00034")
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text("Order Nos  "),
-                                            Text("291, 272")
-                                          ],
-                                        ),
+                                        Text(
+                                          ledger_details[index]
+                                              ['amount_earned'],
+                                          style: TextStyle(fontSize: 17),
+                                        )
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: 20,
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Credited : ',
+                                          style: TextStyle(fontSize: 19),
+                                        ),
+                                        Text(
+                                          ledger_details[index]
+                                              ['credited_amount'],
+                                          style: TextStyle(fontSize: 17),
+                                        )
+                                      ],
                                     ),
-                                    Center(
-                                        child: Text("Rupees : 1,37232.59",
-                                            style: TextStyle(
-                                              fontSize: 23,
-                                            ))),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Balance : ',
+                                          style: TextStyle(fontSize: 19),
+                                        ),
+                                        Text(
+                                          ledger_details[index]['balance'],
+                                          style: TextStyle(fontSize: 17),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
-                                actions: [
-                                  Center(
-                                    child: RaisedButton(
-                                        child: Text("Claim Now"),
-                                        onPressed: () {
-                                          // your code
-                                        }),
-                                  )
-                                ],
                               );
                             });
                       },
@@ -208,62 +207,25 @@ class walletValidationState extends State<wallet> {
                               end: Alignment.centerRight,
                             ),
                           ),
-                          height: 120,
+                          height: 80,
                           child: Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 40),
-                                child: Text(ledger_details[index]['voucher_no'],
-                                    style: TextStyle(fontSize: 20)),
-                              ),
-                              Text(ledger_details[index]['date'],
-                                  style: TextStyle(fontSize: 15)),
                               Row(
                                 children: [
-                                  Text(
-                                    'Amount : ',
-                                    style: TextStyle(fontSize: 15),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 20, 30, 0),
+                                    child: Text(
+                                        ledger_details[index]['voucher_no'],
+                                        style: TextStyle(fontSize: 20)),
                                   ),
-                                  Text(
-                                    ledger_details[index]['amount'],
-                                    style: TextStyle(fontSize: 15),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Earning : ',
-                                    style: TextStyle(fontSize: 15),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 35, 0, 10),
+                                    child: Text(
+                                        ' -   ' + ledger_details[index]['date'],
+                                        style: TextStyle(fontSize: 15)),
                                   ),
-                                  Text(
-                                    ledger_details[index]['amount_earned'],
-                                    style: TextStyle(fontSize: 15),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Credited : ',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  Text(
-                                    ledger_details[index]['credited_amount'],
-                                    style: TextStyle(fontSize: 15),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Balance : ',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  Text(
-                                    ledger_details[index]['balance'],
-                                    style: TextStyle(fontSize: 15),
-                                  )
                                 ],
                               ),
                             ],
@@ -587,7 +549,7 @@ class walletValidationState extends State<wallet> {
         order_details = leger_response['message']['quotation'];
         invoice_details = leger_response['message']['sales_invoice'];
       });
-      print(ledger_details);
+      print(leger_response['message']);
       print(order_details);
       print(invoice_details);
       // print(await response.stream.bytesToString());
