@@ -11,6 +11,7 @@ import 'package:shenbagam_paints/Pages/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
 import 'package:shenbagam_paints/Pages/home_page.dart';
+import 'package:shenbagam_paints/Pages/login_form.dart';
 import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
 import 'package:shenbagam_paints/Pages/profile.dart';
@@ -28,14 +29,6 @@ class Homepage extends StatefulWidget {
 class HomepageValidationState extends State<Homepage> {
   late PageController _pageController;
   int _selectedPage = 0;
-
-  // List<Widget> pages = [
-  //   home(),
-  //   ExplorePage(),
-  //   wallet(),
-  //   my_partners(),
-  //   profile()
-  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -59,12 +52,6 @@ class HomepageValidationState extends State<Homepage> {
   }
 
   Widget build(BuildContext context) {
-    final routes =
-        ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
-    String api_key = routes['api_key'];
-    String api_secret = routes['api_secret'];
-    List welcome = routes['welcome'];
-    List stores = routes['stores'];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -86,18 +73,7 @@ class HomepageValidationState extends State<Homepage> {
           _selectedPage = index;
         }),
         controller: _pageController,
-        children: [
-          home(
-              welcome: welcome.toList(),
-              stores: stores.toList(),
-              api_key: api_key.toString(),
-              api_secret: api_secret.toString()),
-          ExplorePage(
-              api_key: api_key.toString(), api_secret: api_secret.toString()),
-          wallet(),
-          my_partners(),
-          profile()
-        ],
+        children: [home(), ExplorePage(), wallet(), my_partners(), profile()],
       ),
       bottomNavigationBar: FlashyTabBar(
         selectedIndex: _selectedPage,
@@ -228,6 +204,8 @@ class HomepageValidationState extends State<Homepage> {
                   onTap: () {
                     logout(details[details.length - 1].api_key,
                         details[details.length - 1].api_secret);
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginForm()));
                   },
                 ),
               ),

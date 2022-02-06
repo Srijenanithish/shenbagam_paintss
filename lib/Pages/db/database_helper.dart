@@ -33,7 +33,7 @@ class NotesDatabase {
 CREATE TABLE $tableNotes ( 
   ${NoteFields.id} $idType, 
   ${NoteFields.isImportant} $boolType,
- 
+  ${NoteFields.logged_in} $boolType,
   ${NoteFields.api_key} $textType,
   ${NoteFields.api_secret} $textType,
  

@@ -107,7 +107,7 @@ class my_partnersValidationState extends State<my_partners> {
             child: FadeAnimation(
               1.4,
               Text(
-                "All Products",
+                "My Partners",
                 style: GoogleFonts.raleway(
                   textStyle: TextStyle(
                       color: Colors.black54, fontSize: 23, letterSpacing: .5),
@@ -119,15 +119,18 @@ class my_partnersValidationState extends State<my_partners> {
             height: 25,
           ),
           Expanded(
-            child: FadeAnimation(
-              1.4,
-              ListView.builder(
-                itemCount: got.length,
-                itemBuilder: (BuildContext context, int index) => EntryItem(
-                  got[index],
-                ),
-              ),
-            ),
+            child: got.length == 0
+                ? Image.asset("assets/login/loadingg1.gif")
+                : FadeAnimation(
+                    1.4,
+                    ListView.builder(
+                      itemCount: got.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          EntryItem(
+                        got[index],
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),
@@ -137,38 +140,16 @@ class my_partnersValidationState extends State<my_partners> {
 
 class Entry {
   final String title;
-  final List<Entry>
-      children; // Since this is an expansion list ...children can be another list of entries
+  final List<Entry> children;
   Entry(this.title, [this.children = const <Entry>[]]);
 }
 
-// This is the entire multi-level list displayed by this app
-
 final List<Entry> data = got;
 
-// get_entry({
-//   "parent": ["Senbagam Paints"],
-//   "Senbagam Paints": ["Linux", "Mac", "Win"],
-//   "Linux": ["Venkat"],
-//   "Mac": ["Sudarshan"],
-//   "Win": ["vijay", "dineshh"]
-// }, 'parent');
-
-// <Entry>[
-//   Entry("Senbagam Paints", <Entry>[
-//     Entry("Mac", <Entry>[Entry("Sudarshan")]),
-//     Entry("Linux", <Entry>[Entry("Venkat")]),
-//     Entry("Win", <Entry>[Entry("vijay"), Entry("dineshh")])
-//   ])
-// ];
-//
-
-// Create the Widget for the row
 class EntryItem extends StatelessWidget {
   const EntryItem(this.entry);
   final Entry entry;
 
-  // This function recursively creates the multi-level list rows.
   Widget _buildTiles(Entry root) {
     if (root.children.isEmpty) {
       return Container(

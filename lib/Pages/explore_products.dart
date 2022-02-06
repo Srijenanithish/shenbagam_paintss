@@ -8,6 +8,8 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shenbagam_paints/Pages/db/database_helper.dart';
+import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/Pages/product_view.dart';
 import 'package:shenbagam_paints/Pages/products.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
@@ -15,16 +17,27 @@ import 'package:shenbagam_paints/models/products.dart';
 
 class ExplorePage extends StatefulWidget {
   static const String routeName = "/login";
-  String api_key;
-  String api_secret;
-  ExplorePage({Key? key, required this.api_key, required this.api_secret})
-      : super(key: key);
+
   @override
   _ExplorePageState createState() => _ExplorePageState();
 }
 
 class _ExplorePageState extends State<ExplorePage>
     with TickerProviderStateMixin {
+  late List<Note> details;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    refreshNote();
+  }
+
+  Future refreshNote() async {
+    this.details = await NotesDatabase.instance.readAllNotes();
+  }
+
   Map Mapresponse = {};
   List<ProductModel> products1 = [
     ProductModel(
@@ -729,10 +742,6 @@ class _ExplorePageState extends State<ExplorePage>
 
   List<ProductModel> selectedProducts = [];
   List<String> selected_items = [];
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -779,7 +788,10 @@ class _ExplorePageState extends State<ExplorePage>
                               //   });
                               // }
                               print(selected_items);
-                              getquotation(selected_items);
+                              getquotation(
+                                  selected_items,
+                                  details[details.length - 1].api_key,
+                                  details[details.length - 1].api_secret);
                             },
                             child: Text("Get Quotation"),
                           ),
@@ -1351,10 +1363,12 @@ class _ExplorePageState extends State<ExplorePage>
     );
   }
 
-  void getquotation(selected_items) async {
+  void getquotation(selected_items, x, y) async {
     var headers = {
-      'Authorization': 'token ' + widget.api_key + ':' + widget.api_secret,
-      'Content-Type': 'application/json'
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
     };
     var request = http.Request(
         'POST',

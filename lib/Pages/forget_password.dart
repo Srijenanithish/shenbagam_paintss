@@ -318,35 +318,3 @@ class ForgetpassValidationState extends State<Forgetpass> {
     }
   }
 }
-//  var headers = {
-//       'Content-Type': 'application/json',
-//       'Cookie':
-//           'full_name=Sudarshan; sid=eeac97f12794ef7c8c1fc70f82ffddf19327d27d6686b022f549bff1; system_user=yes; user_id=frankel9675%40gmail.com; user_image='
-//     };
-//     var request = http.Request(
-//         'GET',
-//         Uri.parse(
-//             'http://test_senbagam.aerele.in/api/method/senbagam.api.send_otp'));
-//     request.body = json.encode({
-//       "args": [
-//         [
-//           {
-//             "mobile_no": mobile_no.text.toString().trim(),
-//           }
-//         ]
-//       ]
-//     });
-//     request.headers.addAll(headers);
-
-//     http.StreamedResponse response = await request.send();
-
-//     if (response.statusCode == 200) {
-//       var res = await response.stream.bytesToString();
-//       Mapresponse = await json.decode(res);
-//       // dataResponse = Mapresponse['message'];
-//       print(Mapresponse);
-
-//       // print(await response.stream.bytesToString());
-//     } else {
-//       print(response.reasonPhrase);
-//     }

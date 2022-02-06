@@ -11,17 +11,6 @@ import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:http/http.dart' as http;
 
 class home extends StatefulWidget {
-  String api_key;
-  String api_secret;
-  List welcome;
-  List stores;
-  home(
-      {Key? key,
-      required this.welcome,
-      required this.stores,
-      required this.api_key,
-      required this.api_secret})
-      : super(key: key);
   static const String routeName = "/homee";
 
   @override
@@ -124,11 +113,11 @@ class homeValidationState extends State<home> {
             ),
             body: TabBarView(children: [
               Welcome_details.length == 0
-                  ? Text("Loading")
+                  ? Image.asset("assets/login/loadingg1.gif")
                   : FadeAnimation(
                       1.4,
                       ListView.builder(
-                          itemCount: widget.welcome.length,
+                          itemCount: Welcome_details.length,
                           itemBuilder: (ctx, index) {
                             return InkWell(
                               onTap: () {
@@ -204,83 +193,85 @@ class homeValidationState extends State<home> {
                             );
                           }),
                     ),
-              FadeAnimation(
-                1.4,
-                ListView.builder(
-                    itemCount: widget.stores.length,
-                    itemBuilder: (ctx, index) {
-                      return InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.white,
-                                  Colors.white,
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                            ),
-                            height: 400,
-                            child: Column(
-                              children: [
-                                Image.network(
-                                  Store_details[index]['image'],
-                                  width: 600.0,
-                                  height: 240.0,
-                                  fit: BoxFit.cover,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 150, 0),
-                                  child: Text(
-                                    Store_details[index]['address'],
-                                    style: TextStyle(fontSize: 20),
+              Store_details.length == 0
+                  ? Image.asset("assets/login/loadingg1.gif")
+                  : FadeAnimation(
+                      1.4,
+                      ListView.builder(
+                          itemCount: Store_details.length,
+                          itemBuilder: (ctx, index) {
+                            return InkWell(
+                              onTap: () {},
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.white,
+                                        Colors.white,
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                  ),
+                                  height: 400,
+                                  child: Column(
+                                    children: [
+                                      Image.network(
+                                        Store_details[index]['image'],
+                                        width: 600.0,
+                                        height: 240.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 150, 0),
+                                        child: Text(
+                                          Store_details[index]['address'],
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      // Padding(
+                                      //   padding:
+                                      //       const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      //   child: Container(
+                                      //     height: 60,
+                                      //     child: ListView.builder(
+                                      //       scrollDirection: Axis.horizontal,
+                                      //       itemCount: color_list[index].length,
+                                      //       itemBuilder: (context, index1) {
+                                      //         return GestureDetector(
+                                      //           onTap: () {},
+                                      //           child: AnimatedContainer(
+                                      //             duration:
+                                      //                 Duration(milliseconds: 300),
+                                      //             margin: EdgeInsets.only(right: 10),
+                                      //             decoration: BoxDecoration(
+                                      //                 color: color_list[index]
+                                      //                     [index1],
+                                      //                 shape: BoxShape.circle),
+                                      //             width: 40,
+                                      //             height: 40,
+                                      //           ),
+                                      //         );
+                                      //       },
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                // Padding(
-                                //   padding:
-                                //       const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                //   child: Container(
-                                //     height: 60,
-                                //     child: ListView.builder(
-                                //       scrollDirection: Axis.horizontal,
-                                //       itemCount: color_list[index].length,
-                                //       itemBuilder: (context, index1) {
-                                //         return GestureDetector(
-                                //           onTap: () {},
-                                //           child: AnimatedContainer(
-                                //             duration:
-                                //                 Duration(milliseconds: 300),
-                                //             margin: EdgeInsets.only(right: 10),
-                                //             decoration: BoxDecoration(
-                                //                 color: color_list[index]
-                                //                     [index1],
-                                //                 shape: BoxShape.circle),
-                                //             width: 40,
-                                //             height: 40,
-                                //           ),
-                                //         );
-                                //       },
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
+                              ),
+                            );
+                          }),
+                    ),
             ])));
   }
 
@@ -313,34 +304,6 @@ class homeValidationState extends State<home> {
     } else {
       print(response.reasonPhrase);
     }
-
-    // print(details[details.length - 1].api_key);
-    // print(details[details.length - 1].api_secret);
-    // var headers = {
-    //   'Authorization': 'token ' +
-    //       details[details.length - 1].api_key +
-    //       ':' +
-    //       details[details.length - 1].api_secret
-    // };
-    // var request = http.Request(
-    //     'GET',
-    //     Uri.parse(
-    //         'http://test_senbagam.aerele.in/api/method/senbagam_api.api.welcome'));
-    // request.headers.addAll(headers);
-
-    // http.StreamedResponse response = await request.send();
-
-    // if (response.statusCode == 200) {
-    //   var res = await response.stream.bytesToString();
-    //   Mapresponse = await json.decode(res);
-    //   setState(() {
-    //     Welcome_details = Mapresponse['message']['welcome'];
-    //   });
-
-    //   print(await response.stream.bytesToString());
-    // } else {
-    //   print(response.reasonPhrase);
-    // }
   }
 
   void Stores(x, y) async {

@@ -31,6 +31,7 @@ class LoginFormValidationState extends State<LoginForm> {
 
   get prefixIcon => null;
   late bool isImportant;
+  late bool logged_in;
   late String api_key;
   late String api_secret;
 
@@ -50,6 +51,7 @@ class LoginFormValidationState extends State<LoginForm> {
     super.initState();
 
     isImportant = widget.note?.isImportant ?? false;
+    logged_in = widget.note?.logged_in ?? false;
     api_key = widget.note?.api_key ?? '';
     api_secret = widget.note?.api_secret ?? '';
   }
@@ -255,13 +257,6 @@ class LoginFormValidationState extends State<LoginForm> {
                                             ),
                                           ));
                                           loginup(mobilenum, password_);
-                                          // Navigator.of(context)
-                                          //     .pushNamed(Homepage.routeName)
-                                          //     .then((result) async {
-                                          //   print(result);
-                                          // // });
-                                          // Welcome();
-                                          // Stores();
                                         }
                                       },
                                       color: Colors.purple.shade200,
@@ -321,7 +316,7 @@ class LoginFormValidationState extends State<LoginForm> {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      Constants.prefs!.setBool("LoggedIn", true);
+      Constants.prefs!.setBool("isLoggedIn", true);
       var res = await response.stream.bytesToString();
       Mapresponse = await json.decode(res);
       dataResponse = Mapresponse['message'];
@@ -379,7 +374,10 @@ class LoginFormValidationState extends State<LoginForm> {
 
   Future updateNote() async {
     final note = widget.note!.copy(
-        isImportant: isImportant, api_key: api_key, api_secret: api_secret);
+        isImportant: isImportant,
+        logged_in: logged_in,
+        api_key: api_key,
+        api_secret: api_secret);
 
     await NotesDatabase.instance.update(note);
   }
@@ -388,6 +386,7 @@ class LoginFormValidationState extends State<LoginForm> {
     print("added");
     final note = Note(
       isImportant: true,
+      logged_in: true,
       api_key: api_key,
       api_secret: api_secret,
       createdTime: DateTime.now(),
@@ -395,54 +394,4 @@ class LoginFormValidationState extends State<LoginForm> {
 
     await NotesDatabase.instance.create(note);
   }
-
-  // void Welcome(x, y) async {
-  //   var headers = {'Authorization': 'token 5102343d3e2956a:45105fbd19d0d81'};
-  //   var request = http.Request(
-  //       'GET',
-  //       Uri.parse(
-  //           'http://test_senbagam.aerele.in/api/method/senbagam_api.api.welcome'));
-
-  //   request.headers.addAll(headers);
-
-  //   http.StreamedResponse response = await request.send();
-
-  //   if (response.statusCode == 200) {
-  //     print(await response.stream.bytesToString());
-  //   } else {
-  //     print(response.reasonPhrase);
-  //   }
-  // }
-// var headers = {
-//       'Content-Type': 'application/json',
-//       'Cookie':
-//           'full_name=Sudarshan; sid=16236599778de0894ec7d32a8dc5dcea121bafe45db44cf5ec5772d4; system_user=no; user_id=frankel9675%40gmail.com; user_image='
-//     };
-//     var request = http.Request(
-//         'GET',
-//         Uri.parse(
-//             'http://test_senbagam.aerele.in/api/method/senbagam.api.login'));
-//     request.body = json.encode({
-//       "args": [
-//         [
-//           {
-//             "usr": mobilenum.text.toString().trim(),
-//             "pwd": password_.text.toString().trim(),
-//           }
-//         ]
-//       ]
-//     });
-
-//     request.headers.addAll(headers);
-
-//     http.StreamedResponse response = await request.send();
-
-//     if (response.statusCode == 200) {
-//       print(await response.stream.bytesToString());
-//       Navigator.of(context).pushNamed(Homepage.routeName).then((result) async {
-//         print(result);
-//       });
-//     } else {
-//       print(response.reasonPhrase);
-//     }
 }
