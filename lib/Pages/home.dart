@@ -16,6 +16,7 @@ import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
 import 'package:shenbagam_paints/Pages/profile.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
+import 'package:shenbagam_paints/Pages/utils/constants.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:shenbagam_paints/Pages/wallet.dart';
 
@@ -202,6 +203,7 @@ class HomepageValidationState extends State<Homepage> {
                   leading: Icon(Icons.settings),
                   title: const Text('Sign Out'),
                   onTap: () {
+                    Constants.prefs!.setBool("isLoggedIn", false);
                     logout(details[details.length - 1].api_key,
                         details[details.length - 1].api_secret);
                     Navigator.pushReplacement(context,

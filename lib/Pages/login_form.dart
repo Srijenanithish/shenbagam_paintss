@@ -322,27 +322,12 @@ class LoginFormValidationState extends State<LoginForm> {
       dataResponse = Mapresponse['message'];
       api_key = dataResponse['api_key'].toString();
       api_secret = dataResponse['api_secret'].toString();
-      print(api_secret);
+      print(dataResponse['api_secret']);
       print(Mapresponse['message']);
       if (Mapresponse['message']['message'] == 'Success') {
         Navigator.of(context)
-            .pushReplacementNamed(Homepage.routeName, arguments: {
-          "api_key": dataResponse['api_key'],
-          "api_secret": dataResponse['api_secret'],
-          "name": dataResponse['name'],
-          "dob": dataResponse['dob'],
-          "mobile": dataResponse['mobile_no'],
-          "email": dataResponse['email'],
-          "address": dataResponse['address'],
-          "city": dataResponse['city'],
-          "district": dataResponse['district'],
-          "referred_by": dataResponse['Refered_by'],
-          "gstin": dataResponse['gstin'],
-          "pincode": dataResponse['pincode'],
-          "roles": dataResponse['roles'],
-          "welcome": dataResponse['welcome'],
-          "stores": dataResponse['store']
-        }).then((result) async {
+            .pushReplacementNamed(Homepage.routeName)
+            .then((result) async {
           print(result);
         });
         addOrUpdateNote();

@@ -73,11 +73,17 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: status == true ? Homepage() : MyHomePage());
+        home: MyHomePage(status: status));
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  var status;
+
+  MyHomePage({
+    Key key,
+    this.status,
+  }) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -86,15 +92,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    print(widget.status);
     Timer(
-        Duration(seconds: 7),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginForm())));
+        Duration(seconds: 4),
+        widget.status == 'false'
+            ? () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()))
+            : () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Homepage())));
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.white, child: Image.asset("assets/login/senn.gif"));
+        color: Colors.white, child: Image.asset("assets/login/sen1.gif"));
   }
 }

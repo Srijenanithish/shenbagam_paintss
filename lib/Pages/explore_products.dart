@@ -1384,7 +1384,7 @@ class _ExplorePageState extends State<ExplorePage>
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
       Mapresponse = await json.decode(res);
-      if (Mapresponse['message']['message'] == 'Success') {
+      if (Mapresponse['message']['message'] == 'success') {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.black26,
           content: Text(
