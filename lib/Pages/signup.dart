@@ -404,8 +404,8 @@ class SignupValidationState extends State<SignUp> {
                                                 Icon(Icons.confirmation_number),
                                             border: UnderlineInputBorder(),
                                             contentPadding: EdgeInsets.all(16),
-                                            labelText: 'GSTN',
-                                            hintText: 'Enter your GSTN'),
+                                            labelText: 'GSTIN',
+                                            hintText: 'Enter your GSTIN'),
                                         validator: MultiValidator([
                                           RequiredValidator(
                                               errorText: "* Required"),

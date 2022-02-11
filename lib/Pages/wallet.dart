@@ -38,7 +38,7 @@ class walletValidationState extends State<wallet> {
   TextEditingController? _textEditingController = TextEditingController();
   Map leger_response = {};
   List ledger_details = [];
-
+  String balance = '';
   List order_details = [];
   List invoice_details = [];
   @override
@@ -55,12 +55,37 @@ class walletValidationState extends State<wallet> {
             padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
             child: FadeAnimation(
               1.4,
-              Text(
-                "Wallet",
-                style: GoogleFonts.raleway(
-                  textStyle: TextStyle(
-                      color: Colors.black54, fontSize: 23, letterSpacing: .5),
-                ),
+              Row(
+                children: [
+                  Text(
+                    "Wallet",
+                    style: GoogleFonts.raleway(
+                      textStyle: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 23,
+                          letterSpacing: .5),
+                    ),
+                  ),
+                  balance == ''
+                      ? Text(
+                          "   -   " + "Balance = 0.0",
+                          style: GoogleFonts.raleway(
+                            textStyle: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 20,
+                                letterSpacing: .5),
+                          ),
+                        )
+                      : Text(
+                          "   -   " + "Balance = " + balance.toString(),
+                          style: GoogleFonts.raleway(
+                            textStyle: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 20,
+                                letterSpacing: .5),
+                          ),
+                        ),
+                ],
               ),
             ),
           ),
@@ -316,7 +341,7 @@ class walletValidationState extends State<wallet> {
                                   end: Alignment.centerRight,
                                 ),
                               ),
-                              height: 150,
+                              height: 80,
                               child: Column(
                                 children: [
                                   Padding(
@@ -327,7 +352,7 @@ class walletValidationState extends State<wallet> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(0, 35, 0, 10),
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 0),
                                     child: Text(
                                         ' -   ' + order_details[index]['date'],
                                         style: TextStyle(fontSize: 15)),
@@ -472,6 +497,7 @@ class walletValidationState extends State<wallet> {
         ledger_details = leger_response['message']['ledger'];
         order_details = leger_response['message']['quotation'];
         invoice_details = leger_response['message']['sales_invoice'];
+        balance = (leger_response['message']['balance']).toString();
       });
       print(leger_response['message']);
       print(order_details);

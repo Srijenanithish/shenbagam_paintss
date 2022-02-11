@@ -95,11 +95,11 @@ class _MyHomePageState extends State<MyHomePage> {
     print(widget.status);
     Timer(
         Duration(seconds: 4),
-        widget.status == 'false'
+        widget.status == 'true'
             ? () => Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => LoginForm()))
+                context, MaterialPageRoute(builder: (context) => Homepage()))
             : () => Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Homepage())));
+                context, MaterialPageRoute(builder: (context) => LoginForm())));
   }
 
   @override

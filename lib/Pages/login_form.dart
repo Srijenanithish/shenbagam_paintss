@@ -34,6 +34,16 @@ class LoginFormValidationState extends State<LoginForm> {
   late bool logged_in;
   late String api_key;
   late String api_secret;
+  late String name;
+  late String dob;
+  late String mobile;
+  late String email;
+  late String address;
+  late String city;
+  late String district;
+  late String referred_by;
+  late String gstin;
+  late String pincode;
 
   String? validatePassword(String value) {
     if (value.isEmpty) {
@@ -54,6 +64,16 @@ class LoginFormValidationState extends State<LoginForm> {
     logged_in = widget.note?.logged_in ?? false;
     api_key = widget.note?.api_key ?? '';
     api_secret = widget.note?.api_secret ?? '';
+    name = widget.note?.name ?? '';
+    dob = widget.note?.dob ?? '';
+    mobile = widget.note?.mobile ?? '';
+    email = widget.note?.email ?? '';
+    address = widget.note?.address ?? '';
+    city = widget.note?.city ?? '';
+    district = widget.note?.district ?? '';
+    referred_by = widget.note?.referred_by ?? '';
+    gstin = widget.note?.gstin ?? '';
+    pincode = widget.note?.pincode ?? '';
   }
 
   String stringResponse = '0';
@@ -299,7 +319,6 @@ class LoginFormValidationState extends State<LoginForm> {
   }
 
   loginup(mobilenum, password_) async {
-    print("hello");
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
         'GET',
@@ -322,8 +341,16 @@ class LoginFormValidationState extends State<LoginForm> {
       dataResponse = Mapresponse['message'];
       api_key = dataResponse['api_key'].toString();
       api_secret = dataResponse['api_secret'].toString();
-      print(dataResponse['api_secret']);
-      print(Mapresponse['message']);
+      name = dataResponse['name'];
+      dob = dataResponse['dob'];
+      mobile = dataResponse['mobile_no'];
+      email = dataResponse['email'];
+      address = dataResponse['address'];
+      city = dataResponse['city'];
+      district = dataResponse['district'];
+      referred_by = dataResponse['refered_by'];
+      gstin = dataResponse['gstin'];
+      pincode = dataResponse['pincode'];
       if (Mapresponse['message']['message'] == 'Success') {
         Navigator.of(context)
             .pushReplacementNamed(Homepage.routeName)
@@ -341,7 +368,7 @@ class LoginFormValidationState extends State<LoginForm> {
           ),
         ));
       }
-      // print(await response.stream.bytesToString());
+      //print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
     }
@@ -359,21 +386,42 @@ class LoginFormValidationState extends State<LoginForm> {
 
   Future updateNote() async {
     final note = widget.note!.copy(
-        isImportant: isImportant,
-        logged_in: logged_in,
-        api_key: api_key,
-        api_secret: api_secret);
+      isImportant: isImportant,
+      logged_in: logged_in,
+      api_key: api_key,
+      api_secret: api_secret,
+      name: name,
+      dob: dob,
+      mobile: mobile,
+      email: email,
+      address: address,
+      city: city,
+      district: district,
+      referred_by: referred_by,
+      gstin: gstin,
+      pincode: pincode,
+    );
 
     await NotesDatabase.instance.update(note);
   }
 
   Future addNote() async {
-    print("added");
+    print("Added To Database");
     final note = Note(
       isImportant: true,
       logged_in: true,
       api_key: api_key,
       api_secret: api_secret,
+      name: name,
+      dob: dob,
+      mobile: mobile,
+      email: email,
+      address: address,
+      city: city,
+      district: district,
+      referred_by: referred_by,
+      gstin: gstin,
+      pincode: pincode,
       createdTime: DateTime.now(),
     );
 

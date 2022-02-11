@@ -1384,16 +1384,16 @@ class _ExplorePageState extends State<ExplorePage>
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
       Mapresponse = await json.decode(res);
-      if (Mapresponse['message']['message'] == 'success') {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.black26,
-          content: Text(
-            Mapresponse['message']['message'],
-            style: TextStyle(color: Colors.white),
-          ),
-        ));
-      }
-      //print(await response.stream.bytesToString());
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.black26,
+        content: Text(
+          Mapresponse['message']['message'],
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
+
+      //  print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
     }

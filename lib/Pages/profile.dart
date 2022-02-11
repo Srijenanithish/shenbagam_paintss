@@ -9,7 +9,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shenbagam_paints/Pages/bank_details.dart';
+import 'package:shenbagam_paints/Pages/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
+import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/Pages/qr_page.dart';
 
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
@@ -22,6 +24,26 @@ class profile extends StatefulWidget {
 }
 
 class profileValidationState extends State<profile> {
+  late List<Note> details;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    refreshNote();
+  }
+
+  Future refreshNote() async {
+    this.details = await NotesDatabase.instance.readAllNotes();
+    setState(() {
+      name = details[details.length - 1].name;
+      city = details[details.length - 1].city;
+      district = details[details.length - 1].district;
+      pincode = details[details.length - 1].pincode;
+    });
+  }
+
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool _hasBeenPressed = true;
   get prefixIcon => null;
@@ -29,7 +51,10 @@ class profileValidationState extends State<profile> {
   TextEditingController username_ = TextEditingController();
   final String _content =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam ipsum, lobortis quis ultricies non, lacinia at justo.';
-
+  String name = '';
+  String city = '';
+  String district = '';
+  String pincode = '';
   void _shareContent() {
     showDialog(
         context: context,
@@ -85,7 +110,11 @@ class profileValidationState extends State<profile> {
                     child: Text("Share"),
                     onPressed: () {
                       if (formkey.currentState!.validate()) {
-                        Share.share(_content);
+                        Share_Mob(
+                            details[details.length - 1].api_key,
+                            details[details.length - 1].api_secret,
+                            username_,
+                            Mobilenum);
                       }
                     }),
               )
@@ -134,11 +163,20 @@ class profileValidationState extends State<profile> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: FadeAnimation(
-                    1.4,
-                    Text("Edit"),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(edit.routeName)
+                        .then((result) async {
+                      print(result);
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: FadeAnimation(
+                      1.4,
+                      Text("Edit"),
+                    ),
                   ),
                 ),
               ],
@@ -173,7 +211,7 @@ class profileValidationState extends State<profile> {
             FadeAnimation(
               1.4,
               Text(
-                "Jain Immanual Wilson",
+                name,
                 style: TextStyle(
                     fontSize: 25.0,
                     color: Colors.blueGrey,
@@ -187,7 +225,7 @@ class profileValidationState extends State<profile> {
             FadeAnimation(
               1.4,
               Text(
-                "Tamilnadu , India",
+                city + " , " + district,
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.black45,
@@ -201,7 +239,7 @@ class profileValidationState extends State<profile> {
             FadeAnimation(
               1.4,
               Text(
-                "Painter",
+                pincode,
                 style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.black45,
@@ -212,7 +250,6 @@ class profileValidationState extends State<profile> {
             SizedBox(
               height: 30,
             ),
-
             FadeAnimation(
               1.4,
               Row(
@@ -305,7 +342,6 @@ class profileValidationState extends State<profile> {
                 ],
               ),
             ),
-
             FadeAnimation(
               1.4,
               Row(
@@ -396,78 +432,38 @@ class profileValidationState extends State<profile> {
             SizedBox(
               height: 15,
             ),
-
-            // Card(
-            //     color: Colors.blueGrey,
-            //     margin:
-            //         EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
-            //     elevation: 2.0,
-            //     child: Padding(
-            //         padding:
-            //             EdgeInsets.symmetric(vertical: 12, horizontal: 30),
-            //         child: Text(
-            //           "Settings",
-            //           style: TextStyle(
-            //               color: Colors.white,
-            //               letterSpacing: 2.0,
-            //               fontWeight: FontWeight.w300),
-            //         ))),
-            // RaisedButton(
-            //   onPressed: () {},
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(80.0),
-            //   ),
-            //   child: Ink(
-            //     decoration: BoxDecoration(
-            //       gradient: LinearGradient(
-            //           begin: Alignment.centerLeft,
-            //           end: Alignment.centerRight,
-            //           colors: [Colors.pink, Colors.redAccent]),
-            //       borderRadius: BorderRadius.circular(30.0),
-            //     ),
-            //     child: Container(
-            //       constraints: BoxConstraints(
-            //         maxWidth: 100.0,
-            //         maxHeight: 40.0,
-            //       ),
-            //       alignment: Alignment.center,
-            //       child: Text(
-            //         "Settings",
-            //         style: TextStyle(
-            //             color: Colors.white,
-            //             fontSize: 12.0,
-            //             letterSpacing: 2.0,
-            //             fontWeight: FontWeight.w300),
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
     ));
   }
 
-  // void Share() async {
-  //   var headers = {
-  //     'Authorization': 'token 5102343d3e2956a:274bedee26908bd',
-  //     'Content-Type': 'application/json'
-  //   };
-  //   var request = http.Request(
-  //       'POST',
-  //       Uri.parse(
-  //           'http://test_senbagam.aerele.in/api/method/senbagam_api.api.add_referral'));
-  //   request.body = json.encode({
-  //     "args": {"name": "Me", "mobile_no": "9876543210"}
-  //   });
-  //   request.headers.addAll(headers);
+  void Share_Mob(x, y, name, mob) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.add_referral'));
+    request.body = json.encode({
+      "args": {
+        "name": name.text.toString().trim(),
+        "mobile_no": mob.text.toString().trim()
+      }
+    });
+    request.headers.addAll(headers);
 
-  //   http.StreamedResponse response = await request.send();
+    http.StreamedResponse response = await request.send();
 
-  //   if (response.statusCode == 200) {
-  //     print(await response.stream.bytesToString());
-  //   } else {
-  //     print(response.reasonPhrase);
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      Share.share(_content);
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
 }

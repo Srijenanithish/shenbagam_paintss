@@ -61,8 +61,7 @@ class homeValidationState extends State<home> {
 
   Future refreshNote() async {
     this.details = await NotesDatabase.instance.readAllNotes();
-    print(details[details.length - 1].api_key);
-    print(details[details.length - 1].api_secret);
+
     Welcome(details[details.length - 1].api_key,
         details[details.length - 1].api_secret);
     Stores(details[details.length - 1].api_key,
@@ -159,33 +158,6 @@ class homeValidationState extends State<home> {
                                       SizedBox(
                                         height: 20,
                                       ),
-                                      // Padding(
-                                      //   padding:
-                                      //       const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                      //   child: Container(
-                                      //     height: 60,
-                                      //     child: ListView.builder(
-                                      //       scrollDirection: Axis.horizontal,
-                                      //       itemCount: color_list[index].length,
-                                      //       itemBuilder: (context, index1) {
-                                      //         return GestureDetector(
-                                      //           onTap: () {},
-                                      //           child: AnimatedContainer(
-                                      //             duration:
-                                      //                 Duration(milliseconds: 300),
-                                      //             margin: EdgeInsets.only(right: 10),
-                                      //             decoration: BoxDecoration(
-                                      //                 color: color_list[index]
-                                      //                     [index1],
-                                      //                 shape: BoxShape.circle),
-                                      //             width: 40,
-                                      //             height: 40,
-                                      //           ),
-                                      //         );
-                                      //       },
-                                      //     ),
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
                                 ),
@@ -282,7 +254,7 @@ class homeValidationState extends State<home> {
       'Accept': "*/*",
       'Connection': "keep-alive"
     };
-    print(headers);
+
     var request = http.Request(
         'GET',
         Uri.parse(
@@ -295,7 +267,7 @@ class homeValidationState extends State<home> {
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
       Mapresponse = await json.decode(res);
-      print(Mapresponse['message']['welcome']);
+
       setState(() {
         Welcome_details = Mapresponse['message']['content'];
       });
@@ -313,7 +285,7 @@ class homeValidationState extends State<home> {
       'Accept': "*/*",
       'Connection': "keep-alive"
     };
-    print(headers);
+
     var request = http.Request(
         'GET',
         Uri.parse(

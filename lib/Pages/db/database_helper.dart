@@ -36,7 +36,16 @@ CREATE TABLE $tableNotes (
   ${NoteFields.logged_in} $boolType,
   ${NoteFields.api_key} $textType,
   ${NoteFields.api_secret} $textType,
- 
+  ${NoteFields.name} $textType,
+  ${NoteFields.dob} $textType,
+  ${NoteFields.mobile} $textType,
+  ${NoteFields.email} $textType,
+  ${NoteFields.address} $textType,
+  ${NoteFields.city} $textType,
+  ${NoteFields.district} $textType,
+  ${NoteFields.referred_by} $textType,
+  ${NoteFields.gstin} $textType,
+  ${NoteFields.pincode} $textType,
   ${NoteFields.time} $textType
   
   )

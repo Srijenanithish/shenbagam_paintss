@@ -17,6 +17,7 @@ class my_partners extends StatefulWidget {
 }
 
 List<Entry> got = [];
+List<Entry> not_got = [Entry("No Referral Found")];
 
 class my_partnersValidationState extends State<my_partners> {
   Map partner_response = {};
@@ -80,7 +81,7 @@ class my_partnersValidationState extends State<my_partners> {
       if (temp[0].title != "null") {
         ret_data.add(Entry(temp_title, temp));
       } else {
-        ret_data.add(Entry(temp_title));
+        ret_data.add(Entry(temp_title, [Entry("No Referral Found")]));
       }
     }
     return ret_data;
@@ -120,7 +121,16 @@ class my_partnersValidationState extends State<my_partners> {
           ),
           Expanded(
             child: got.length == 0
-                ? Image.asset("assets/login/loadingg1.gif")
+                ? FadeAnimation(
+                    1.4,
+                    ListView.builder(
+                      itemCount: not_got.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          EntryItem(
+                        not_got[index],
+                      ),
+                    ),
+                  )
                 : FadeAnimation(
                     1.4,
                     ListView.builder(
@@ -170,7 +180,7 @@ class EntryItem extends StatelessWidget {
         ),
       );
     }
-    print("----------" + root.title);
+
     return Container(
       decoration: BoxDecoration(color: Colors.white12),
       child: ExpansionTile(

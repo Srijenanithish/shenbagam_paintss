@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shenbagam_paints/Pages/db/database_helper.dart';
+import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
@@ -18,17 +20,47 @@ class edit extends StatefulWidget {
 }
 
 class editValidationState extends State<edit> {
+  late List<Note> details;
+  bool isLoading = false;
+
   @override
   void initState() {
-    dateinput.text = ""; //set the initial value of text field
+    dateinput.text = "";
     super.initState();
+
+    refreshNote();
+  }
+
+  Future refreshNote() async {
+    this.details = await NotesDatabase.instance.readAllNotes();
+    setState(() {
+      name1 = details[details.length - 1].name;
+      dob1 = details[details.length - 1].dob;
+      mobile1 = details[details.length - 1].mobile;
+      email1 = details[details.length - 1].email;
+      address1 = details[details.length - 1].address;
+      city1 = details[details.length - 1].city;
+      district1 = details[details.length - 1].district;
+      referred_by1 = details[details.length - 1].referred_by;
+      gstin1 = details[details.length - 1].gstin;
+      pincode1 = details[details.length - 1].pincode;
+    });
   }
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   late PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   get prefixIcon => null;
-
+  String name1 = '';
+  String dob1 = '';
+  String mobile1 = '';
+  String email1 = '';
+  String address1 = '';
+  String city1 = '';
+  String district1 = '';
+  String referred_by1 = '';
+  String gstin1 = '';
+  String pincode1 = '';
   String? validatePassword(String value) {
     if (value.isEmpty) {
       return "* Required";
@@ -44,13 +76,14 @@ class editValidationState extends State<edit> {
   TextEditingController username_ = TextEditingController();
   TextEditingController dateinput = TextEditingController();
   TextEditingController email = TextEditingController();
-
+  TextEditingController _controller = TextEditingController();
   TextEditingController Mobilenum = TextEditingController();
   TextEditingController Address = TextEditingController();
   TextEditingController City = TextEditingController();
   TextEditingController District = TextEditingController();
   TextEditingController Pincode = TextEditingController();
   TextEditingController password_ = TextEditingController();
+  TextEditingController gstn = TextEditingController();
   bool _passwordVisible = false;
   Widget build(BuildContext context) {
     return Container(
@@ -171,33 +204,28 @@ class editValidationState extends State<edit> {
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 20, 40, 0),
                                     child: TextFormField(
-                                        controller: username_,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.person),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Name',
-                                            hintText: 'Enter your Name'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                      controller: username_,
+                                      decoration: InputDecoration(
+                                          prefixIcon:
+                                              prefixIcon ?? Icon(Icons.person),
+                                          border: UnderlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: name1,
+                                          hintText: 'Enter your Name'),
+                                    ),
                                   ),
                                   Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           40, 10, 40, 0),
                                       child: TextFormField(
+                                        enabled: false,
                                         controller: dateinput,
                                         decoration: InputDecoration(
                                             prefixIcon: prefixIcon ??
                                                 Icon(Icons.calendar_today),
                                             border: UnderlineInputBorder(),
                                             contentPadding: EdgeInsets.all(16),
-                                            labelText: 'DOB',
+                                            labelText: dob1,
                                             hintText:
                                                 'Enter your DOB'), //set it true, so that user will not able to edit text
                                         onTap: () async {
@@ -227,131 +255,121 @@ class editValidationState extends State<edit> {
                                             print("Date is not selected");
                                           }
                                         },
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                        ]),
                                       )),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
                                     child: TextFormField(
-                                        controller: Mobilenum,
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            prefixIcon:
-                                                prefixIcon ?? Icon(Icons.phone),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Mobile Number',
-                                            hintText:
-                                                'Enter your Mobile Number'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(10,
-                                              errorText:
-                                                  "Mobile Number should be 10 characters"),
-                                        ])),
+                                      controller: Mobilenum,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                          prefixIcon:
+                                              prefixIcon ?? Icon(Icons.phone),
+                                          border: UnderlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: mobile1,
+                                          hintText: 'Enter your Mobile Number'),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
                                     child: TextFormField(
-                                        controller: email,
-                                        decoration: InputDecoration(
-                                            prefixIcon:
-                                                prefixIcon ?? Icon(Icons.email),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Email',
-                                            hintText: 'Enter your Email ID'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                        ])),
+                                      controller: email,
+                                      decoration: InputDecoration(
+                                          prefixIcon:
+                                              prefixIcon ?? Icon(Icons.email),
+                                          border: UnderlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: email1,
+                                          hintText: 'Enter your Email ID'),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
                                     child: TextFormField(
-                                        controller: Address,
-                                        maxLines: 2,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.landscape),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Address',
-                                            hintText: 'Enter your Address'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                      controller: Address,
+                                      maxLines: 2,
+                                      decoration: InputDecoration(
+                                          prefixIcon: prefixIcon ??
+                                              Icon(Icons.landscape),
+                                          border: UnderlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: address1,
+                                          hintText: 'Enter your Address'),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
                                     child: TextFormField(
-                                        controller: City,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.location_city),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'City',
-                                            hintText: 'Enter your City'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                      controller: City,
+                                      decoration: InputDecoration(
+                                          prefixIcon: prefixIcon ??
+                                              Icon(Icons.location_city),
+                                          border: UnderlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: city1,
+                                          hintText: 'Enter your City'),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
                                     child: TextFormField(
-                                        controller: District,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.pin_drop),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'District',
-                                            hintText: 'Enter your District'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                      controller: District,
+                                      decoration: InputDecoration(
+                                          prefixIcon: prefixIcon ??
+                                              Icon(Icons.pin_drop),
+                                          border: UnderlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: district1,
+                                          hintText: 'Enter your District'),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 0),
                                     child: TextFormField(
-                                        controller: Pincode,
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            prefixIcon:
-                                                prefixIcon ?? Icon(Icons.code),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Pincode',
-                                            hintText: 'Enter your Pincode'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(6,
-                                              errorText:
-                                                  "Username should be atleast 6 characters"),
-                                        ])),
+                                      controller: Pincode,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                          prefixIcon:
+                                              prefixIcon ?? Icon(Icons.code),
+                                          border: UnderlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: pincode1,
+                                          hintText: 'Enter your Pincode'),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        40, 10, 40, 0),
+                                    child: TextField(
+                                      enabled: false,
+                                      controller: _controller,
+                                      decoration: InputDecoration(
+                                          prefixIcon:
+                                              prefixIcon ?? Icon(Icons.person),
+                                          labelText: referred_by1),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        40, 10, 40, 0),
+                                    child: TextFormField(
+                                      enabled: false,
+                                      controller: gstn,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                          prefixIcon: prefixIcon ??
+                                              Icon(Icons.confirmation_number),
+                                          border: UnderlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(16),
+                                          labelText: gstin1,
+                                          hintText: 'Enter your GSTN'),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 20,
