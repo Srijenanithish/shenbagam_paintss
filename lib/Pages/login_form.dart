@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:form_field_validator/form_field_validator.dart';
@@ -27,6 +28,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class LoginFormValidationState extends State<LoginForm> {
+  bool form_active = true;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   get prefixIcon => null;
@@ -59,7 +61,7 @@ class LoginFormValidationState extends State<LoginForm> {
   @override
   void initState() {
     super.initState();
-
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     isImportant = widget.note?.isImportant ?? false;
     logged_in = widget.note?.logged_in ?? false;
     api_key = widget.note?.api_key ?? '';
@@ -111,13 +113,17 @@ class LoginFormValidationState extends State<LoginForm> {
                           FadeAnimation(
                             1.4,
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 100, 0, 0),
+                              padding: EdgeInsets.fromLTRB(
+                                  0,
+                                  MediaQuery.of(context).size.width / 3,
+                                  MediaQuery.of(context).size.width / 5,
+                                  0),
                               child: Text(
                                 'Senbagam Paints',
                                 style: GoogleFonts.raleway(
                                   textStyle: TextStyle(
                                       color: Colors.black54,
-                                      fontSize: 40,
+                                      fontSize: 30,
                                       letterSpacing: .5),
                                 ),
                               ),
@@ -126,7 +132,11 @@ class LoginFormValidationState extends State<LoginForm> {
                           FadeAnimation(
                             1.4,
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 150, 0),
+                              padding: EdgeInsets.fromLTRB(
+                                  0,
+                                  MediaQuery.of(context).size.width / 15,
+                                  MediaQuery.of(context).size.width / 1.64,
+                                  0),
                               child: Text(
                                 'LOGIN',
                                 style: GoogleFonts.raleway(
@@ -142,7 +152,7 @@ class LoginFormValidationState extends State<LoginForm> {
                             1.4,
                             Container(
                               width: double.infinity,
-                              height: 150,
+                              height: MediaQuery.of(context).size.height / 6,
                               child: FadeAnimation(
                                 1.4,
                                 Container(
@@ -164,79 +174,161 @@ class LoginFormValidationState extends State<LoginForm> {
                                 FadeAnimation(
                                   1.4,
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 50, 40, 0),
-                                    child: TextFormField(
-                                      controller: mobilenum,
-                                      keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
-                                          prefixIcon: prefixIcon ??
-                                              Icon(
-                                                Icons.person,
-                                                color: Colors.purple.shade200,
-                                              ),
-                                          border: UnderlineInputBorder(
-                                              borderSide: new BorderSide(
-                                                  color: Colors.red)),
-                                          labelText: 'Mobile Number',
-                                          contentPadding: EdgeInsets.all(16),
-                                          hintText: 'Enter your Mobile Number'),
-                                      validator: MultiValidator([
-                                        RequiredValidator(
-                                            errorText: "* Required"),
-                                        MinLengthValidator(10,
-                                            errorText:
-                                                "Mobile Number should be 10 characters"),
-                                      ]),
-                                    ),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: mobilenum,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(
+                                                      Icons.person,
+                                                      color: Colors
+                                                          .purple.shade200,
+                                                    ),
+                                                border: UnderlineInputBorder(
+                                                    borderSide: new BorderSide(
+                                                        color: Colors.red)),
+                                                labelText: 'Mobile Number',
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                hintText:
+                                                    'Enter your Mobile Number'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(10,
+                                                  errorText:
+                                                      "Mobile Number should be 10 characters"),
+                                            ]),
+                                          )
+                                        : TextFormField(
+                                            controller: mobilenum,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(
+                                                      Icons.person,
+                                                      color: Colors
+                                                          .purple.shade200,
+                                                    ),
+                                                border: UnderlineInputBorder(
+                                                    borderSide: new BorderSide(
+                                                        color: Colors.red)),
+                                                labelText: 'Mobile Number',
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                hintText:
+                                                    'Enter your Mobile Number'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(10,
+                                                  errorText:
+                                                      "Mobile Number should be 10 characters"),
+                                            ]),
+                                          ),
                                   ),
                                 ),
                                 FadeAnimation(
                                   1.4,
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 40,
-                                        right: 40,
-                                        top: 15,
-                                        bottom: 0),
-                                    child: TextFormField(
-                                        controller: password_,
-                                        obscureText: !_passwordVisible,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(
-                                                  Icons.password_sharp,
-                                                  color: Colors.purple.shade200,
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: password_,
+                                            obscureText: !_passwordVisible,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(
+                                                      Icons.password_sharp,
+                                                      color: Colors
+                                                          .purple.shade200,
+                                                    ),
+                                                border: UnderlineInputBorder(),
+                                                labelText: 'Password',
+                                                suffixIcon: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _passwordVisible =
+                                                          !_passwordVisible;
+                                                    });
+                                                  },
+                                                  child: Icon(
+                                                    _passwordVisible
+                                                        ? Icons.visibility
+                                                        : Icons.visibility_off,
+                                                    color:
+                                                        Colors.purple.shade200,
+                                                  ),
                                                 ),
-                                            border: UnderlineInputBorder(),
-                                            labelText: 'Password',
-                                            suffixIcon: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _passwordVisible =
-                                                      !_passwordVisible;
-                                                });
-                                              },
-                                              child: Icon(
-                                                _passwordVisible
-                                                    ? Icons.visibility
-                                                    : Icons.visibility_off,
-                                                color: Colors.purple.shade200,
-                                              ),
-                                            ),
-                                            contentPadding: EdgeInsets.all(16),
-                                            fillColor: Colors.black12,
-                                            hintText: 'Enter secure password'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Password should be atleast 6 characters"),
-                                          MaxLengthValidator(15,
-                                              errorText:
-                                                  "Password should not be greater than 15 characters")
-                                        ])),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                fillColor: Colors.black12,
+                                                hintText:
+                                                    'Enter secure password'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Password should be atleast 6 characters"),
+                                              MaxLengthValidator(15,
+                                                  errorText:
+                                                      "Password should not be greater than 15 characters")
+                                            ]))
+                                        : TextFormField(
+                                            controller: password_,
+                                            obscureText: !_passwordVisible,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(
+                                                      Icons.password_sharp,
+                                                      color: Colors
+                                                          .purple.shade200,
+                                                    ),
+                                                border: UnderlineInputBorder(),
+                                                labelText: 'Password',
+                                                suffixIcon: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _passwordVisible =
+                                                          !_passwordVisible;
+                                                    });
+                                                  },
+                                                  child: Icon(
+                                                    _passwordVisible
+                                                        ? Icons.visibility
+                                                        : Icons.visibility_off,
+                                                    color:
+                                                        Colors.purple.shade200,
+                                                  ),
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                fillColor: Colors.black12,
+                                                hintText:
+                                                    'Enter secure password'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Password should be atleast 6 characters"),
+                                              MaxLengthValidator(15,
+                                                  errorText:
+                                                      "Password should not be greater than 15 characters")
+                                            ])),
                                   ),
                                 ),
                                 Padding(
@@ -261,24 +353,36 @@ class LoginFormValidationState extends State<LoginForm> {
                                 FadeAnimation(
                                     1.4,
                                     FlatButton(
-                                      minWidth: 190,
+                                      minWidth:
+                                          MediaQuery.of(context).size.width / 2,
                                       child: Text('LOGIN'),
-                                      onPressed: () {
-                                        if (formkey.currentState!.validate()) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            backgroundColor: Colors.black26,
-                                            duration:
-                                                const Duration(seconds: 10),
-                                            content: Text(
-                                              "Please Wait while Loading .....",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ));
-                                          loginup(mobilenum, password_);
-                                        }
-                                      },
+                                      onPressed: form_active
+                                          ? () {
+                                              if (formkey.currentState!
+                                                  .validate()) {
+                                                setState(() {
+                                                  form_active = false;
+                                                });
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Colors.black26,
+                                                  duration: const Duration(
+                                                      seconds: 10),
+                                                  content: Text(
+                                                    "Please Wait while Loading .....",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ));
+                                                loginup(mobilenum, password_);
+                                              }
+                                            }
+                                          : null,
+                                      disabledColor: Colors.black12,
+                                      disabledTextColor: Colors.blueGrey,
                                       color: Colors.purple.shade200,
                                       splashColor: Colors.green,
                                     )),
@@ -359,7 +463,11 @@ class LoginFormValidationState extends State<LoginForm> {
         });
         addOrUpdateNote();
       } else {
+        setState(() {
+          form_active = true;
+        });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.black26,
           duration: const Duration(seconds: 6),
           content: Text(

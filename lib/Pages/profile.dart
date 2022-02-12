@@ -46,9 +46,12 @@ class profileValidationState extends State<profile> {
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool _hasBeenPressed = true;
+  bool form_active = true;
+  bool form_active1 = true;
   get prefixIcon => null;
   TextEditingController Mobilenum = TextEditingController();
   TextEditingController username_ = TextEditingController();
+  TextEditingController feed = TextEditingController();
   final String _content =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam ipsum, lobortis quis ultricies non, lacinia at justo.';
   String name = '';
@@ -68,38 +71,71 @@ class profileValidationState extends State<profile> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: TextFormField(
-                        controller: Mobilenum,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            prefixIcon: prefixIcon ?? Icon(Icons.phone),
-                            border: UnderlineInputBorder(),
-                            contentPadding: EdgeInsets.all(16),
-                            labelText: 'Mobile Number',
-                            hintText: 'Enter your Mobile Number'),
-                        validator: MultiValidator([
-                          RequiredValidator(errorText: "* Required"),
-                          MinLengthValidator(10,
-                              errorText:
-                                  "Mobile Number should be 10 characters"),
-                        ])),
+                    child: !form_active
+                        ? TextFormField(
+                            enabled: false,
+                            controller: Mobilenum,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                prefixIcon: prefixIcon ?? Icon(Icons.phone),
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.all(16),
+                                labelText: 'Mobile Number',
+                                hintText: 'Enter your Mobile Number'),
+                            validator: MultiValidator([
+                              RequiredValidator(errorText: "* Required"),
+                              MinLengthValidator(10,
+                                  errorText:
+                                      "Mobile Number should be 10 characters"),
+                            ]))
+                        : TextFormField(
+                            controller: Mobilenum,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                prefixIcon: prefixIcon ?? Icon(Icons.phone),
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.all(16),
+                                labelText: 'Mobile Number',
+                                hintText: 'Enter your Mobile Number'),
+                            validator: MultiValidator([
+                              RequiredValidator(errorText: "* Required"),
+                              MinLengthValidator(10,
+                                  errorText:
+                                      "Mobile Number should be 10 characters"),
+                            ])),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: TextFormField(
-                        controller: username_,
-                        decoration: InputDecoration(
-                            prefixIcon: prefixIcon ?? Icon(Icons.person),
-                            border: UnderlineInputBorder(),
-                            contentPadding: EdgeInsets.all(16),
-                            labelText: 'Name',
-                            hintText: 'Enter your Name'),
-                        validator: MultiValidator([
-                          RequiredValidator(errorText: "* Required"),
-                          MinLengthValidator(4,
-                              errorText:
-                                  "Username should be atleast 4 characters"),
-                        ])),
+                    child: !form_active
+                        ? TextFormField(
+                            enabled: false,
+                            controller: username_,
+                            decoration: InputDecoration(
+                                prefixIcon: prefixIcon ?? Icon(Icons.person),
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.all(16),
+                                labelText: 'Name',
+                                hintText: 'Enter your Name'),
+                            validator: MultiValidator([
+                              RequiredValidator(errorText: "* Required"),
+                              MinLengthValidator(4,
+                                  errorText:
+                                      "Username should be atleast 4 characters"),
+                            ]))
+                        : TextFormField(
+                            controller: username_,
+                            decoration: InputDecoration(
+                                prefixIcon: prefixIcon ?? Icon(Icons.person),
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.all(16),
+                                labelText: 'Name',
+                                hintText: 'Enter your Name'),
+                            validator: MultiValidator([
+                              RequiredValidator(errorText: "* Required"),
+                              MinLengthValidator(4,
+                                  errorText:
+                                      "Username should be atleast 4 characters"),
+                            ])),
                   ),
                 ],
               ),
@@ -108,15 +144,20 @@ class profileValidationState extends State<profile> {
               Center(
                 child: RaisedButton(
                     child: Text("Share"),
-                    onPressed: () {
-                      if (formkey.currentState!.validate()) {
-                        Share_Mob(
-                            details[details.length - 1].api_key,
-                            details[details.length - 1].api_secret,
-                            username_,
-                            Mobilenum);
-                      }
-                    }),
+                    onPressed: form_active
+                        ? () {
+                            if (formkey.currentState!.validate()) {
+                              setState(() {
+                                form_active = false;
+                              });
+                              Share_Mob(
+                                  details[details.length - 1].api_key,
+                                  details[details.length - 1].api_secret,
+                                  username_,
+                                  Mobilenum);
+                            }
+                          }
+                        : null),
               )
             ],
           );
@@ -391,38 +432,123 @@ class profileValidationState extends State<profile> {
                       ),
                     ),
                   ),
-                  Card(
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 8, 21, 8),
-                      child: Column(
-                        children: [
-                          Column(
-                            children: [
-                              SizedBox(
-                                height: 20,
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              scrollable: true,
+                              content: Form(
+                                autovalidate: true,
+                                key: formkey,
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 30),
+                                      child: Text("Hi " + name + '!'),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: !form_active1
+                                          ? TextFormField(
+                                              controller: feed,
+                                              maxLines: 2,
+                                              decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.comment_bank),
+                                                border: OutlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Send Feedback',
+                                                hintText: 'Type Something',
+                                              ),
+                                              validator: MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                                MinLengthValidator(4,
+                                                    errorText:
+                                                        "Username should be atleast 4 characters"),
+                                              ]))
+                                          : TextFormField(
+                                              controller: feed,
+                                              maxLines: 2,
+                                              decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.comment_bank),
+                                                border: OutlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Send Feedback',
+                                                hintText: 'Type Something',
+                                              ),
+                                              validator: MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                                MinLengthValidator(4,
+                                                    errorText:
+                                                        "Username should be atleast 4 characters"),
+                                              ])),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Icon(
-                                Icons.comment_bank,
-                                size: 22,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 7,
-                          ),
-                          Text(
-                            "Feeb Back",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18.0,
+                              actions: [
+                                Center(
+                                  child: RaisedButton(
+                                      child: Text("  SEND  "),
+                                      onPressed: form_active1
+                                          ? () {
+                                              if (formkey.currentState!
+                                                  .validate()) {
+                                                setState(() {
+                                                  form_active1 = false;
+                                                });
+
+                                                Navigator.pop(context);
+                                              }
+                                            }
+                                          : null),
+                                )
+                              ],
+                            );
+                          });
+                    },
+                    child: Card(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(25, 8, 21, 8),
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Icon(
+                                  Icons.comment_bank,
+                                  size: 22,
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                        ],
+                            SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              "Feeb Back",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -460,6 +586,7 @@ class profileValidationState extends State<profile> {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      Navigator.pop(context);
       Share.share(_content);
       print(await response.stream.bytesToString());
     } else {

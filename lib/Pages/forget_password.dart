@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
+import 'package:wc_form_validators/wc_form_validators.dart';
 
 class Forgetpass extends StatefulWidget {
   static const String routeName = "/Forgetpass";
@@ -17,7 +19,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool _hasBeenPressed = true;
   get prefixIcon => null;
-
+  var password = '';
   String? validatePassword(String value) {
     if (value.isEmpty) {
       return "* Required";
@@ -30,13 +32,22 @@ class ForgetpassValidationState extends State<Forgetpass> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+  }
+
+  @override
   Map Mapresponse = {};
   Map dataResponse = {};
   TextEditingController Mobilenum = TextEditingController();
 
   TextEditingController Otp = TextEditingController();
   TextEditingController password_ = TextEditingController();
+  TextEditingController password__ = TextEditingController();
   bool _passwordVisible = false;
+  bool form_active = true;
+  bool form_active1 = true;
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
@@ -62,13 +73,17 @@ class ForgetpassValidationState extends State<Forgetpass> {
                             },
                           )),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 60, 50, 0),
+                        padding: EdgeInsets.fromLTRB(
+                            0,
+                            MediaQuery.of(context).size.width / 6,
+                            MediaQuery.of(context).size.width / 5,
+                            0),
                         child: Text(
                           'Senbagam Paints',
                           style: GoogleFonts.raleway(
                             textStyle: TextStyle(
                                 color: Colors.black54,
-                                fontSize: 35,
+                                fontSize: 30,
                                 letterSpacing: .5),
                           ),
                         ),
@@ -79,7 +94,11 @@ class ForgetpassValidationState extends State<Forgetpass> {
                 FadeAnimation(
                   1.4,
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 100, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        0,
+                        MediaQuery.of(context).size.width / 15,
+                        MediaQuery.of(context).size.width / 6,
+                        0),
                     child: Text(
                       'FORGET PASSWORD',
                       style: GoogleFonts.raleway(
@@ -96,7 +115,11 @@ class ForgetpassValidationState extends State<Forgetpass> {
                     child: FadeAnimation(
                       1.4,
                       Card(
-                        margin: EdgeInsets.fromLTRB(25, 40, 25, 80),
+                        margin: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width / 13,
+                            MediaQuery.of(context).size.width / 8,
+                            MediaQuery.of(context).size.width / 13,
+                            0),
                         clipBehavior: Clip.antiAlias,
                         child: Form(
                           autovalidate: true,
@@ -107,25 +130,49 @@ class ForgetpassValidationState extends State<Forgetpass> {
                                 height: 20,
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                child: TextFormField(
-                                    controller: Mobilenum,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                        prefixIcon:
-                                            prefixIcon ?? Icon(Icons.phone),
-                                        border: UnderlineInputBorder(),
-                                        contentPadding: EdgeInsets.all(16),
-                                        labelText: 'Mobile Number',
-                                        hintText: 'Enter your Mobile Number'),
-                                    validator: MultiValidator([
-                                      RequiredValidator(
-                                          errorText: "* Required"),
-                                      MinLengthValidator(10,
-                                          errorText:
-                                              "Mobile Number should be 10 characters"),
-                                    ])),
+                                padding: EdgeInsets.fromLTRB(
+                                    MediaQuery.of(context).size.width / 15,
+                                    0,
+                                    MediaQuery.of(context).size.width / 15,
+                                    0),
+                                child: !form_active
+                                    ? TextFormField(
+                                        enabled: false,
+                                        controller: Mobilenum,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                            prefixIcon:
+                                                prefixIcon ?? Icon(Icons.phone),
+                                            border: UnderlineInputBorder(),
+                                            contentPadding: EdgeInsets.all(16),
+                                            labelText: 'Mobile Number',
+                                            hintText:
+                                                'Enter your Mobile Number'),
+                                        validator: MultiValidator([
+                                          RequiredValidator(
+                                              errorText: "* Required"),
+                                          MinLengthValidator(10,
+                                              errorText:
+                                                  "Mobile Number should be 10 characters"),
+                                        ]))
+                                    : TextFormField(
+                                        controller: Mobilenum,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                            prefixIcon:
+                                                prefixIcon ?? Icon(Icons.phone),
+                                            border: UnderlineInputBorder(),
+                                            contentPadding: EdgeInsets.all(16),
+                                            labelText: 'Mobile Number',
+                                            hintText:
+                                                'Enter your Mobile Number'),
+                                        validator: MultiValidator([
+                                          RequiredValidator(
+                                              errorText: "* Required"),
+                                          MinLengthValidator(10,
+                                              errorText:
+                                                  "Mobile Number should be 10 characters"),
+                                        ])),
                               ),
                               SizedBox(
                                 height: 20,
@@ -133,17 +180,24 @@ class ForgetpassValidationState extends State<Forgetpass> {
                               FadeAnimation(
                                   1.4,
                                   FlatButton(
-                                    minWidth: 170,
+                                    minWidth:
+                                        MediaQuery.of(context).size.width / 2,
                                     child: Text('SEND OTP'),
-                                    onPressed: () {
-                                      if (formkey.currentState!.validate()) {
-                                        send_otp(Mobilenum);
-                                        setState(() {
-                                          _hasBeenPressed = false;
-                                        });
-                                      }
-                                      ;
-                                    },
+                                    onPressed: form_active
+                                        ? () {
+                                            if (formkey.currentState!
+                                                .validate()) {
+                                              send_otp(Mobilenum);
+                                              setState(() {
+                                                _hasBeenPressed = false;
+                                                form_active = false;
+                                              });
+                                            }
+                                            ;
+                                          }
+                                        : null,
+                                    disabledColor: Colors.black12,
+                                    disabledTextColor: Colors.blueGrey,
                                     color: Colors.purple.shade200,
                                     splashColor: Colors.green,
                                   )),
@@ -183,70 +237,213 @@ class ForgetpassValidationState extends State<Forgetpass> {
       return Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: TextFormField(
-                controller: Otp,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    prefixIcon: prefixIcon ?? Icon(Icons.format_list_numbered),
-                    border: UnderlineInputBorder(),
-                    contentPadding: EdgeInsets.all(16),
-                    labelText: 'Enter OTP',
-                    hintText: 'Enter your Generated OTP'),
-                validator: MultiValidator([
-                  RequiredValidator(errorText: "* Required"),
-                  MinLengthValidator(4,
-                      errorText: "OTP should be atleast 4 characters"),
-                ])),
+            padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 15,
+                0, MediaQuery.of(context).size.width / 15, 0),
+            child: !form_active1
+                ? TextFormField(
+                    enabled: false,
+                    controller: Otp,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        prefixIcon:
+                            prefixIcon ?? Icon(Icons.format_list_numbered),
+                        border: UnderlineInputBorder(),
+                        contentPadding: EdgeInsets.all(16),
+                        labelText: 'Enter OTP',
+                        hintText: 'Enter your Generated OTP'),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: "* Required"),
+                      MinLengthValidator(4,
+                          errorText: "OTP should be atleast 4 characters"),
+                    ]))
+                : TextFormField(
+                    controller: Otp,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        prefixIcon:
+                            prefixIcon ?? Icon(Icons.format_list_numbered),
+                        border: UnderlineInputBorder(),
+                        contentPadding: EdgeInsets.all(16),
+                        labelText: 'Enter OTP',
+                        hintText: 'Enter your Generated OTP'),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: "* Required"),
+                      MinLengthValidator(4,
+                          errorText: "OTP should be atleast 4 characters"),
+                    ])),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 0),
-            child: TextFormField(
-                controller: password_,
-                obscureText: !_passwordVisible,
-                decoration: InputDecoration(
-                    prefixIcon: prefixIcon ??
-                        Icon(
-                          Icons.password_sharp,
-                          color: Colors.purple.shade200,
+            padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 15,
+                0, MediaQuery.of(context).size.width / 15, 0),
+            child: !form_active1
+                ? TextFormField(
+                    enabled: false,
+                    controller: password_,
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                        prefixIcon: prefixIcon ?? Icon(Icons.password_sharp),
+                        border: UnderlineInputBorder(),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          child: Icon(_passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
                         ),
-                    border: UnderlineInputBorder(),
-                    labelText: 'New Password',
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                      child: Icon(
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Colors.purple.shade200,
-                      ),
-                    ),
-                    contentPadding: EdgeInsets.all(16),
-                    fillColor: Colors.black12,
-                    hintText: 'Enter secure password'),
-                validator: MultiValidator([
-                  RequiredValidator(errorText: "* Required"),
-                  MinLengthValidator(4,
-                      errorText: "Password should be atleast 6 characters"),
-                  MaxLengthValidator(15,
-                      errorText:
-                          "Password should not be greater than 15 characters")
-                ])),
+                        contentPadding: EdgeInsets.all(16),
+                        labelText: 'Password',
+                        hintText: 'Enter secure password'),
+                    validator: Validators.compose([
+                      Validators.patternString(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                          'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                      MultiValidator([
+                        RequiredValidator(errorText: "* Required"),
+                        MinLengthValidator(4,
+                            errorText:
+                                "Password should be atleast 6 characters"),
+                        MaxLengthValidator(15,
+                            errorText:
+                                "Password should not be greater than 15 characters")
+                      ])
+                    ]),
+                  )
+                : TextFormField(
+                    controller: password_,
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                        prefixIcon: prefixIcon ?? Icon(Icons.password_sharp),
+                        border: UnderlineInputBorder(),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          child: Icon(_passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                        contentPadding: EdgeInsets.all(16),
+                        labelText: 'Password',
+                        hintText: 'Enter secure password'),
+                    onChanged: (val) => password = val,
+                    validator: Validators.compose([
+                      Validators.patternString(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                          'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                      MultiValidator([
+                        RequiredValidator(errorText: "* Required"),
+                        MinLengthValidator(4,
+                            errorText:
+                                "Password should be atleast 6 characters"),
+                        MaxLengthValidator(15,
+                            errorText:
+                                "Password should not be greater than 15 characters")
+                      ])
+                    ]),
+                  ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 15,
+                0, MediaQuery.of(context).size.width / 15, 0),
+            child: !form_active1
+                ? TextFormField(
+                    enabled: false,
+                    controller: password__,
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                        prefixIcon: prefixIcon ?? Icon(Icons.password_sharp),
+                        border: UnderlineInputBorder(),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          child: Icon(_passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                        contentPadding: EdgeInsets.all(16),
+                        labelText: 'Confirm Password',
+                        hintText: 'Enter secure password again'),
+                    validator: Validators.compose([
+                      Validators.patternString(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                          'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                      MultiValidator([
+                        RequiredValidator(errorText: "* Required"),
+                        MinLengthValidator(4,
+                            errorText:
+                                "Password should be atleast 6 characters"),
+                        MaxLengthValidator(15,
+                            errorText:
+                                "Password should not be greater than 15 characters")
+                      ])
+                    ]),
+                  )
+                : TextFormField(
+                    controller: password__,
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                        prefixIcon: prefixIcon ?? Icon(Icons.password_sharp),
+                        border: UnderlineInputBorder(),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          child: Icon(_passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                        contentPadding: EdgeInsets.all(16),
+                        labelText: 'Confirm Password',
+                        hintText: 'Enter secure password again'),
+                    validator: (val) =>
+                        MatchValidator(errorText: 'passwords do not match')
+                            .validateMatch(val!, password),
+                    //Validators.compose([
+                    //     Validators.patternString(
+                    //         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                    //         'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                    //     MultiValidator([
+                    //       RequiredValidator(
+                    //           errorText: "* Required"),
+                    //       MinLengthValidator(4,
+                    //           errorText:
+                    //               "Password should be atleast 6 characters"),
+                    //       MaxLengthValidator(15,
+                    //           errorText:
+                    //               "Password should not be greater than 15 characters")
+                    //     ])
+                    //   ]),
+                  ),
           ),
           SizedBox(
             height: 10,
           ),
           FlatButton(
-            minWidth: 170,
+            minWidth: MediaQuery.of(context).size.width / 2,
             child: Text('RESET PASSWORD'),
-            onPressed: () {
-              reset_pass(Otp, password_);
-            },
+            onPressed: form_active1
+                ? () {
+                    if (formkey.currentState!.validate()) {
+                      setState(() {
+                        form_active1 = false;
+                      });
+                      reset_pass(Otp, password_);
+                    }
+                    ;
+                  }
+                : null,
+            disabledColor: Colors.black12,
+            disabledTextColor: Colors.blueGrey,
             color: Colors.purple.shade200,
             splashColor: Colors.green,
           ),
@@ -305,12 +502,14 @@ class ForgetpassValidationState extends State<Forgetpass> {
       Mapresponse = await json.decode(res);
       if (Mapresponse['message']['message'] == 'success') {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.black26,
           content: Text(
             "Password has changed Successfully ",
             style: TextStyle(color: Colors.white),
           ),
         ));
+        Navigator.pop(context);
       }
       print(await response.stream.bytesToString());
     } else {

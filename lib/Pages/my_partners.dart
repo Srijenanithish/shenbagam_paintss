@@ -49,7 +49,7 @@ class my_partnersValidationState extends State<my_partners> {
     var request = http.Request(
         'GET',
         Uri.parse(
-            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.get_referral_tree'));
+            'http://test_senbagam.aerele.in/app/referral-tree/view/tree'));
 
     request.headers.addAll(headers);
 
@@ -58,13 +58,12 @@ class my_partnersValidationState extends State<my_partners> {
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
       partner_response = await json.decode(res);
-      print(partner_response['message']);
 
       setState(() {
         got = get_entry(partner_response['message'], "parent");
       });
 
-      //print(await response.stream.bytesToString());
+      // print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
     }
@@ -78,13 +77,14 @@ class my_partnersValidationState extends State<my_partners> {
     for (var i = 0; i < data[key].length; i++) {
       String temp_title = data[key][i];
       List<Entry> temp = get_entry(data, data[key][i]);
-      if (temp[0].title != "null") {
+      print(key);
+      if (temp.length != 0 && temp[0].title != "null") {
         ret_data.add(Entry(temp_title, temp));
       } else {
-        ret_data.add(Entry(temp_title, [Entry("No Referral Found")]));
+        ret_data.add(Entry(temp_title));
       }
     }
-    return ret_data;
+    return ret_data.length > 0 ? ret_data : [Entry("No Referral Found")];
   }
 
   parse_entry(data) {
@@ -96,7 +96,6 @@ class my_partnersValidationState extends State<my_partners> {
 
   @override
   Widget build(BuildContext context) {
-    print(data);
     return Scaffold(
       body: Column(
         children: [

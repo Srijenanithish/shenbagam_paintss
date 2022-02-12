@@ -29,8 +29,7 @@ class walletValidationState extends State<wallet> {
 
   Future refreshNote() async {
     this.details = await NotesDatabase.instance.readAllNotes();
-    print(details[details.length - 1].api_key);
-    print(details[details.length - 1].api_secret);
+
     wallet_call(details[details.length - 1].api_key,
         details[details.length - 1].api_secret);
   }
@@ -299,17 +298,20 @@ class walletValidationState extends State<wallet> {
                                             )
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Item : ',
-                                              style: TextStyle(fontSize: 19),
-                                            ),
-                                            Text(
-                                              order_details[index]['item'],
-                                              style: TextStyle(fontSize: 17),
-                                            )
-                                          ],
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'Item : ',
+                                                style: TextStyle(fontSize: 19),
+                                              ),
+                                              Text(
+                                                order_details[index]['item'],
+                                                style: TextStyle(fontSize: 17),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                         Row(
                                           children: [
@@ -499,9 +501,7 @@ class walletValidationState extends State<wallet> {
         invoice_details = leger_response['message']['sales_invoice'];
         balance = (leger_response['message']['balance']).toString();
       });
-      print(leger_response['message']);
-      print(order_details);
-      print(invoice_details);
+
       // print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);

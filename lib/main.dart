@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(status);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
 
@@ -92,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    print(widget.status);
+
     Timer(
         Duration(seconds: 4),
         widget.status == 'true'
@@ -106,6 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Container(
         color: Colors.white,
-        child: Image.asset("assets/login/Splash_screen.gif"));
+        child: Image.asset("assets/login/Splash_screen1.gif"));
   }
 }

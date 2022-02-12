@@ -739,7 +739,7 @@ class _ExplorePageState extends State<ExplorePage>
         "PU1-20",
         false),
   ];
-
+  bool clear = false;
   List<ProductModel> selectedProducts = [];
   List<String> selected_items = [];
 
@@ -772,30 +772,33 @@ class _ExplorePageState extends State<ExplorePage>
                   ),
                   FadeAnimation(
                       1.4,
-                      Column(
-                        children: [
-                          Icon(Icons.border_right),
-                          InkWell(
-                            onTap: () {
-                              // selected_items.clear();
-                              // for (int i = 0;
-                              //     i < selectedProducts.length;
-                              //     i++) {
-                              //   setState(() {
-                              //     selected_items.add(selectedProducts[i]
-                              //         .color_type
-                              //         .toString());
-                              //   });
-                              // }
-                              print(selected_items);
-                              getquotation(
-                                  selected_items,
-                                  details[details.length - 1].api_key,
-                                  details[details.length - 1].api_secret);
-                            },
-                            child: Text("Get Quotation"),
-                          ),
-                        ],
+                      InkWell(
+                        onTap: () {
+                          if (selected_items.length == 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Colors.black26,
+                              content: Text(
+                                "Select Something to get Quotation .",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ));
+                          } else {
+                            setState(() {
+                              clear = true;
+                            });
+
+                            getquotation(
+                                selected_items,
+                                details[details.length - 1].api_key,
+                                details[details.length - 1].api_secret);
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            Icon(Icons.check_outlined),
+                            Text("Get Quotation"),
+                          ],
+                        ),
                       )),
                 ],
               ),
@@ -870,17 +873,24 @@ class _ExplorePageState extends State<ExplorePage>
                                       fit: BoxFit.cover),
                                 ),
                                 Text(products1[index].code),
-                                Container(
-                                  child: products1[index].isSelected
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green[700],
-                                        )
-                                      : Icon(
+                                clear == true
+                                    ? Container(
+                                        child: Icon(
                                           Icons.check_circle_outline,
                                           color: Colors.grey,
                                         ),
-                                ),
+                                      )
+                                    : Container(
+                                        child: products1[index].isSelected
+                                            ? Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green[700],
+                                              )
+                                            : Icon(
+                                                Icons.check_circle_outline,
+                                                color: Colors.grey,
+                                              ),
+                                      ),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -962,17 +972,24 @@ class _ExplorePageState extends State<ExplorePage>
                                       fit: BoxFit.cover),
                                 ),
                                 Text(products2[index].code),
-                                Container(
-                                  child: products2[index].isSelected
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green[700],
-                                        )
-                                      : Icon(
+                                clear == true
+                                    ? Container(
+                                        child: Icon(
                                           Icons.check_circle_outline,
                                           color: Colors.grey,
                                         ),
-                                ),
+                                      )
+                                    : Container(
+                                        child: products2[index].isSelected
+                                            ? Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green[700],
+                                              )
+                                            : Icon(
+                                                Icons.check_circle_outline,
+                                                color: Colors.grey,
+                                              ),
+                                      ),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -1053,18 +1070,24 @@ class _ExplorePageState extends State<ExplorePage>
                                   child: Image.network(products3[index].name,
                                       fit: BoxFit.cover),
                                 ),
-                                Text(products3[index].code),
-                                Container(
-                                  child: products3[index].isSelected
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green[700],
-                                        )
-                                      : Icon(
+                                clear == true
+                                    ? Container(
+                                        child: Icon(
                                           Icons.check_circle_outline,
                                           color: Colors.grey,
                                         ),
-                                ),
+                                      )
+                                    : Container(
+                                        child: products3[index].isSelected
+                                            ? Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green[700],
+                                              )
+                                            : Icon(
+                                                Icons.check_circle_outline,
+                                                color: Colors.grey,
+                                              ),
+                                      ),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -1146,17 +1169,24 @@ class _ExplorePageState extends State<ExplorePage>
                                       fit: BoxFit.cover),
                                 ),
                                 Text(products4[index].code),
-                                Container(
-                                  child: products4[index].isSelected
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green[700],
-                                        )
-                                      : Icon(
+                                clear == true
+                                    ? Container(
+                                        child: Icon(
                                           Icons.check_circle_outline,
                                           color: Colors.grey,
                                         ),
-                                ),
+                                      )
+                                    : Container(
+                                        child: products4[index].isSelected
+                                            ? Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green[700],
+                                              )
+                                            : Icon(
+                                                Icons.check_circle_outline,
+                                                color: Colors.grey,
+                                              ),
+                                      ),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -1238,17 +1268,24 @@ class _ExplorePageState extends State<ExplorePage>
                                       fit: BoxFit.cover),
                                 ),
                                 Text(products5[index].code),
-                                Container(
-                                  child: products5[index].isSelected
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green[700],
-                                        )
-                                      : Icon(
+                                clear == true
+                                    ? Container(
+                                        child: Icon(
                                           Icons.check_circle_outline,
                                           color: Colors.grey,
                                         ),
-                                ),
+                                      )
+                                    : Container(
+                                        child: products5[index].isSelected
+                                            ? Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green[700],
+                                              )
+                                            : Icon(
+                                                Icons.check_circle_outline,
+                                                color: Colors.grey,
+                                              ),
+                                      ),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -1330,17 +1367,24 @@ class _ExplorePageState extends State<ExplorePage>
                                       fit: BoxFit.cover),
                                 ),
                                 Text(products6[index].code),
-                                Container(
-                                  child: products6[index].isSelected
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green[700],
-                                        )
-                                      : Icon(
+                                clear == true
+                                    ? Container(
+                                        child: Icon(
                                           Icons.check_circle_outline,
                                           color: Colors.grey,
                                         ),
-                                ),
+                                      )
+                                    : Container(
+                                        child: products6[index].isSelected
+                                            ? Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green[700],
+                                              )
+                                            : Icon(
+                                                Icons.check_circle_outline,
+                                                color: Colors.grey,
+                                              ),
+                                      ),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -1386,11 +1430,19 @@ class _ExplorePageState extends State<ExplorePage>
       Mapresponse = await json.decode(res);
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
         backgroundColor: Colors.black26,
         content: Text(
           Mapresponse['message']['message'],
           style: TextStyle(color: Colors.white),
         ),
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 200,
+            right: 20,
+            left: 20),
       ));
 
       //  print(await response.stream.bytesToString());

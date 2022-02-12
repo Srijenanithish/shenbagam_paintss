@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:shenbagam_paints/Pages/login_form.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +23,7 @@ class SignupValidationState extends State<SignUp> {
   @override
   void initState() {
     dateinput.text = ""; //set the initial value of text field
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
   }
 
@@ -48,9 +51,11 @@ class SignupValidationState extends State<SignUp> {
 
   @override
   bool button_active = true;
+  bool form_active = true;
   Map Mapresponse_ref = {};
   Map Mapresponse = {};
   List dataResponse = [];
+  var password = '';
   TextEditingController username_ = TextEditingController();
   TextEditingController dateinput = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -61,6 +66,7 @@ class SignupValidationState extends State<SignUp> {
   TextEditingController District = TextEditingController();
   TextEditingController Pincode = TextEditingController();
   TextEditingController password_ = TextEditingController();
+  TextEditingController password__ = TextEditingController();
   TextEditingController gstn = TextEditingController();
   TextEditingController _controller = TextEditingController();
   bool _passwordVisible = false;
@@ -90,8 +96,11 @@ class SignupValidationState extends State<SignUp> {
                             Row(
                               children: [
                                 Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 60, 0, 0),
+                                    padding: EdgeInsets.fromLTRB(
+                                        0,
+                                        MediaQuery.of(context).size.width / 6,
+                                        0,
+                                        0),
                                     child: new IconButton(
                                       icon: new Icon(Icons.arrow_back),
                                       onPressed: () {
@@ -99,14 +108,17 @@ class SignupValidationState extends State<SignUp> {
                                       },
                                     )),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 60, 50, 0),
+                                  padding: EdgeInsets.fromLTRB(
+                                      0,
+                                      MediaQuery.of(context).size.width / 6,
+                                      MediaQuery.of(context).size.width / 5,
+                                      0),
                                   child: Text(
                                     'Senbagam Paints',
                                     style: GoogleFonts.raleway(
                                       textStyle: TextStyle(
                                           color: Colors.black54,
-                                          fontSize: 35,
+                                          fontSize: 30,
                                           letterSpacing: .5),
                                     ),
                                   ),
@@ -117,7 +129,11 @@ class SignupValidationState extends State<SignUp> {
                           FadeAnimation(
                             1.4,
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 170, 0),
+                              padding: EdgeInsets.fromLTRB(
+                                  0,
+                                  MediaQuery.of(context).size.width / 15,
+                                  MediaQuery.of(context).size.width / 2.12,
+                                  0),
                               child: Text(
                                 'SIGN UP',
                                 style: GoogleFonts.raleway(
@@ -140,173 +156,378 @@ class SignupValidationState extends State<SignUp> {
                                     height: 20,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 20, 40, 0),
-                                    child: TextFormField(
-                                        controller: username_,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.person),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Name',
-                                            hintText: 'Enter your Name'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: username_,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.person),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Name',
+                                                hintText: 'Enter your Name'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ]))
+                                        : TextFormField(
+                                            controller: username_,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.person),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Name',
+                                                hintText: 'Enter your Name'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ])),
                                   ),
                                   Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          40, 10, 40, 0),
-                                      child: TextFormField(
-                                        controller: dateinput,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.calendar_today),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'DOB',
-                                            hintText:
-                                                'Enter your DOB'), //set it true, so that user will not able to edit text
-                                        onTap: () async {
-                                          DateTime? pickedDate =
-                                              await showDatePicker(
-                                                  context: context,
-                                                  initialDate: DateTime.now(),
-                                                  firstDate: DateTime(
-                                                      1950), //DateTime.now() - not to allow to choose before today.
-                                                  lastDate: DateTime.now());
+                                      padding: EdgeInsets.fromLTRB(
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          0),
+                                      child: !form_active
+                                          ? TextFormField(
+                                              enabled: false,
+                                              controller: dateinput,
+                                              decoration: InputDecoration(
+                                                  prefixIcon: prefixIcon ??
+                                                      Icon(
+                                                          Icons.calendar_today),
+                                                  border:
+                                                      UnderlineInputBorder(),
+                                                  contentPadding:
+                                                      EdgeInsets.all(16),
+                                                  labelText: 'DOB',
+                                                  hintText:
+                                                      'Enter your DOB'), //set it true, so that user will not able to edit text
+                                              onTap: () async {
+                                                DateTime? pickedDate =
+                                                    await showDatePicker(
+                                                        context: context,
+                                                        initialDate:
+                                                            DateTime.now(),
+                                                        firstDate: DateTime(
+                                                            1950), //DateTime.now() - not to allow to choose before today.
+                                                        lastDate:
+                                                            DateTime.now());
 
-                                          if (pickedDate != null) {
-                                            print(
-                                                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                            String formattedDate =
-                                                DateFormat('yyyy-MM-dd')
-                                                    .format(pickedDate);
-                                            print(
-                                                formattedDate); //formatted date output using intl package =>  2021-03-16
-                                            //you can implement different kind of Date Format here according to your requirement
+                                                if (pickedDate != null) {
+                                                  print(
+                                                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                                  String formattedDate =
+                                                      DateFormat('yyyy-MM-dd')
+                                                          .format(pickedDate);
+                                                  print(
+                                                      formattedDate); //formatted date output using intl package =>  2021-03-16
+                                                  //you can implement different kind of Date Format here according to your requirement
 
-                                            setState(() {
-                                              dateinput.text =
-                                                  formattedDate; //set output date to TextField value.
-                                            });
-                                          } else {
-                                            print("Date is not selected");
-                                          }
-                                        },
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                        ]),
-                                      )),
+                                                  setState(() {
+                                                    dateinput.text =
+                                                        formattedDate; //set output date to TextField value.
+                                                  });
+                                                } else {
+                                                  print("Date is not selected");
+                                                }
+                                              },
+                                              validator: MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                              ]),
+                                            )
+                                          : TextFormField(
+                                              controller: dateinput,
+                                              decoration: InputDecoration(
+                                                  prefixIcon: prefixIcon ??
+                                                      Icon(
+                                                          Icons.calendar_today),
+                                                  border:
+                                                      UnderlineInputBorder(),
+                                                  contentPadding:
+                                                      EdgeInsets.all(16),
+                                                  labelText: 'DOB',
+                                                  hintText:
+                                                      'Enter your DOB'), //set it true, so that user will not able to edit text
+                                              onTap: () async {
+                                                DateTime? pickedDate =
+                                                    await showDatePicker(
+                                                        context: context,
+                                                        initialDate:
+                                                            DateTime.now(),
+                                                        firstDate: DateTime(
+                                                            1950), //DateTime.now() - not to allow to choose before today.
+                                                        lastDate:
+                                                            DateTime.now());
+
+                                                if (pickedDate != null) {
+                                                  print(
+                                                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                                  String formattedDate =
+                                                      DateFormat('yyyy-MM-dd')
+                                                          .format(pickedDate);
+                                                  print(
+                                                      formattedDate); //formatted date output using intl package =>  2021-03-16
+                                                  //you can implement different kind of Date Format here according to your requirement
+
+                                                  setState(() {
+                                                    dateinput.text =
+                                                        formattedDate; //set output date to TextField value.
+                                                  });
+                                                } else {
+                                                  print("Date is not selected");
+                                                }
+                                              },
+                                              validator: MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                              ]),
+                                            )),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                        controller: Mobilenum,
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            prefixIcon:
-                                                prefixIcon ?? Icon(Icons.phone),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Mobile Number',
-                                            hintText:
-                                                'Enter your Mobile Number'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(10,
-                                              errorText:
-                                                  "Mobile Number should be 10 characters"),
-                                        ])),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: Mobilenum,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.phone),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Mobile Number',
+                                                hintText:
+                                                    'Enter your Mobile Number'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(10,
+                                                  errorText:
+                                                      "Mobile Number should be 10 characters"),
+                                            ]))
+                                        : TextFormField(
+                                            controller: Mobilenum,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.phone),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Mobile Number',
+                                                hintText:
+                                                    'Enter your Mobile Number'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(10,
+                                                  errorText:
+                                                      "Mobile Number should be 10 characters"),
+                                            ])),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                        controller: email,
-                                        decoration: InputDecoration(
-                                            prefixIcon:
-                                                prefixIcon ?? Icon(Icons.email),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Email',
-                                            hintText: 'Enter your Email ID'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                        ])),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: email,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.email),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Email',
+                                                hintText:
+                                                    'Enter your Email ID'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                            ]))
+                                        : TextFormField(
+                                            controller: email,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.email),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Email',
+                                                hintText:
+                                                    'Enter your Email ID'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                            ])),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                        controller: Address,
-                                        maxLines: 2,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.landscape),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Address',
-                                            hintText: 'Enter your Address'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: Address,
+                                            maxLines: 2,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.landscape),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Address',
+                                                hintText: 'Enter your Address'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ]))
+                                        : TextFormField(
+                                            controller: Address,
+                                            maxLines: 2,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.landscape),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Address',
+                                                hintText: 'Enter your Address'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ])),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                        controller: City,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.location_city),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'City',
-                                            hintText: 'Enter your City'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: City,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.location_city),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'City',
+                                                hintText: 'Enter your City'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ]))
+                                        : TextFormField(
+                                            controller: City,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.location_city),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'City',
+                                                hintText: 'Enter your City'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ])),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                        controller: District,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.pin_drop),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'District',
-                                            hintText: 'Enter your District'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: District,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.pin_drop),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'District',
+                                                hintText:
+                                                    'Enter your District'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ]))
+                                        : TextFormField(
+                                            controller: District,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.pin_drop),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'District',
+                                                hintText:
+                                                    'Enter your District'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ])),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
                                     child: FlatButton(
                                       disabledColor: Colors.black12,
                                       disabledTextColor: Colors.blueGrey,
@@ -333,38 +554,16 @@ class SignupValidationState extends State<SignUp> {
                                     ),
                                   ),
                                   Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          40, 10, 40, 0),
-                                      child: !button_active
+                                      padding: EdgeInsets.fromLTRB(
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          0),
+                                      child: button_active
                                           ? TextField(
-                                              controller: _controller,
-                                              decoration: InputDecoration(
-                                                prefixIcon: prefixIcon ??
-                                                    Icon(Icons.person),
-                                                labelText: 'Referred by ',
-                                                suffixIcon:
-                                                    PopupMenuButton<String>(
-                                                  icon: const Icon(
-                                                      Icons.arrow_drop_down),
-                                                  onSelected: (String value) {
-                                                    _controller.text = value;
-                                                  },
-                                                  itemBuilder:
-                                                      (BuildContext context) {
-                                                    return items.map<
-                                                            PopupMenuItem<
-                                                                String>>(
-                                                        (String value) {
-                                                      return new PopupMenuItem(
-                                                          child:
-                                                              new Text(value),
-                                                          value: value);
-                                                    }).toList();
-                                                  },
-                                                ),
-                                              ),
-                                            )
-                                          : TextField(
                                               enabled: false,
                                               controller: _controller,
                                               decoration: InputDecoration(
@@ -392,33 +591,126 @@ class SignupValidationState extends State<SignUp> {
                                                   },
                                                 ),
                                               ),
-                                            )),
+                                            )
+                                          : !form_active
+                                              ? TextField(
+                                                  enabled: false,
+                                                  controller: _controller,
+                                                  decoration: InputDecoration(
+                                                    prefixIcon: prefixIcon ??
+                                                        Icon(Icons.person),
+                                                    labelText: 'Referred by ',
+                                                    suffixIcon:
+                                                        PopupMenuButton<String>(
+                                                      icon: const Icon(Icons
+                                                          .arrow_drop_down),
+                                                      onSelected:
+                                                          (String value) {
+                                                        _controller.text =
+                                                            value;
+                                                      },
+                                                      itemBuilder: (BuildContext
+                                                          context) {
+                                                        return items.map<
+                                                                PopupMenuItem<
+                                                                    String>>(
+                                                            (String value) {
+                                                          return new PopupMenuItem(
+                                                              child: new Text(
+                                                                  value),
+                                                              value: value);
+                                                        }).toList();
+                                                      },
+                                                    ),
+                                                  ),
+                                                )
+                                              : TextField(
+                                                  controller: _controller,
+                                                  decoration: InputDecoration(
+                                                    prefixIcon: prefixIcon ??
+                                                        Icon(Icons.person),
+                                                    labelText: 'Referred by ',
+                                                    suffixIcon:
+                                                        PopupMenuButton<String>(
+                                                      icon: const Icon(Icons
+                                                          .arrow_drop_down),
+                                                      onSelected:
+                                                          (String value) {
+                                                        _controller.text =
+                                                            value;
+                                                      },
+                                                      itemBuilder: (BuildContext
+                                                          context) {
+                                                        return items.map<
+                                                                PopupMenuItem<
+                                                                    String>>(
+                                                            (String value) {
+                                                          return new PopupMenuItem(
+                                                              child: new Text(
+                                                                  value),
+                                                              value: value);
+                                                        }).toList();
+                                                      },
+                                                    ),
+                                                  ),
+                                                )),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                        controller: gstn,
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            prefixIcon: prefixIcon ??
-                                                Icon(Icons.confirmation_number),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'GSTIN',
-                                            hintText: 'Enter your GSTIN'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Username should be atleast 4 characters"),
-                                        ])),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: gstn,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons
+                                                        .confirmation_number),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'GSTIN',
+                                                hintText: 'Enter your GSTIN'),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ]))
+                                        : TextFormField(
+                                            controller: gstn,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons
+                                                        .confirmation_number),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'GSTIN',
+                                                hintText: 'Enter your GSTIN'),
+                                            validator: MultiValidator([
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ])),
                                   ),
                                   Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          40, 10, 40, 0),
-                                      child: button_active
+                                      padding: EdgeInsets.fromLTRB(
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          0),
+                                      child: !form_active
                                           ? TextFormField(
+                                              enabled: false,
                                               controller: Pincode,
                                               keyboardType:
                                                   TextInputType.number,
@@ -461,82 +753,250 @@ class SignupValidationState extends State<SignUp> {
                                                         "Username should be atleast 6 characters"),
                                               ]))),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        40, 10, 40, 0),
-                                    child: TextFormField(
-                                      controller: password_,
-                                      obscureText: !_passwordVisible,
-                                      decoration: InputDecoration(
-                                          prefixIcon: prefixIcon ??
-                                              Icon(Icons.password_sharp),
-                                          border: UnderlineInputBorder(),
-                                          suffixIcon: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _passwordVisible =
-                                                    !_passwordVisible;
-                                              });
-                                            },
-                                            child: Icon(_passwordVisible
-                                                ? Icons.visibility
-                                                : Icons.visibility_off),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: password_,
+                                            obscureText: !_passwordVisible,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.password_sharp),
+                                                border: UnderlineInputBorder(),
+                                                suffixIcon: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _passwordVisible =
+                                                          !_passwordVisible;
+                                                    });
+                                                  },
+                                                  child: Icon(_passwordVisible
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off),
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Password',
+                                                hintText:
+                                                    'Enter secure password'),
+                                            validator: Validators.compose([
+                                              Validators.patternString(
+                                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                                                  'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                                              MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                                MinLengthValidator(4,
+                                                    errorText:
+                                                        "Password should be atleast 6 characters"),
+                                                MaxLengthValidator(15,
+                                                    errorText:
+                                                        "Password should not be greater than 15 characters")
+                                              ])
+                                            ]),
+                                          )
+                                        : TextFormField(
+                                            controller: password_,
+                                            obscureText: !_passwordVisible,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.password_sharp),
+                                                border: UnderlineInputBorder(),
+                                                suffixIcon: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _passwordVisible =
+                                                          !_passwordVisible;
+                                                    });
+                                                  },
+                                                  child: Icon(_passwordVisible
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off),
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Password',
+                                                hintText:
+                                                    'Enter secure password'),
+                                            onChanged: (val) => password = val,
+                                            validator: Validators.compose([
+                                              Validators.patternString(
+                                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                                                  'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                                              MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                                MinLengthValidator(4,
+                                                    errorText:
+                                                        "Password should be atleast 6 characters"),
+                                                MaxLengthValidator(15,
+                                                    errorText:
+                                                        "Password should not be greater than 15 characters")
+                                              ])
+                                            ]),
                                           ),
-                                          contentPadding: EdgeInsets.all(16),
-                                          labelText: 'Password',
-                                          hintText: 'Enter secure password'),
-                                      validator: Validators.compose([
-                                        Validators.patternString(
-                                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
-                                            'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
-                                        MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(4,
-                                              errorText:
-                                                  "Password should be atleast 6 characters"),
-                                          MaxLengthValidator(15,
-                                              errorText:
-                                                  "Password should not be greater than 15 characters")
-                                        ])
-                                      ]),
-                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 15,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: password__,
+                                            obscureText: !_passwordVisible,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.password_sharp),
+                                                border: UnderlineInputBorder(),
+                                                suffixIcon: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _passwordVisible =
+                                                          !_passwordVisible;
+                                                    });
+                                                  },
+                                                  child: Icon(_passwordVisible
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off),
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Confirm Password',
+                                                hintText:
+                                                    'Enter secure password again'),
+                                            validator: Validators.compose([
+                                              Validators.patternString(
+                                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                                                  'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                                              MultiValidator([
+                                                RequiredValidator(
+                                                    errorText: "* Required"),
+                                                MinLengthValidator(4,
+                                                    errorText:
+                                                        "Password should be atleast 6 characters"),
+                                                MaxLengthValidator(15,
+                                                    errorText:
+                                                        "Password should not be greater than 15 characters")
+                                              ])
+                                            ]),
+                                          )
+                                        : TextFormField(
+                                            controller: password__,
+                                            obscureText: !_passwordVisible,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.password_sharp),
+                                                border: UnderlineInputBorder(),
+                                                suffixIcon: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _passwordVisible =
+                                                          !_passwordVisible;
+                                                    });
+                                                  },
+                                                  child: Icon(_passwordVisible
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off),
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: 'Confirm Password',
+                                                hintText:
+                                                    'Enter secure password again'),
+                                            validator: (val) => MatchValidator(
+                                                    errorText:
+                                                        'passwords do not match')
+                                                .validateMatch(val!, password),
+                                            //Validators.compose([
+                                            //     Validators.patternString(
+                                            //         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                                            //         'Ensure Password contains\nSpecialcharacters,Numbers and Letters'),
+                                            //     MultiValidator([
+                                            //       RequiredValidator(
+                                            //           errorText: "* Required"),
+                                            //       MinLengthValidator(4,
+                                            //           errorText:
+                                            //               "Password should be atleast 6 characters"),
+                                            //       MaxLengthValidator(15,
+                                            //           errorText:
+                                            //               "Password should not be greater than 15 characters")
+                                            //     ])
+                                            //   ]),
+                                          ),
                                   ),
                                   SizedBox(
                                     height: 20,
                                   ),
                                   FadeAnimation(
                                       1.4,
-                                      FlatButton(
-                                        minWidth: 190,
-                                        child: Text('SIGN UP'),
-                                        onPressed: () {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            backgroundColor: Colors.black26,
-                                            duration:
-                                                const Duration(seconds: 30),
-                                            content: Text(
-                                              "Please Wait while Loading .....",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ));
-                                          Signup123(
-                                              username_,
-                                              dateinput,
-                                              Mobilenum,
-                                              email,
-                                              Address,
-                                              City,
-                                              District,
-                                              _controller,
-                                              gstn,
-                                              Pincode,
-                                              password_);
-                                        },
-                                        color: Colors.purple.shade200,
-                                        splashColor: Colors.green,
-                                      )),
+                                      !form_active
+                                          ? FlatButton(
+                                              minWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                              child: Text('SIGN UP'),
+                                              onPressed: null,
+                                              color: Colors.purple.shade200,
+                                              splashColor: Colors.green,
+                                            )
+                                          : FlatButton(
+                                              minWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                              child: Text('SIGN UP'),
+                                              onPressed: form_active
+                                                  ? () {
+                                                      if (formkey.currentState!
+                                                          .validate()) {
+                                                        setState(() {
+                                                          form_active = false;
+                                                        });
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                SnackBar(
+                                                          backgroundColor:
+                                                              Colors.black26,
+                                                          duration:
+                                                              const Duration(
+                                                                  seconds: 10),
+                                                          content: Text(
+                                                            "Please Wait while Loading .....",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ));
+                                                        Signup123(
+                                                            username_,
+                                                            dateinput,
+                                                            Mobilenum,
+                                                            email,
+                                                            Address,
+                                                            City,
+                                                            District,
+                                                            _controller,
+                                                            gstn,
+                                                            Pincode,
+                                                            password_);
+                                                      }
+                                                    }
+                                                  : null,
+                                              disabledColor: Colors.black12,
+                                              disabledTextColor:
+                                                  Colors.blueGrey,
+                                              color: Colors.purple.shade200,
+                                              splashColor: Colors.green,
+                                            )),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -595,6 +1055,17 @@ class SignupValidationState extends State<SignUp> {
 
   Signup123(username_, dateinput, Mobilenum, email, Address, City, District,
       _controller, gstn, Pincode, password_) async {
+    print(username_.text.toString().trim());
+    print(dateinput.text.toString().trim());
+    print(Mobilenum.text.toString().trim());
+    print(email.text.toString().trim());
+    print(Address.text.toString().trim());
+    print(City.text.toString().trim());
+    print(District.text.toString().trim());
+    print(_controller.text.toString().trim());
+    print(gstn.text.toString().trim());
+    print(Pincode.text.toString().trim());
+    print(password_.text.toString().trim());
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
         'POST',
@@ -615,6 +1086,8 @@ class SignupValidationState extends State<SignUp> {
         "password": password_.text.toString().trim()
       }
     });
+    var body = request.body;
+    print(body);
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -624,13 +1097,22 @@ class SignupValidationState extends State<SignUp> {
       Mapresponse = await json.decode(res);
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.black26,
-        duration: const Duration(seconds: 30),
+        duration: const Duration(seconds: 12),
         content: Text(
           Mapresponse['message']['message'],
           style: TextStyle(color: Colors.white),
         ),
       ));
+      if (Mapresponse['message']['message'] ==
+          'Account Created, Please Login') {
+        Navigator.pop(context);
+      } else {
+        setState(() {
+          form_active = true;
+        });
+      }
     } else {
       print(response.reasonPhrase);
     }

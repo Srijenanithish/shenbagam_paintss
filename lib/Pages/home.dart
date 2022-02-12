@@ -40,7 +40,8 @@ class HomepageValidationState extends State<Homepage> {
 
   late List<Note> details;
   bool isLoading = false;
-
+  String name = '';
+  String email = '';
   @override
   void initState() {
     _pageController = PageController(initialPage: 0);
@@ -50,6 +51,10 @@ class HomepageValidationState extends State<Homepage> {
 
   Future refreshNote() async {
     this.details = await NotesDatabase.instance.readAllNotes();
+    setState(() {
+      name = details[details.length - 1].name;
+      email = details[details.length - 1].email;
+    });
   }
 
   Widget build(BuildContext context) {
@@ -151,7 +156,7 @@ class HomepageValidationState extends State<Homepage> {
                 child: UserAccountsDrawerHeader(
                   decoration: BoxDecoration(color: Colors.white),
                   accountName: Text(
-                    "Jain Immanual Wilson",
+                    name,
                     style: TextStyle(color: Colors.black),
                   ),
                   currentAccountPicture: CircleAvatar(
@@ -160,7 +165,7 @@ class HomepageValidationState extends State<Homepage> {
                     child: Image.asset("assets/login/usericonn.png"),
                   ),
                   accountEmail: Text(
-                    "Painter",
+                    email,
                     style: TextStyle(color: Colors.black),
                   ),
                   onDetailsPressed: () {

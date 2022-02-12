@@ -81,7 +81,7 @@ class homeValidationState extends State<home> {
                 child: FadeAnimation(
                   1.4,
                   Text(
-                    "Shenbagam Paints Welcomes You !",
+                    "We Welcomes You !",
                     style: GoogleFonts.raleway(
                       textStyle: TextStyle(
                           color: Colors.orange.shade400,
