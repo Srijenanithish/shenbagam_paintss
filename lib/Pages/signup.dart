@@ -582,8 +582,8 @@ class SignupValidationState extends State<SignUp> {
       print(dataResponse);
       setState(() {
         for (int i = 0; i < dataResponse.length; i++) {
-          items.add(dataResponse[i][0].toString());
-          referred_by_cus.add(dataResponse[i][1].toString());
+          items.add(dataResponse[i].toString());
+          referred_by_cus.add(dataResponse[i].toString());
         }
       });
 

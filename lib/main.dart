@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(widget.status);
     Timer(
         Duration(seconds: 4),
-        widget.status == 'true'
+        widget.status == true
             ? () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => Homepage()))
             : () => Navigator.pushReplacement(
@@ -105,6 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.white, child: Image.asset("assets/login/sen1.gif"));
+        color: Colors.white, child: Image.asset("assets/login/Splash_screen.gif"));
   }
 }
