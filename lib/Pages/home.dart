@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flashy_tab_bar/flashy_tab_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -22,7 +23,7 @@ import 'package:shenbagam_paints/Pages/wallet.dart';
 import 'package:shenbagam_paints/utils/constants.dart';
 
 class home extends StatefulWidget {
-  static const String routeName = "/Homepage";
+  static const String routeName = "/home";
 
   @override
   homeValidationState createState() => homeValidationState();
@@ -41,10 +42,17 @@ class homeValidationState extends State<home> {
 
   late List<Note> details;
   bool isLoading = false;
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  get prefixIcon => null;
+  TextEditingController feed = TextEditingController();
+  Map Mapresponse_ = {};
+  String dataResponse = '';
+  bool form_active1 = true;
   String name = '';
   String email = '';
   @override
   void initState() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     _pageController = PageController(initialPage: 0);
     super.initState();
     refreshNote();
@@ -79,7 +87,13 @@ class homeValidationState extends State<home> {
           _selectedPage = index;
         }),
         controller: _pageController,
-        children: [home(), ExplorePage(), wallet(), my_partners(), profile()],
+        children: [
+          Homepage(),
+          ExplorePage(),
+          wallet(),
+          my_partners(),
+          profile()
+        ],
       ),
       bottomNavigationBar: FlashyTabBar(
         selectedIndex: _selectedPage,
@@ -189,7 +203,105 @@ class homeValidationState extends State<home> {
                   leading: Icon(Icons.feedback),
                   title: const Text('Feedback'),
                   onTap: () {
-                    Navigator.pop(context);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            scrollable: true,
+                            content: Form(
+                              autovalidate: true,
+                              key: formkey,
+                              child: Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 0, 20, 30),
+                                    child: Text("Hi " + name + '!'),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    child: !form_active1
+                                        ? TextFormField(
+                                            controller: feed,
+                                            maxLines: 2,
+                                            decoration: InputDecoration(
+                                              prefixIcon: prefixIcon ??
+                                                  Icon(Icons.comment_bank),
+                                              border: OutlineInputBorder(),
+                                              contentPadding:
+                                                  EdgeInsets.all(16),
+                                              labelText: 'Send Feedback',
+                                              hintText: 'Type Something',
+                                            ),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ]))
+                                        : TextFormField(
+                                            controller: feed,
+                                            maxLines: 2,
+                                            decoration: InputDecoration(
+                                              prefixIcon: prefixIcon ??
+                                                  Icon(Icons.comment_bank),
+                                              border: OutlineInputBorder(),
+                                              contentPadding:
+                                                  EdgeInsets.all(16),
+                                              labelText: 'Send Feedback',
+                                              hintText: 'Type Something',
+                                            ),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: "* Required"),
+                                              MinLengthValidator(4,
+                                                  errorText:
+                                                      "Username should be atleast 4 characters"),
+                                            ])),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    RaisedButton(
+                                        child: Text("  SEND  "),
+                                        onPressed: form_active1
+                                            ? () {
+                                                if (formkey.currentState!
+                                                    .validate()) {
+                                                  setState(() {
+                                                    form_active1 = false;
+                                                  });
+                                                  Navigator.pop(context);
+                                                  feedback(
+                                                      details[details.length -
+                                                              1]
+                                                          .api_key,
+                                                      details[details.length -
+                                                              1]
+                                                          .api_secret,
+                                                      feed);
+                                                }
+                                              }
+                                            : null),
+                                    RaisedButton(
+                                        child: Text("CANCEL"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                  ],
+                                ),
+                              )
+                            ],
+                          );
+                        });
                   },
                 ),
               ),
@@ -237,6 +349,47 @@ class homeValidationState extends State<home> {
 
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+//FeedBack Api....
+  void feedback(x, y, feed) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.add_feedback'));
+    request.body = json.encode({
+      "args": {"feedback": feed.text.toString().trim()}
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res1 = await response.stream.bytesToString();
+
+      Mapresponse_ = await json.decode(res1);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.black26,
+        duration: const Duration(seconds: 12),
+        content: Text(
+          Mapresponse_['message']['message'],
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
+      setState(() {
+        form_active1 = true;
+      });
+      //  print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
     }

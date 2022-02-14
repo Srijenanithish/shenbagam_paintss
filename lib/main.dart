@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Duration(seconds: 4),
         widget.status == 'true'
             ? () => Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Homepage()))
+                context, MaterialPageRoute(builder: (context) => home()))
             : () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => LoginForm())));
   }

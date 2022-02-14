@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +11,7 @@ import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:http/http.dart' as http;
 
 class Homepage extends StatefulWidget {
-  static const String routeName = "/homee";
+  static const String routeName = "/Homepage";
 
   @override
   HomepageValidationState createState() => HomepageValidationState();

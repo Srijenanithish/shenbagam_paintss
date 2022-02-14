@@ -46,6 +46,7 @@ class profileValidationState extends State<profile> {
   }
 
   Map Mapresponse = {};
+  Map Mapresponse_ = {};
   String dataResponse = '';
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -150,22 +151,32 @@ class profileValidationState extends State<profile> {
             ),
             actions: [
               Center(
-                child: RaisedButton(
-                    child: Text("Share"),
-                    onPressed: form_active
-                        ? () {
-                            if (formkey.currentState!.validate()) {
-                              setState(() {
-                                form_active = false;
-                              });
-                              Share_Mob(
-                                  details[details.length - 1].api_key,
-                                  details[details.length - 1].api_secret,
-                                  username_,
-                                  Mobilenum);
-                            }
-                          }
-                        : null),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RaisedButton(
+                        child: Text("Share"),
+                        onPressed: form_active
+                            ? () {
+                                if (formkey.currentState!.validate()) {
+                                  setState(() {
+                                    form_active = false;
+                                  });
+                                  Share_Mob(
+                                      details[details.length - 1].api_key,
+                                      details[details.length - 1].api_secret,
+                                      username_,
+                                      Mobilenum);
+                                }
+                              }
+                            : null),
+                    RaisedButton(
+                        child: Text("CANCEL"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ],
+                ),
               )
             ],
           );
@@ -510,26 +521,38 @@ class profileValidationState extends State<profile> {
                               ),
                               actions: [
                                 Center(
-                                  child: RaisedButton(
-                                      child: Text("  SEND  "),
-                                      onPressed: form_active1
-                                          ? () {
-                                              if (formkey.currentState!
-                                                  .validate()) {
-                                                setState(() {
-                                                  form_active1 = false;
-                                                });
-
-                                                Navigator.pop(context);
-                                                feedback(
-                                                    details[details.length - 1]
-                                                        .api_key,
-                                                    details[details.length - 1]
-                                                        .api_secret,
-                                                    feed);
-                                              }
-                                            }
-                                          : null),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      RaisedButton(
+                                          child: Text("  SEND  "),
+                                          onPressed: form_active1
+                                              ? () {
+                                                  if (formkey.currentState!
+                                                      .validate()) {
+                                                    setState(() {
+                                                      form_active1 = false;
+                                                    });
+                                                    Navigator.pop(context);
+                                                    feedback(
+                                                        details[details.length -
+                                                                1]
+                                                            .api_key,
+                                                        details[details.length -
+                                                                1]
+                                                            .api_secret,
+                                                        feed);
+                                                  }
+                                                }
+                                              : null),
+                                      RaisedButton(
+                                          child: Text("  Cancel  "),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          }),
+                                    ],
+                                  ),
                                 )
                               ],
                             );
@@ -641,7 +664,22 @@ class profileValidationState extends State<profile> {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      var res1 = await response.stream.bytesToString();
+
+      Mapresponse_ = await json.decode(res1);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.black26,
+        duration: const Duration(seconds: 12),
+        content: Text(
+          Mapresponse_['message']['message'],
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
+      setState(() {
+        form_active1 = true;
+      });
+      //  print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
     }

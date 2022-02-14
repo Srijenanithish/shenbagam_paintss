@@ -1,10 +1,13 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 
 class qr_page extends StatefulWidget {
   @override
@@ -15,6 +18,22 @@ class qr_page extends StatefulWidget {
 }
 
 class qr_pageState extends State<qr_page> {
+  Map Mapresponse_ = {};
+  String dataResponse = '';
+  late List<Note> details;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    refreshNote();
+  }
+
+  Future refreshNote() async {
+    this.details = await NotesDatabase.instance.readAllNotes();
+  }
+
   String result = "Scan For Rewards !";
   String qrResult = '';
   bool pressed = true;
@@ -152,7 +171,14 @@ class qr_pageState extends State<qr_page> {
                         child: FlatButton(
                           minWidth: 190,
                           child: Text('CLAIM REWARDS'),
-                          onPressed: pressed_ ? () {} : null,
+                          onPressed: pressed_
+                              ? () {
+                                  qr_page(
+                                      details[details.length - 1].api_key,
+                                      details[details.length - 1].api_secret,
+                                      qrResult);
+                                }
+                              : null,
                           color: Colors.purple.shade200,
                           splashColor: Colors.green,
                           disabledColor: Colors.black12,
@@ -165,5 +191,46 @@ class qr_pageState extends State<qr_page> {
 
         //onPressed: _scanQR,
         );
+  }
+
+//Claim Reward API ....
+  void qr_page(x, y, content) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.add_qr'));
+    request.body = json.encode({
+      "args": {"qr_code": content}
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res1 = await response.stream.bytesToString();
+
+      Mapresponse_ = await json.decode(res1);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.black26,
+        duration: const Duration(seconds: 12),
+        content: Text(
+          Mapresponse_['message']['message'],
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
+      setState(() {
+        pressed_ = false;
+      });
+      // print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 }
