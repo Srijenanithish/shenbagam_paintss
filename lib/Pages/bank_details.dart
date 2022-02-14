@@ -86,6 +86,7 @@ class bankValidationState extends State<bank> {
                     Padding(
                       padding: const EdgeInsets.only(top: 30),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
                             height: 150,
@@ -96,8 +97,8 @@ class bankValidationState extends State<bank> {
                                 });
                               },
                               child: Card(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 5.0),
+                                // margin: EdgeInsets.symmetric(
+                                //     horizontal: 20.0, vertical: 5.0),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 15, 10, 8),
@@ -148,8 +149,8 @@ class bankValidationState extends State<bank> {
                               },
                               child: Card(
                                 color: Colors.white70,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 0.0, vertical: 5.0),
+                                // margin: EdgeInsets.symmetric(
+                                //     horizontal: 0.0, vertical: 5.0),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(30, 15, 30, 4),
