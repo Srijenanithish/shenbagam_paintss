@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:shenbagam_paints/Pages/login_form.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -84,21 +85,24 @@ class SignupValidationState extends State<SignUp> {
           children: <Widget>[
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   child: SingleChildScrollView(
                     child: FadeAnimation(
                       1.4,
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FadeAnimation(
                             1.4,
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
                                     padding: EdgeInsets.fromLTRB(
                                         0,
-                                        MediaQuery.of(context).size.width / 6,
+                                        ResponsiveFlutter.of(context).scale(50),
                                         0,
                                         0),
                                     child: new IconButton(
@@ -110,15 +114,17 @@ class SignupValidationState extends State<SignUp> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       0,
-                                      MediaQuery.of(context).size.width / 6,
-                                      MediaQuery.of(context).size.width / 5,
+                                      ResponsiveFlutter.of(context).scale(50),
+                                      0,
                                       0),
                                   child: Text(
                                     'Senbagam Paints',
                                     style: GoogleFonts.raleway(
                                       textStyle: TextStyle(
                                           color: Colors.black54,
-                                          fontSize: 30,
+                                          fontSize:
+                                              ResponsiveFlutter.of(context)
+                                                  .fontSize(4.5),
                                           letterSpacing: .5),
                                     ),
                                   ),
@@ -130,16 +136,17 @@ class SignupValidationState extends State<SignUp> {
                             1.4,
                             Padding(
                               padding: EdgeInsets.fromLTRB(
+                                  MediaQuery.of(context).size.width / 10,
+                                  ResponsiveFlutter.of(context).scale(15),
                                   0,
-                                  MediaQuery.of(context).size.width / 15,
-                                  MediaQuery.of(context).size.width / 2.12,
                                   0),
                               child: Text(
                                 'SIGN UP',
                                 style: GoogleFonts.raleway(
                                   textStyle: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 24,
+                                      fontSize: ResponsiveFlutter.of(context)
+                                          .fontSize(3.5),
                                       letterSpacing: .5),
                                 ),
                               ),

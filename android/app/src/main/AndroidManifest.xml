@@ -2,7 +2,7 @@
     package="com.example.shenbagam_paints">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="shenbagam_paints"
+        android:label="senbagam_paints"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

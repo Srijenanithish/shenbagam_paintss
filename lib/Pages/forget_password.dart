@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 
@@ -60,170 +61,235 @@ class ForgetpassValidationState extends State<Forgetpass> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FadeAnimation(
-                  1.4,
-                  Row(
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
-                          child: new IconButton(
-                            icon: new Icon(Icons.arrow_back),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          )),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                            0,
-                            MediaQuery.of(context).size.width / 6,
-                            MediaQuery.of(context).size.width / 5,
-                            0),
-                        child: Text(
-                          'Senbagam Paints',
-                          style: GoogleFonts.raleway(
-                            textStyle: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 30,
-                                letterSpacing: .5),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                FadeAnimation(
-                  1.4,
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        0,
-                        MediaQuery.of(context).size.width / 15,
-                        MediaQuery.of(context).size.width / 6,
-                        0),
-                    child: Text(
-                      'FORGET PASSWORD',
-                      style: GoogleFonts.raleway(
-                        textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            letterSpacing: .5),
-                      ),
-                    ),
-                  ),
-                ),
                 Container(
-                  child: SingleChildScrollView(
-                    child: FadeAnimation(
-                      1.4,
-                      Card(
-                        margin: EdgeInsets.fromLTRB(
-                            MediaQuery.of(context).size.width / 13,
-                            MediaQuery.of(context).size.width / 8,
-                            MediaQuery.of(context).size.width / 13,
-                            0),
-                        clipBehavior: Clip.antiAlias,
-                        child: Form(
-                          autovalidate: true,
-                          key: formkey,
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    MediaQuery.of(context).size.width / 15,
-                                    0,
-                                    MediaQuery.of(context).size.width / 15,
-                                    0),
-                                child: !form_active
-                                    ? TextFormField(
-                                        enabled: false,
-                                        controller: Mobilenum,
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            prefixIcon:
-                                                prefixIcon ?? Icon(Icons.phone),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Mobile Number',
-                                            hintText:
-                                                'Enter your Mobile Number'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(10,
-                                              errorText:
-                                                  "Mobile Number should be 10 characters"),
-                                        ]))
-                                    : TextFormField(
-                                        controller: Mobilenum,
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            prefixIcon:
-                                                prefixIcon ?? Icon(Icons.phone),
-                                            border: UnderlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(16),
-                                            labelText: 'Mobile Number',
-                                            hintText:
-                                                'Enter your Mobile Number'),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "* Required"),
-                                          MinLengthValidator(10,
-                                              errorText:
-                                                  "Mobile Number should be 10 characters"),
-                                        ])),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              FadeAnimation(
-                                  1.4,
-                                  FlatButton(
-                                    minWidth:
-                                        MediaQuery.of(context).size.width / 2,
-                                    child: Text('SEND OTP'),
-                                    onPressed: form_active
-                                        ? () {
-                                            if (formkey.currentState!
-                                                .validate()) {
-                                              send_otp(Mobilenum);
-                                              setState(() {
-                                                _hasBeenPressed = false;
-                                                form_active = false;
-                                              });
-                                            }
-                                            ;
-                                          }
-                                        : null,
-                                    disabledColor: Colors.black12,
-                                    disabledTextColor: Colors.blueGrey,
-                                    color: Colors.purple.shade200,
-                                    splashColor: Colors.green,
-                                  )),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                child: Center(
-                                  child: Container(
-                                      width: 300,
-                                      child: _hasBeenPressed
-                                          ? getOTP()
-                                          : getOTP()),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                    child: SingleChildScrollView(
+                        child: FadeAnimation(
+                            1.4,
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FadeAnimation(
+                                    1.4,
+                                    Row(
+                                      children: [
+                                        Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0,
+                                                ResponsiveFlutter.of(context)
+                                                    .scale(50),
+                                                0,
+                                                0),
+                                            child: new IconButton(
+                                              icon: new Icon(Icons.arrow_back),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            )),
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              0,
+                                              ResponsiveFlutter.of(context)
+                                                  .scale(50),
+                                              0,
+                                              0),
+                                          child: Text(
+                                            'Senbagam Paints',
+                                            style: GoogleFonts.raleway(
+                                              textStyle: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 30,
+                                                  letterSpacing: .5),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  FadeAnimation(
+                                    1.4,
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                          ResponsiveFlutter.of(context)
+                                              .scale(15),
+                                          0,
+                                          0),
+                                      child: Text(
+                                        'FORGET PASSWORD',
+                                        style: GoogleFonts.raleway(
+                                          textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 22,
+                                              letterSpacing: .5),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: SingleChildScrollView(
+                                      child: FadeAnimation(
+                                        1.4,
+                                        Card(
+                                          margin: EdgeInsets.fromLTRB(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  13,
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  8,
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  13,
+                                              0),
+                                          clipBehavior: Clip.antiAlias,
+                                          child: Form(
+                                            autovalidate: true,
+                                            key: formkey,
+                                            child: Column(
+                                              children: <Widget>[
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width /
+                                                          15,
+                                                      0,
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width /
+                                                          15,
+                                                      0),
+                                                  child: !form_active
+                                                      ? TextFormField(
+                                                          enabled: false,
+                                                          controller: Mobilenum,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          decoration: InputDecoration(
+                                                              prefixIcon:
+                                                                  prefixIcon ??
+                                                                      Icon(Icons
+                                                                          .phone),
+                                                              border:
+                                                                  UnderlineInputBorder(),
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .all(16),
+                                                              labelText:
+                                                                  'Mobile Number',
+                                                              hintText:
+                                                                  'Enter your Mobile Number'),
+                                                          validator:
+                                                              MultiValidator([
+                                                            RequiredValidator(
+                                                                errorText:
+                                                                    "* Required"),
+                                                            MinLengthValidator(
+                                                                10,
+                                                                errorText:
+                                                                    "Mobile Number should be 10 characters"),
+                                                          ]))
+                                                      : TextFormField(
+                                                          controller: Mobilenum,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          decoration: InputDecoration(
+                                                              prefixIcon:
+                                                                  prefixIcon ??
+                                                                      Icon(Icons
+                                                                          .phone),
+                                                              border:
+                                                                  UnderlineInputBorder(),
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .all(16),
+                                                              labelText:
+                                                                  'Mobile Number',
+                                                              hintText:
+                                                                  'Enter your Mobile Number'),
+                                                          validator:
+                                                              MultiValidator([
+                                                            RequiredValidator(
+                                                                errorText:
+                                                                    "* Required"),
+                                                            MinLengthValidator(
+                                                                10,
+                                                                errorText:
+                                                                    "Mobile Number should be 10 characters"),
+                                                          ])),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                FadeAnimation(
+                                                    1.4,
+                                                    FlatButton(
+                                                      minWidth:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              2,
+                                                      child: Text('SEND OTP'),
+                                                      onPressed: form_active
+                                                          ? () {
+                                                              if (formkey
+                                                                  .currentState!
+                                                                  .validate()) {
+                                                                send_otp(
+                                                                    Mobilenum);
+                                                                setState(() {
+                                                                  _hasBeenPressed =
+                                                                      false;
+                                                                  form_active =
+                                                                      false;
+                                                                });
+                                                              }
+                                                              ;
+                                                            }
+                                                          : null,
+                                                      disabledColor:
+                                                          Colors.black12,
+                                                      disabledTextColor:
+                                                          Colors.blueGrey,
+                                                      color: Colors
+                                                          .purple.shade200,
+                                                      splashColor: Colors.green,
+                                                    )),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 10, 0, 0),
+                                                  child: Center(
+                                                    child: Container(
+                                                        width: 300,
+                                                        child: _hasBeenPressed
+                                                            ? getOTP()
+                                                            : getOTP()),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]))))
               ],
             ),
           ],

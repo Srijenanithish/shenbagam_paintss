@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:shenbagam_paints/Pages/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
@@ -77,7 +78,8 @@ class homeValidationState extends State<home> {
               backgroundColor: Colors.white,
               foregroundColor: Colors.black54,
               title: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(
+                    ResponsiveFlutter.of(context).scale(12), 0, 0, 0),
                 child: FadeAnimation(
                   1.4,
                   Text(
@@ -85,7 +87,7 @@ class homeValidationState extends State<home> {
                     style: GoogleFonts.raleway(
                       textStyle: TextStyle(
                           color: Colors.orange.shade400,
-                          fontSize: 20,
+                          fontSize: ResponsiveFlutter.of(context).fontSize(2.5),
                           letterSpacing: .5),
                     ),
                   ),

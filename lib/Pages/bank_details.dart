@@ -134,11 +134,14 @@ class bankValidationState extends State<bank> {
                             height: 150,
                             child: InkWell(
                               onTap: () {
-                                setState(() {
-                                  hasBeenPressed_view = !hasBeenPressed_view;
-                                });
                                 viewexist(details[details.length - 1].api_key,
                                     details[details.length - 1].api_secret);
+                                dataresponse.length == 0
+                                    ? null
+                                    : setState(() {
+                                        hasBeenPressed_view =
+                                            !hasBeenPressed_view;
+                                      });
                               },
                               child: Card(
                                 color: Colors.white70,
@@ -191,23 +194,6 @@ class bankValidationState extends State<bank> {
                           child: _hasBeenPressed_add ? getView() : getAdd()),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FadeAnimation(
-                      1.4,
-                      FlatButton(
-                        minWidth: 190,
-                        child: Text('Upload image'),
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: ((builder) => bottomSheet()),
-                          );
-                        },
-                        color: Colors.purple.shade200,
-                        splashColor: Colors.green,
-                      )),
                 ],
               ),
             ]))));
@@ -382,6 +368,23 @@ class bankValidationState extends State<bank> {
                               ifsc_code);
                         }
                       }
+                    },
+                    color: Colors.purple.shade200,
+                    splashColor: Colors.green,
+                  )),
+              SizedBox(
+                height: 20,
+              ),
+              FadeAnimation(
+                  1.4,
+                  FlatButton(
+                    minWidth: 190,
+                    child: Text('Upload image'),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: ((builder) => bottomSheet()),
+                      );
                     },
                     color: Colors.purple.shade200,
                     splashColor: Colors.green,

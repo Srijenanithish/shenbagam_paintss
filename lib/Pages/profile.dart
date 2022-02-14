@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:share/share.dart';
 import 'package:http/http.dart' as http;
@@ -30,7 +31,7 @@ class profileValidationState extends State<profile> {
   @override
   void initState() {
     super.initState();
-
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     refreshNote();
   }
 
@@ -44,6 +45,8 @@ class profileValidationState extends State<profile> {
     });
   }
 
+  Map Mapresponse = {};
+  String dataResponse = '';
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool _hasBeenPressed = true;
   bool form_active = true;
@@ -52,8 +55,7 @@ class profileValidationState extends State<profile> {
   TextEditingController Mobilenum = TextEditingController();
   TextEditingController username_ = TextEditingController();
   TextEditingController feed = TextEditingController();
-  final String _content =
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam ipsum, lobortis quis ultricies non, lacinia at justo.';
+  String _content = '';
   String name = '';
   String city = '';
   String district = '';
@@ -170,58 +172,61 @@ class profileValidationState extends State<profile> {
         body: SingleChildScrollView(
       child: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 25,
+            ),
             Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(50, 20, 190, 0),
-                  child: FadeAnimation(
-                    1.4,
-                    Text(
-                      "Profile",
-                      style: GoogleFonts.raleway(
-                        textStyle: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 23,
-                            letterSpacing: .5),
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: FadeAnimation(
+                      1.4,
+                      Text(
+                        "Profile",
+                        style: GoogleFonts.raleway(
+                          textStyle: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 23,
+                              letterSpacing: .5),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(edit.routeName)
-                        .then((result) async {
-                      print(result);
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: FadeAnimation(
-                      1.4,
-                      Icon(Icons.edit),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(edit.routeName)
+                          .then((result) async {
+                        print(result);
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              MediaQuery.of(context).size.width / 8, 0, 0, 0),
+                          child: FadeAnimation(
+                            1.4,
+                            Icon(Icons.edit),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: FadeAnimation(
+                            1.4,
+                            Text("Edit"),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(edit.routeName)
-                        .then((result) async {
-                      print(result);
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: FadeAnimation(
-                      1.4,
-                      Text("Edit"),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                ]),
             SizedBox(
               height: 25,
             ),
@@ -266,7 +271,7 @@ class profileValidationState extends State<profile> {
             FadeAnimation(
               1.4,
               Text(
-                city + " , " + district,
+                city + "  ,  " + district,
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.black45,
@@ -294,6 +299,7 @@ class profileValidationState extends State<profile> {
             FadeAnimation(
               1.4,
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
                     onTap: () {
@@ -304,8 +310,8 @@ class profileValidationState extends State<profile> {
                       });
                     },
                     child: Card(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
+                      // margin:
+                      //   EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                         child: Column(
@@ -345,8 +351,8 @@ class profileValidationState extends State<profile> {
                     },
                     child: Card(
                       color: Colors.white70,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
+                      // margin:
+                      //   EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(40, 4, 40, 4),
                         child: Column(
@@ -386,6 +392,7 @@ class profileValidationState extends State<profile> {
             FadeAnimation(
               1.4,
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
                     onTap: () {
@@ -397,8 +404,8 @@ class profileValidationState extends State<profile> {
                     },
                     child: Card(
                       color: Colors.white70,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
+                      //  margin:
+                      //    EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                         child: Column(
@@ -517,8 +524,8 @@ class profileValidationState extends State<profile> {
                           });
                     },
                     child: Card(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
+                      // margin:
+                      //   EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(25, 8, 21, 8),
                         child: Column(
@@ -586,6 +593,13 @@ class profileValidationState extends State<profile> {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      var res = await response.stream.bytesToString();
+
+      Mapresponse = await json.decode(res);
+      setState(() {
+        _content = Mapresponse['message']['share'];
+      });
+
       Navigator.pop(context);
       Share.share(_content);
       print(await response.stream.bytesToString());

@@ -7,6 +7,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:shenbagam_paints/Pages/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
@@ -68,7 +69,9 @@ class HomepageValidationState extends State<Homepage> {
           "Senbagam Paints",
           style: GoogleFonts.raleway(
             textStyle: TextStyle(
-                color: Colors.black54, fontSize: 25, letterSpacing: .5),
+                color: Colors.black54,
+                fontSize: ResponsiveFlutter.of(context).fontSize(3.5),
+                letterSpacing: .5),
           ),
         ),
 

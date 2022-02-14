@@ -14,6 +14,7 @@ import 'package:shenbagam_paints/Pages/model/data.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
 import 'package:shenbagam_paints/Pages/utils/constants.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
+import 'package:responsive_flutter/responsive_flutter.dart';
 
 class LoginForm extends StatefulWidget {
   final Note? note;
@@ -95,8 +96,8 @@ class LoginFormValidationState extends State<LoginForm> {
             // Set its value to transparent
 
             body: Container(
-      width: double.infinity,
-      height: double.infinity,
+      width: ResponsiveFlutter.of(context).scale(double.infinity),
+      height: ResponsiveFlutter.of(context).scale(double.infinity),
       child: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
@@ -108,22 +109,25 @@ class LoginFormValidationState extends State<LoginForm> {
                     child: FadeAnimation(
                       1.4,
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FadeAnimation(
                             1.4,
                             Padding(
                               padding: EdgeInsets.fromLTRB(
+                                  MediaQuery.of(context).size.width / 10,
+                                  ResponsiveFlutter.of(context).scale(120),
                                   0,
-                                  MediaQuery.of(context).size.width / 3,
-                                  MediaQuery.of(context).size.width / 5,
                                   0),
                               child: Text(
                                 'Senbagam Paints',
+                                textAlign: TextAlign.left,
                                 style: GoogleFonts.raleway(
                                   textStyle: TextStyle(
                                       color: Colors.black54,
-                                      fontSize: 30,
+                                      fontSize: ResponsiveFlutter.of(context)
+                                          .fontSize(4.5),
                                       letterSpacing: .5),
                                 ),
                               ),
@@ -133,16 +137,18 @@ class LoginFormValidationState extends State<LoginForm> {
                             1.4,
                             Padding(
                               padding: EdgeInsets.fromLTRB(
+                                  MediaQuery.of(context).size.width / 10,
+                                  ResponsiveFlutter.of(context).scale(15),
                                   0,
-                                  MediaQuery.of(context).size.width / 15,
-                                  MediaQuery.of(context).size.width / 1.64,
                                   0),
                               child: Text(
                                 'LOGIN',
+                                textAlign: TextAlign.left,
                                 style: GoogleFonts.raleway(
                                   textStyle: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 24,
+                                      fontSize: ResponsiveFlutter.of(context)
+                                          .fontSize(3.5),
                                       letterSpacing: .5),
                                 ),
                               ),
