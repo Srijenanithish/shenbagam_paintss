@@ -1,3 +1,4 @@
+// Sample product view page..... Not yet Implemented...
 class ProductModel {
   String name;
   String code;

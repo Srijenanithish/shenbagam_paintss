@@ -7,9 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shenbagam_paints/Pages/bank_details.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
-import 'package:shenbagam_paints/Pages/utils/constants.dart';
+import 'package:shenbagam_paints/utils/constants.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
 import 'package:shenbagam_paints/Pages/forget_password.dart';
@@ -24,6 +22,7 @@ import 'package:shenbagam_paints/Pages/wallet.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //sharedpreferences initialised....
   Constants.prefs = await SharedPreferences.getInstance();
   var status = (Constants.prefs.getBool('isLoggedIn') ?? false).toString();
   SystemChrome.setPreferredOrientations(
@@ -66,6 +65,7 @@ class MyApp extends StatelessWidget {
         title: 'Senbagam Paints',
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
+          //google fonts lato theme...
           textTheme: GoogleFonts.latoTextTheme(
             Theme.of(context).textTheme,
           ),
@@ -77,6 +77,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  // status to set the logged in preference....
   var status;
 
   MyHomePage({
@@ -91,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
+//splashscreen ....
     Timer(
         Duration(seconds: 4),
         widget.status == 'true'

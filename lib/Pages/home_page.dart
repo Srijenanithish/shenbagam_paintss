@@ -6,23 +6,24 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:http/http.dart' as http;
 
-class home extends StatefulWidget {
+class Homepage extends StatefulWidget {
   static const String routeName = "/homee";
 
   @override
-  homeValidationState createState() => homeValidationState();
+  HomepageValidationState createState() => HomepageValidationState();
 }
 
-class homeValidationState extends State<home> {
+class HomepageValidationState extends State<Homepage> {
   Map Mapresponse = {};
   List Welcome_details = [];
   Map dataresponse = {};
   List Store_details = [];
+
   List<List> color_list = [
     [
       Colors.grey.shade50,
@@ -249,6 +250,7 @@ class homeValidationState extends State<home> {
             ])));
   }
 
+//Welcome API...
   void Welcome(x, y) async {
     var headers = {
       'Authorization': 'token ' + x.toString() + ':' + y.toString(),
@@ -280,6 +282,7 @@ class homeValidationState extends State<home> {
     }
   }
 
+//Stores API ....
   void Stores(x, y) async {
     var headers = {
       'Authorization': 'token ' + x.toString() + ':' + y.toString(),

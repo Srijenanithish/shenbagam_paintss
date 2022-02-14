@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/Pages/product_view.dart';
 import 'package:shenbagam_paints/Pages/products.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
@@ -740,7 +740,9 @@ class _ExplorePageState extends State<ExplorePage>
         "PU1-20",
         false),
   ];
+
   bool clear = false;
+
   List<ProductModel> selectedProducts = [];
   List<String> selected_items = [];
 
@@ -1414,6 +1416,7 @@ class _ExplorePageState extends State<ExplorePage>
     );
   }
 
+//Get quotation API....
   void getquotation(selected_items, x, y) async {
     var headers = {
       'Authorization': 'token ' + x.toString() + ':' + y.toString(),

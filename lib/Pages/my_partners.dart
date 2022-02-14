@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -39,6 +39,7 @@ class my_partnersValidationState extends State<my_partners> {
         details[details.length - 1].api_secret);
   }
 
+//Referal Tree API....
   Future<void> partners(x, y) async {
     var headers = {
       'Authorization': 'token ' + x.toString() + ':' + y.toString(),
@@ -69,6 +70,7 @@ class my_partnersValidationState extends State<my_partners> {
     }
   }
 
+//Function for API response for ENTRY...
   List<Entry> get_entry(Map data, key) {
     if (!data.containsKey(key)) {
       return [Entry("null")];

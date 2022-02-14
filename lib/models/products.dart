@@ -1,3 +1,4 @@
+// For the products listed in Explore products....
 class Product {
   final String name;
   final String brand;

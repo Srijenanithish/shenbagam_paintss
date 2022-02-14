@@ -7,12 +7,12 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/forget_password.dart';
 import 'package:shenbagam_paints/Pages/home.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
-import 'package:shenbagam_paints/Pages/utils/constants.dart';
+import 'package:shenbagam_paints/utils/constants.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 
@@ -31,7 +31,7 @@ class LoginForm extends StatefulWidget {
 class LoginFormValidationState extends State<LoginForm> {
   bool form_active = true;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-
+//for database fields..
   get prefixIcon => null;
   late bool isImportant;
   late bool logged_in;
@@ -63,6 +63,7 @@ class LoginFormValidationState extends State<LoginForm> {
   void initState() {
     super.initState();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
+    //for database fields...
     isImportant = widget.note?.isImportant ?? false;
     logged_in = widget.note?.logged_in ?? false;
     api_key = widget.note?.api_key ?? '';
@@ -91,10 +92,6 @@ class LoginFormValidationState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
-
-            // By defaut, Scaffold background is white
-            // Set its value to transparent
-
             body: Container(
       width: ResponsiveFlutter.of(context).scale(double.infinity),
       height: ResponsiveFlutter.of(context).scale(double.infinity),
@@ -428,6 +425,7 @@ class LoginFormValidationState extends State<LoginForm> {
     )));
   }
 
+//Login API....
   loginup(mobilenum, password_) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
@@ -463,7 +461,7 @@ class LoginFormValidationState extends State<LoginForm> {
       pincode = dataResponse['pincode'];
       if (Mapresponse['message']['message'] == 'Success') {
         Navigator.of(context)
-            .pushReplacementNamed(Homepage.routeName)
+            .pushReplacementNamed(home.routeName)
             .then((result) async {
           print(result);
         });
@@ -488,6 +486,7 @@ class LoginFormValidationState extends State<LoginForm> {
     }
   }
 
+//Database function...
   void addOrUpdateNote() async {
     final isUpdating = widget.note != null;
 

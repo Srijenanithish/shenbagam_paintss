@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/Pages/profile.dart';
 
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
@@ -316,7 +316,7 @@ class walletValidationState extends State<wallet> {
                                         Row(
                                           children: [
                                             Text(
-                                              'amount : ',
+                                              'Amount : ',
                                               style: TextStyle(fontSize: 19),
                                             ),
                                             Text(
@@ -475,6 +475,7 @@ class walletValidationState extends State<wallet> {
     );
   }
 
+//Wallet API....
   void wallet_call(x, y) async {
     var headers = {
       'Authorization': 'token ' + x.toString() + ':' + y.toString(),

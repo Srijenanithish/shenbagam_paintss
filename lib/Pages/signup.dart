@@ -57,10 +57,10 @@ class SignupValidationState extends State<SignUp> {
   Map Mapresponse = {};
   List dataResponse = [];
   var password = '';
+
   TextEditingController username_ = TextEditingController();
   TextEditingController dateinput = TextEditingController();
   TextEditingController email = TextEditingController();
-
   TextEditingController Mobilenum = TextEditingController();
   TextEditingController Address = TextEditingController();
   TextEditingController City = TextEditingController();
@@ -70,10 +70,13 @@ class SignupValidationState extends State<SignUp> {
   TextEditingController password__ = TextEditingController();
   TextEditingController gstn = TextEditingController();
   TextEditingController _controller = TextEditingController();
+
   bool _passwordVisible = false;
   bool isPressed = false;
+
   var items = ["Click ✓ in Mobile Number"];
   var referred_by_cus = [];
+
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
@@ -1024,6 +1027,7 @@ class SignupValidationState extends State<SignUp> {
     )));
   }
 
+//Get Referral API....
   void Referral(mobile_no) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
@@ -1060,6 +1064,7 @@ class SignupValidationState extends State<SignUp> {
     }
   }
 
+//Sign UP API...
   Signup123(username_, dateinput, Mobilenum, email, Address, City, District,
       _controller, gstn, Pincode, password_) async {
     print(username_.text.toString().trim());

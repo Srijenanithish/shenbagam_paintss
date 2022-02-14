@@ -6,12 +6,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
 import 'package:shenbagam_paints/Pages/profile.dart';
-
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
 
 class bank extends StatefulWidget {
   static const String routeName = "/bank";
@@ -23,6 +22,7 @@ class bank extends StatefulWidget {
 class bankValidationState extends State<bank> {
   late PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
+
   late List<Note> details;
   bool isLoading = false;
 
@@ -38,18 +38,21 @@ class bankValidationState extends State<bank> {
   }
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
   TextEditingController? _textEditingController = TextEditingController();
   TextEditingController bank_name = TextEditingController();
-
   TextEditingController account_holder_name = TextEditingController();
   TextEditingController account_no = TextEditingController();
   TextEditingController re_account_no = TextEditingController();
   TextEditingController ifsc_code = TextEditingController();
+
   bool _hasBeenPressed_add = true;
   bool hasBeenPressed_view = true;
+
   String value = '';
   Map Mapresponse = {};
   List dataresponse = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -468,6 +471,7 @@ class bankValidationState extends State<bank> {
     ;
   }
 
+//Add Bank Account API....
   Future<void> submit(x, y, bank_name, account_holder_name, account_no,
       re_account_no, ifsc_code) async {
     var headers = {
@@ -499,6 +503,7 @@ class bankValidationState extends State<bank> {
     }
   }
 
+//View Existing API.....
   Future<void> viewexist(x, y) async {
     var headers = {
       'Authorization': 'token ' + x.toString() + ':' + y.toString(),

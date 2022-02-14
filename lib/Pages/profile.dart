@@ -10,9 +10,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shenbagam_paints/Pages/bank_details.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/Pages/qr_page.dart';
 
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
@@ -47,19 +47,25 @@ class profileValidationState extends State<profile> {
 
   Map Mapresponse = {};
   String dataResponse = '';
+
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
   bool _hasBeenPressed = true;
   bool form_active = true;
   bool form_active1 = true;
+
   get prefixIcon => null;
+
   TextEditingController Mobilenum = TextEditingController();
   TextEditingController username_ = TextEditingController();
   TextEditingController feed = TextEditingController();
+
   String _content = '';
   String name = '';
   String city = '';
   String district = '';
   String pincode = '';
+
   void _shareContent() {
     showDialog(
         context: context,
@@ -515,6 +521,12 @@ class profileValidationState extends State<profile> {
                                                 });
 
                                                 Navigator.pop(context);
+                                                feedback(
+                                                    details[details.length - 1]
+                                                        .api_key,
+                                                    details[details.length - 1]
+                                                        .api_secret,
+                                                    feed);
                                               }
                                             }
                                           : null),
@@ -571,6 +583,7 @@ class profileValidationState extends State<profile> {
     ));
   }
 
+// Share link to Mobile via Share API...(Add Referal API)...
   void Share_Mob(x, y, name, mob) async {
     var headers = {
       'Authorization': 'token ' + x.toString() + ':' + y.toString(),
@@ -602,6 +615,32 @@ class profileValidationState extends State<profile> {
 
       Navigator.pop(context);
       Share.share(_content);
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+//FeedBack Api....
+  void feedback(x, y, feed) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.add_feedback'));
+    request.body = json.encode({
+      "args": {"feedback": feed.text.toString().trim()}
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);

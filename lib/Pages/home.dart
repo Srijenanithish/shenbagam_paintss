@@ -8,27 +8,27 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-import 'package:shenbagam_paints/Pages/db/database_helper.dart';
+import 'package:shenbagam_paints/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
 import 'package:shenbagam_paints/Pages/home_page.dart';
 import 'package:shenbagam_paints/Pages/login_form.dart';
-import 'package:shenbagam_paints/Pages/model/data.dart';
+import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/Pages/my_partners.dart';
 import 'package:shenbagam_paints/Pages/profile.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
-import 'package:shenbagam_paints/Pages/utils/constants.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:shenbagam_paints/Pages/wallet.dart';
+import 'package:shenbagam_paints/utils/constants.dart';
 
-class Homepage extends StatefulWidget {
+class home extends StatefulWidget {
   static const String routeName = "/Homepage";
 
   @override
-  HomepageValidationState createState() => HomepageValidationState();
+  homeValidationState createState() => homeValidationState();
 }
 
-class HomepageValidationState extends State<Homepage> {
+class homeValidationState extends State<home> {
   late PageController _pageController;
   int _selectedPage = 0;
 
@@ -64,7 +64,6 @@ class HomepageValidationState extends State<Homepage> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black54),
-        // centerTitle: true,
         title: Text(
           "Senbagam Paints",
           style: GoogleFonts.raleway(
@@ -74,8 +73,6 @@ class HomepageValidationState extends State<Homepage> {
                 letterSpacing: .5),
           ),
         ),
-
-        // backgroundColor: Colors.white10.withOpacity(0.01),
       ),
       body: PageView(
         onPageChanged: (index) => setState(() {
@@ -192,9 +189,6 @@ class HomepageValidationState extends State<Homepage> {
                   leading: Icon(Icons.feedback),
                   title: const Text('Feedback'),
                   onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
                     Navigator.pop(context);
                   },
                 ),
@@ -224,6 +218,7 @@ class HomepageValidationState extends State<Homepage> {
     );
   }
 
+//Logout API...
   Future<void> logout(x, y) async {
     var headers = {
       'Authorization': 'token ' + x.toString() + ':' + y.toString(),

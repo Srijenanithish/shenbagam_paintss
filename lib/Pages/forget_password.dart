@@ -19,8 +19,10 @@ class Forgetpass extends StatefulWidget {
 class ForgetpassValidationState extends State<Forgetpass> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool _hasBeenPressed = true;
+
   get prefixIcon => null;
   var password = '';
+
   String? validatePassword(String value) {
     if (value.isEmpty) {
       return "* Required";
@@ -41,14 +43,16 @@ class ForgetpassValidationState extends State<Forgetpass> {
   @override
   Map Mapresponse = {};
   Map dataResponse = {};
-  TextEditingController Mobilenum = TextEditingController();
 
+  TextEditingController Mobilenum = TextEditingController();
   TextEditingController Otp = TextEditingController();
   TextEditingController password_ = TextEditingController();
   TextEditingController password__ = TextEditingController();
+
   bool _passwordVisible = false;
   bool form_active = true;
   bool form_active1 = true;
+
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
@@ -527,6 +531,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
     }
   }
 
+//Send OTP API...
   void send_otp(mobile_no) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
@@ -547,6 +552,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
     }
   }
 
+// Reset password API...
   void reset_pass(otp, password) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
