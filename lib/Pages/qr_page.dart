@@ -16,12 +16,15 @@ class qr_page extends StatefulWidget {
 
 class qr_pageState extends State<qr_page> {
   String result = "Scan For Rewards !";
-
+  String qrResult = '';
+  bool pressed = true;
+  bool pressed_ = true;
   Future _scanQR() async {
     try {
-      String qrResult = await BarcodeScanner.scan();
+      qrResult = await BarcodeScanner.scan();
       setState(() {
-        result = qrResult;
+        pressed = false;
+        result = " Wow! Claim Your Rewards !";
       });
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
@@ -47,75 +50,120 @@ class qr_pageState extends State<qr_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black54),
-        // centerTitle: true,
-        title: Text(
-          "Senbagam Paints",
-          style: GoogleFonts.raleway(
-            textStyle: TextStyle(
-                color: Colors.black54, fontSize: 25, letterSpacing: .5),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black54),
+          // centerTitle: true,
+          title: Text(
+            "Senbagam Paints",
+            style: GoogleFonts.raleway(
+              textStyle: TextStyle(
+                  color: Colors.black54, fontSize: 25, letterSpacing: .5),
+            ),
           ),
+
+          // backgroundColor: Colors.white10.withOpacity(0.01),
         ),
-
-        // backgroundColor: Colors.white10.withOpacity(0.01),
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 25,
-          ),
-          FadeAnimation(
-            1.4,
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 150, 0),
-              child: FadeAnimation(
-                1.4,
-                Text(
-                  "Scan QR Code",
-                  style: GoogleFonts.raleway(
-                    textStyle: TextStyle(
-                        color: Colors.black54, fontSize: 23, letterSpacing: .5),
+        body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: SingleChildScrollView(
+                child: Stack(children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 25,
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width / 10),
+                    child: Container(
+                      child: Column(children: [
+                        FadeAnimation(
+                          1.4,
+                          FadeAnimation(
+                            1.4,
+                            Text(
+                              "Scan QR Code",
+                              style: GoogleFonts.raleway(
+                                textStyle: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 23,
+                                    letterSpacing: .5),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        FadeAnimation(
+                          1.4,
+                          Card(
+                            shape: ContinuousRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                            ),
+                            borderOnForeground: true,
+                            elevation: 0,
+                            child: Text(
+                              result,
+                              style: new TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ]),
+                    ),
+                  ),
+                  FadeAnimation(
+                      1.4,
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width / 5,
+                            0,
+                            MediaQuery.of(context).size.width / 5,
+                            0),
+                        child: FlatButton(
+                          minWidth: 190,
+                          child: Text('SCAN'),
+                          onPressed: pressed
+                              ? () {
+                                  _scanQR();
+                                }
+                              : null,
+                          color: Colors.purple.shade200,
+                          splashColor: Colors.green,
+                          disabledColor: Colors.black12,
+                          disabledTextColor: Colors.blueGrey,
+                        ),
+                      )),
+                  FadeAnimation(
+                      1.4,
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width / 5,
+                            0,
+                            MediaQuery.of(context).size.width / 5,
+                            0),
+                        child: FlatButton(
+                          minWidth: 190,
+                          child: Text('CLAIM REWARDS'),
+                          onPressed: pressed_ ? () {} : null,
+                          color: Colors.purple.shade200,
+                          splashColor: Colors.green,
+                          disabledColor: Colors.black12,
+                          disabledTextColor: Colors.blueGrey,
+                        ),
+                      )),
+                ],
               ),
-            ),
-          ),
-          FadeAnimation(
-            1.4,
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-              child: Card(
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-                borderOnForeground: true,
-                elevation: 0,
-                margin: EdgeInsets.fromLTRB(60, 0, 60, 40),
-                child: Text(
-                  result,
-                  style: new TextStyle(fontSize: 20.0),
-                ),
-              ),
-            ),
-          ),
-          FadeAnimation(
-              1.4,
-              FlatButton(
-                minWidth: 190,
-                child: Text('Scan'),
-                onPressed: () {
-                  _scanQR();
-                },
-                color: Colors.purple.shade200,
-                splashColor: Colors.green,
-              )),
-        ],
-      ),
+            ])))
 
-      //onPressed: _scanQR,
-    );
+        //onPressed: _scanQR,
+        );
   }
 }
