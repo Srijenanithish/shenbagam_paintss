@@ -52,6 +52,7 @@ class editValidationState extends State<edit> {
   }
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  Map Mapresponse = {};
   bool form_active = true;
   bool form_active_ = true;
   late PickedFile _imageFile;
@@ -253,7 +254,13 @@ class editValidationState extends State<edit> {
                                                 form_active_ = false;
                                               });
                                             },
-                                          ),
+                                            onFieldSubmitted: (value) {
+                                              setState(() {
+                                                name1 = username_.text
+                                                    .toString()
+                                                    .trim();
+                                              });
+                                            }),
                                   ),
                                   Padding(
                                       padding: EdgeInsets.fromLTRB(
@@ -326,6 +333,13 @@ class editValidationState extends State<edit> {
                                                 setState(() {
                                                   form_active_ = false;
                                                 });
+                                              },
+                                              onFieldSubmitted: (value) {
+                                                setState(() {
+                                                  dob1 = dateinput.text
+                                                      .toString()
+                                                      .trim();
+                                                });
                                               }, //set it true, so that user will not able to edit text
                                               onTap: () async {
                                                 DateTime? pickedDate =
@@ -395,7 +409,13 @@ class editValidationState extends State<edit> {
                                                 form_active_ = false;
                                               });
                                             },
-                                          ),
+                                            onFieldSubmitted: (value) {
+                                              setState(() {
+                                                mobile1 = Mobilenum.text
+                                                    .toString()
+                                                    .trim();
+                                              });
+                                            }),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(
@@ -472,7 +492,13 @@ class editValidationState extends State<edit> {
                                                 form_active_ = false;
                                               });
                                             },
-                                          ),
+                                            onFieldSubmitted: (value) {
+                                              setState(() {
+                                                address1 = Address.text
+                                                    .toString()
+                                                    .trim();
+                                              });
+                                            }),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(
@@ -508,7 +534,12 @@ class editValidationState extends State<edit> {
                                                 form_active_ = false;
                                               });
                                             },
-                                          ),
+                                            onFieldSubmitted: (value) {
+                                              setState(() {
+                                                city1 =
+                                                    City.text.toString().trim();
+                                              });
+                                            }),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(
@@ -546,7 +577,13 @@ class editValidationState extends State<edit> {
                                                 form_active_ = false;
                                               });
                                             },
-                                          ),
+                                            onFieldSubmitted: (value) {
+                                              setState(() {
+                                                district1 = District.text
+                                                    .toString()
+                                                    .trim();
+                                              });
+                                            }),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(
@@ -602,54 +639,57 @@ class editValidationState extends State<edit> {
                                                 form_active_ = false;
                                               });
                                             },
-                                          ),
+                                            onFieldSubmitted: (value) {
+                                              setState(() {
+                                                gstin1 =
+                                                    gstn.text.toString().trim();
+                                              });
+                                            }),
                                   ),
                                   Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                          MediaQuery.of(context).size.width /
-                                              10,
-                                          MediaQuery.of(context).size.width /
-                                              25,
-                                          MediaQuery.of(context).size.width /
-                                              10,
-                                          0),
-                                      child: !form_active
-                                          ? TextFormField(
-                                              enabled: false,
-                                              controller: Pincode,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: InputDecoration(
-                                                  prefixIcon: prefixIcon ??
-                                                      Icon(Icons.code),
-                                                  border:
-                                                      UnderlineInputBorder(),
-                                                  contentPadding:
-                                                      EdgeInsets.all(16),
-                                                  labelText: pincode1,
-                                                  hintText:
-                                                      'Enter your Pincode'),
-                                            )
-                                          : TextFormField(
-                                              controller: Pincode,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: InputDecoration(
-                                                  prefixIcon: prefixIcon ??
-                                                      Icon(Icons.code),
-                                                  border:
-                                                      UnderlineInputBorder(),
-                                                  contentPadding:
-                                                      EdgeInsets.all(16),
-                                                  labelText: pincode1,
-                                                  hintText:
-                                                      'Enter your Pincode'),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  form_active_ = false;
-                                                });
-                                              },
-                                            )),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width / 10,
+                                        MediaQuery.of(context).size.width / 25,
+                                        MediaQuery.of(context).size.width / 10,
+                                        0),
+                                    child: !form_active
+                                        ? TextFormField(
+                                            enabled: false,
+                                            controller: Pincode,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.code),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: pincode1,
+                                                hintText: 'Enter your Pincode'),
+                                          )
+                                        : TextFormField(
+                                            controller: Pincode,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                prefixIcon: prefixIcon ??
+                                                    Icon(Icons.code),
+                                                border: UnderlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                labelText: pincode1,
+                                                hintText: 'Enter your Pincode'),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                form_active_ = false;
+                                              });
+                                            },
+                                            onFieldSubmitted: (value) {
+                                              setState(() {
+                                                pincode1 = Pincode.text
+                                                    .toString()
+                                                    .trim();
+                                              });
+                                            }),
+                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),
@@ -667,7 +707,23 @@ class editValidationState extends State<edit> {
                                                     .validate()) {
                                                   setState(() {
                                                     form_active = false;
+                                                    form_active_ = true;
                                                   });
+                                                  edit_profile(
+                                                      details[details.length -
+                                                              1]
+                                                          .api_key,
+                                                      details[details.length -
+                                                              1]
+                                                          .api_secret,
+                                                      name1,
+                                                      dob1,
+                                                      mobile1,
+                                                      address1,
+                                                      city1,
+                                                      district1,
+                                                      gstin1,
+                                                      pincode1);
                                                 }
                                               },
                                         disabledColor: Colors.black12,
@@ -744,38 +800,49 @@ class editValidationState extends State<edit> {
     });
   }
 
-  Signup123(username_, dateinput, Mobilenum, Address, City, District, Pincode,
-      password_, email) async {
+  Future<void> edit_profile(x, y, name11, dob11, mobile11, address11, city11,
+      district11, gstin11, pincode11) async {
     var headers = {
-      'Content-Type': 'application/json',
-      'Cookie': 'sid=0036eae681f1a55d3a8e3f21b13ad4c82d0dc54044a519d750355095'
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
     };
     var request = http.Request(
         'POST',
         Uri.parse(
-            'http://test_senbagam.aerele.in/api/method/senbagam.api.sign_up'));
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.update_profile'));
     request.body = json.encode({
-      "args": [
-        [
-          {
-            "name": dateinput.text.toString().trim(),
-            "dob": Mobilenum.text.toString().trim(),
-            "mobile_no": Address.text.toString().trim(),
-            "address": City.text.toString().trim(),
-            "city": District.text.toString().trim(),
-            "district": Pincode.text.toString().trim(),
-            "pincode": password_.text.toString().trim(),
-            "email": username_.text.toString().trim(),
-            "password": email.text.toString().trim(),
-          }
-        ]
-      ]
+      "args": {
+        "name": name11,
+        "dob": dob11,
+        "mobile_no": mobile11,
+        "address": address11,
+        "city": city11,
+        "district": district11,
+        "gstin": gstin11,
+        "pincode": pincode11
+      }
     });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      var res = await response.stream.bytesToString();
+      Mapresponse = await json.decode(res);
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.black26,
+        duration: const Duration(seconds: 12),
+        content: Text(
+          Mapresponse['message']['message'],
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
+      Navigator.pop(context);
+
       print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
