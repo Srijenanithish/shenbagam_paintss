@@ -37,9 +37,14 @@ class _ExplorePageState extends State<ExplorePage>
 
   Future refreshNote() async {
     this.details = await NotesDatabase.instance.readAllNotes();
+    getitems(details[details.length - 1].api_key,
+        details[details.length - 1].api_secret);
   }
 
   Map Mapresponse = {};
+  Map Mapresponse_ = {};
+  List Items = [];
+  List Items_name = [];
   List<ProductModel> products1 = [
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvVmaCIuus40EIkFJdltxAOODXGl_QPnm8tA&usqp=CAU",
@@ -748,672 +753,436 @@ class _ExplorePageState extends State<ExplorePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
+    return CustomScrollView(slivers: [
+      SliverAppBar(
+        floating: false,
+        pinned: true,
+        toolbarHeight: 80,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black54,
+        title: FadeAnimation(
+          0.1,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: FadeAnimation(
-                      1.4,
-                      Text(
-                        "All Products",
-                        style: GoogleFonts.raleway(
-                          textStyle: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 23,
-                              letterSpacing: .5),
-                        ),
-                      ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: FadeAnimation(
+                  1.4,
+                  Text(
+                    "All Products",
+                    style: GoogleFonts.raleway(
+                      textStyle: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 23,
+                          letterSpacing: .5),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: FadeAnimation(
-                        1.4,
-                        InkWell(
-                          onTap: () {
-                            if (selected_items.length == 0) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                backgroundColor: Colors.black26,
-                                content: Text(
-                                  "Select Something to get Quotation .",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ));
-                            } else {
-                              setState(() {
-                                clear = true;
-                              });
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: FadeAnimation(
+                    1.4,
+                    InkWell(
+                      onTap: () {
+                        print(selected_items);
+                        if (selected_items.length == 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.black26,
+                            content: Text(
+                              "Select Something to get Quotation .",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            margin: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).size.height - 200,
+                                right: 20,
+                                left: 20),
+                          ));
+                        } else {
+                          setState(() {
+                            clear = true;
+                          });
 
-                              getquotation(
-                                  selected_items,
-                                  details[details.length - 1].api_key,
-                                  details[details.length - 1].api_secret);
-                            }
-                          },
-                          child: Column(
-                            children: [
-                              Icon(Icons.check_outlined),
-                              Text("Get Quotation"),
-                            ],
-                          ),
-                        )),
-                  ),
-                ],
+                          getquotation(
+                              selected_items,
+                              details[details.length - 1].api_key,
+                              details[details.length - 1].api_secret);
+                        }
+                      },
+                      child: Column(
+                        children: [
+                          Icon(Icons.check_outlined),
+                          Text("Get Quotation"),
+                        ],
+                      ),
+                    )),
               ),
-              SizedBox(
-                height: 25,
-              ),
-              Column(children: [
-                FadeAnimation(
-                  1.4,
-                  Text(
-                    "EZHIL",
-                    style: TextStyle(fontSize: 19),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Divider(
-                    // thickness of the line
-                    indent: 40, // empty space to the leading edge of divider.
-                    endIndent: 40,
-                    color: Colors.black45,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  child: Container(
-                    height: 190,
-                    child: FadeAnimation(
-                      1.4,
-                      ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: products1.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                products1[index].isSelected =
-                                    !products1[index].isSelected;
-                                if (products1[index].isSelected == true) {
-                                  selectedProducts.add(ProductModel(
-                                      products1[index].name,
-                                      products1[index].code,
-                                      products1[index].color_type,
-                                      true));
-                                  selected_items.clear();
-                                  for (int i = 0;
-                                      i < selectedProducts.length;
-                                      i++) {
-                                    setState(() {
-                                      selected_items.add(
-                                          (selectedProducts[i].color_type)
-                                              .toString());
-                                    });
-                                  }
-                                } else if (products1[index].isSelected ==
-                                    false) {
-                                  selectedProducts.removeWhere((element) =>
-                                      element.name == products1[index].name);
-                                }
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 15),
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.network(products1[index].name,
-                                      fit: BoxFit.cover),
-                                ),
-                                Text(products1[index].code),
-                                clear == true
-                                    ? Container(
-                                        child: Icon(
-                                          Icons.check_circle_outline,
-                                          color: Colors.grey,
-                                        ),
-                                      )
-                                    : Container(
-                                        child: products1[index].isSelected
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green[700],
-                                              )
-                                            : Icon(
-                                                Icons.check_circle_outline,
-                                                color: Colors.grey,
-                                              ),
-                                      ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Text(
-                    "KAPPAN",
-                    style: TextStyle(fontSize: 19),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Divider(
-                    // thickness of the line
-                    indent: 40, // empty space to the leading edge of divider.
-                    endIndent: 40,
-                    color: Colors.black45,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  child: Container(
-                    height: 200,
-                    child: FadeAnimation(
-                      1.4,
-                      ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: products2.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                products2[index].isSelected =
-                                    !products2[index].isSelected;
-                                if (products2[index].isSelected == true) {
-                                  selectedProducts.add(ProductModel(
-                                      products2[index].name,
-                                      products2[index].code,
-                                      products2[index].color_type,
-                                      true));
-                                  selected_items.clear();
-                                  for (int i = 0;
-                                      i < selectedProducts.length;
-                                      i++) {
-                                    setState(() {
-                                      selected_items.add(selectedProducts[i]
-                                          .color_type
-                                          .toString());
-                                    });
-                                  }
-                                } else if (products2[index].isSelected ==
-                                    false) {
-                                  selectedProducts.removeWhere((element) =>
-                                      element.name == products2[index].name);
-                                }
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 15),
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.network(products1[index].name,
-                                      fit: BoxFit.cover),
-                                ),
-                                Text(products2[index].code),
-                                clear == true
-                                    ? Container(
-                                        child: Icon(
-                                          Icons.check_circle_outline,
-                                          color: Colors.grey,
-                                        ),
-                                      )
-                                    : Container(
-                                        child: products2[index].isSelected
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green[700],
-                                              )
-                                            : Icon(
-                                                Icons.check_circle_outline,
-                                                color: Colors.grey,
-                                              ),
-                                      ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Text(
-                    "AZHAGI",
-                    style: TextStyle(fontSize: 19),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Divider(
-                    // thickness of the line
-                    indent: 40, // empty space to the leading edge of divider.
-                    endIndent: 40,
-                    color: Colors.black45,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  child: Container(
-                    height: 190,
-                    child: FadeAnimation(
-                      1.4,
-                      ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: products3.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                products3[index].isSelected =
-                                    !products3[index].isSelected;
-                                if (products3[index].isSelected == true) {
-                                  selectedProducts.add(ProductModel(
-                                      products3[index].name,
-                                      products3[index].code,
-                                      products3[index].color_type,
-                                      true));
-                                  selected_items.clear();
-                                  for (int i = 0;
-                                      i < selectedProducts.length;
-                                      i++) {
-                                    setState(() {
-                                      selected_items.add(selectedProducts[i]
-                                          .color_type
-                                          .toString());
-                                    });
-                                  }
-                                } else if (products3[index].isSelected ==
-                                    false) {
-                                  selectedProducts.removeWhere((element) =>
-                                      element.name == products3[index].name);
-                                }
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 15),
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.network(products3[index].name,
-                                      fit: BoxFit.cover),
-                                ),
-                                clear == true
-                                    ? Container(
-                                        child: Icon(
-                                          Icons.check_circle_outline,
-                                          color: Colors.grey,
-                                        ),
-                                      )
-                                    : Container(
-                                        child: products3[index].isSelected
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green[700],
-                                              )
-                                            : Icon(
-                                                Icons.check_circle_outline,
-                                                color: Colors.grey,
-                                              ),
-                                      ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Text(
-                    "INIYAN",
-                    style: TextStyle(fontSize: 19),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Divider(
-                    // thickness of the line
-                    indent: 40, // empty space to the leading edge of divider.
-                    endIndent: 40,
-                    color: Colors.black45,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  child: Container(
-                    height: 190,
-                    child: FadeAnimation(
-                      1.4,
-                      ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: products4.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                products4[index].isSelected =
-                                    !products4[index].isSelected;
-                                if (products4[index].isSelected == true) {
-                                  selectedProducts.add(ProductModel(
-                                      products4[index].name,
-                                      products4[index].code,
-                                      products4[index].color_type,
-                                      true));
-                                  selected_items.clear();
-                                  for (int i = 0;
-                                      i < selectedProducts.length;
-                                      i++) {
-                                    setState(() {
-                                      selected_items.add(selectedProducts[i]
-                                          .color_type
-                                          .toString());
-                                    });
-                                  }
-                                } else if (products4[index].isSelected ==
-                                    false) {
-                                  selectedProducts.removeWhere((element) =>
-                                      element.name == products4[index].name);
-                                }
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 15),
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.network(products4[index].name,
-                                      fit: BoxFit.cover),
-                                ),
-                                Text(products4[index].code),
-                                clear == true
-                                    ? Container(
-                                        child: Icon(
-                                          Icons.check_circle_outline,
-                                          color: Colors.grey,
-                                        ),
-                                      )
-                                    : Container(
-                                        child: products4[index].isSelected
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green[700],
-                                              )
-                                            : Icon(
-                                                Icons.check_circle_outline,
-                                                color: Colors.grey,
-                                              ),
-                                      ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Text(
-                    "SEVVANTHI",
-                    style: TextStyle(fontSize: 19),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Divider(
-                    // thickness of the line
-                    indent: 40, // empty space to the leading edge of divider.
-                    endIndent: 40,
-                    color: Colors.black45,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  child: Container(
-                    height: 190,
-                    child: FadeAnimation(
-                      1.4,
-                      ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: products5.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                products5[index].isSelected =
-                                    !products5[index].isSelected;
-                                if (products5[index].isSelected == true) {
-                                  selectedProducts.add(ProductModel(
-                                      products5[index].name,
-                                      products5[index].code,
-                                      products5[index].color_type,
-                                      true));
-                                  selected_items.clear();
-                                  for (int i = 0;
-                                      i < selectedProducts.length;
-                                      i++) {
-                                    setState(() {
-                                      selected_items.add(selectedProducts[i]
-                                          .color_type
-                                          .toString());
-                                    });
-                                  }
-                                } else if (products5[index].isSelected ==
-                                    false) {
-                                  selectedProducts.removeWhere((element) =>
-                                      element.name == products5[index].name);
-                                }
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 15),
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.network(products5[index].name,
-                                      fit: BoxFit.cover),
-                                ),
-                                Text(products5[index].code),
-                                clear == true
-                                    ? Container(
-                                        child: Icon(
-                                          Icons.check_circle_outline,
-                                          color: Colors.grey,
-                                        ),
-                                      )
-                                    : Container(
-                                        child: products5[index].isSelected
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green[700],
-                                              )
-                                            : Icon(
-                                                Icons.check_circle_outline,
-                                                color: Colors.grey,
-                                              ),
-                                      ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Text(
-                    "PUGAZH",
-                    style: TextStyle(fontSize: 19),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                FadeAnimation(
-                  1.4,
-                  Divider(
-                    // thickness of the line
-                    indent: 40, // empty space to the leading edge of divider.
-                    endIndent: 40,
-                    color: Colors.black45,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  child: Container(
-                    height: 190,
-                    child: FadeAnimation(
-                      1.4,
-                      ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: products6.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                products6[index].isSelected =
-                                    !products6[index].isSelected;
-                                if (products6[index].isSelected == true) {
-                                  selectedProducts.add(ProductModel(
-                                      products6[index].name,
-                                      products6[index].code,
-                                      products6[index].color_type,
-                                      true));
-                                  selected_items.clear();
-                                  for (int i = 0;
-                                      i < selectedProducts.length;
-                                      i++) {
-                                    setState(() {
-                                      selected_items.add(selectedProducts[i]
-                                          .color_type
-                                          .toString());
-                                    });
-                                  }
-                                } else if (products6[index].isSelected ==
-                                    false) {
-                                  selectedProducts.removeWhere((element) =>
-                                      element.name == products6[index].name);
-                                }
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 15),
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.network(products6[index].name,
-                                      fit: BoxFit.cover),
-                                ),
-                                Text(products6[index].code),
-                                clear == true
-                                    ? Container(
-                                        child: Icon(
-                                          Icons.check_circle_outline,
-                                          color: Colors.grey,
-                                        ),
-                                      )
-                                    : Container(
-                                        child: products6[index].isSelected
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green[700],
-                                              )
-                                            : Icon(
-                                                Icons.check_circle_outline,
-                                                color: Colors.grey,
-                                              ),
-                                      ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-              ]),
             ],
           ),
         ),
       ),
-    );
+      SliverList(delegate:
+          SliverChildBuilderDelegate((BuildContext context, int index) {
+        if (Items.length != 0) {
+          if (index > Items.length - 1) return null;
+        } else {
+          if (index > 3) return null;
+        }
+        return Container(
+            color: Colors.white,
+            padding: EdgeInsets.only(
+              top: 10,
+              left: MediaQuery.of(context).size.width / 30,
+              right: MediaQuery.of(context).size.width / 25,
+            ),
+            height: MediaQuery.of(context).size.height / 2.3,
+            child: Column(children: [
+              Items.length == 0
+                  ? Text(
+                      "Loading...",
+                      style: TextStyle(fontSize: 19),
+                    )
+                  : Text(
+                      Items[index]['section_name'],
+                      style: TextStyle(fontSize: 19),
+                    ),
+              SizedBox(
+                height: 5,
+              ),
+              FadeAnimation(
+                1.4,
+                Items.length == 0
+                    ? Text(
+                        "Please Wait... !",
+                        style: TextStyle(fontSize: 19),
+                      )
+                    : Text(
+                        Items[index]['description'],
+                      ),
+              ),
+              Divider(
+                // thickness of the line
+                indent: 40, // empty space to the leading edge of divider.
+                endIndent: 40,
+                color: Colors.black45,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width / 30, 0, 0, 0),
+                child: Container(
+                  height: 200,
+                  child: FadeAnimation(
+                    1.4,
+                    ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: Items_name.length,
+                      itemBuilder: (context, index1) {
+                        //print(Items_name.length);
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (clear == true) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.black26,
+                                  content: Text(
+                                    "Please try after some time of your previous quotation.",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  margin: EdgeInsets.only(
+                                      bottom:
+                                          MediaQuery.of(context).size.height -
+                                              200,
+                                      right: 20,
+                                      left: 20),
+                                ));
+                              }
+                              Items_name[index][index1]['selected'] == 0
+                                  ? Items_name[index][index1]['selected'] = 1
+                                  : Items_name[index][index1]['selected'] = 0;
+                              if (Items_name[index][index1]['selected'] == 1) {
+                                selectedProducts.add(ProductModel(
+                                    Items_name[index][index1]['item_name'],
+                                    Items_name[index][index1]['item_code'],
+                                    Items_name[index][index1]['image'],
+                                    true));
+                                selected_items.clear();
+                                for (int i = 0;
+                                    i < selectedProducts.length;
+                                    i++) {
+                                  setState(() {
+                                    selected_items.add(
+                                        (selectedProducts[i].code).toString());
+                                  });
+                                }
+                              } else if (Items_name[index][index1]
+                                      ['selected'] ==
+                                  0) {
+                                selectedProducts.removeWhere((element) =>
+                                    element.name ==
+                                    Items_name[index][index1]['item_name']);
+                              }
+                            });
+                          },
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: 10),
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.network(
+                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvVmaCIuus40EIkFJdltxAOODXGl_QPnm8tA&usqp=CAU",
+                                      fit: BoxFit.cover),
+                                ),
+                                Container(
+                                  width: 70,
+                                  child: Text(
+                                      Items_name[index][index1]['item_name'],
+                                      textAlign: TextAlign.center),
+                                ),
+                                clear == true
+                                    ? Container(
+                                        child: Icon(
+                                          Icons.check_circle_outline,
+                                          color: Colors.grey,
+                                        ),
+                                      )
+                                    : Container(
+                                        child: Items_name[index][index1]
+                                                    ['selected'] ==
+                                                1
+                                            ? Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green[700],
+                                              )
+                                            : Icon(
+                                                Icons.check_circle_outline,
+                                                color: Colors.grey,
+                                              ),
+                                      ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ]));
+      }))
+    ]);
+  }
+
+  //   Scaffold(
+  //     body: Container(
+  //       child: SingleChildScrollView(
+  //         child: Column(
+  //           children: [
+  //             SizedBox(
+  //               height: 25,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [
+  //                 Padding(
+  //                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+  //                   child: FadeAnimation(
+  //                     1.4,
+  //                     Text(
+  //                       "All Products",
+  //                       style: GoogleFonts.raleway(
+  //                         textStyle: TextStyle(
+  //                             color: Colors.black54,
+  //                             fontSize: 23,
+  //                             letterSpacing: .5),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+  //                   child: FadeAnimation(
+  //                       1.4,
+  //                       InkWell(
+  //                         onTap: () {
+  //                           if (selected_items.length == 0) {
+  //                             ScaffoldMessenger.of(context)
+  //                                 .showSnackBar(SnackBar(
+  //                               backgroundColor: Colors.black26,
+  //                               content: Text(
+  //                                 "Select Something to get Quotation .",
+  //                                 style: TextStyle(color: Colors.white),
+  //                               ),
+  //                             ));
+  //                           } else {
+  //                             setState(() {
+  //                               clear = true;
+  //                             });
+
+  //                             getquotation(
+  //                                 selected_items,
+  //                                 details[details.length - 1].api_key,
+  //                                 details[details.length - 1].api_secret);
+  //                           }
+  //                         },
+  //                         child: Column(
+  //                           children: [
+  //                             Icon(Icons.check_outlined),
+  //                             Text("Get Quotation"),
+  //                           ],
+  //                         ),
+  //                       )),
+  //                 ),
+  //               ],
+  //             ),
+  //             SizedBox(
+  //               height: 25,
+  //             ),
+  //             Column(children: [
+  //               FadeAnimation(
+  //                 1.4,
+  //                 Text(
+  //                   "EZHIL",
+  //                   style: TextStyle(fontSize: 19),
+  //                 ),
+  //               ),
+  //               SizedBox(
+  //                 height: 5,
+  //               ),
+  //               FadeAnimation(
+  //                 1.4,
+  //                 Divider(
+  //                   // thickness of the line
+  //                   indent: 40, // empty space to the leading edge of divider.
+  //                   endIndent: 40,
+  //                   color: Colors.black45,
+  //                 ),
+  //               ),
+  //               Padding(
+  //                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+  //                 child: Container(
+  //                   height: 190,
+  //                   child: FadeAnimation(
+  //                     1.4,
+  //                     ListView.builder(
+  //                       scrollDirection: Axis.horizontal,
+  //                       itemCount: products1.length,
+  //                       itemBuilder: (context, index) {
+  //                         return InkWell(
+  //                           onTap: () {
+  //                             setState(() {
+  //                               products1[index].isSelected =
+  //                                   !products1[index].isSelected;
+  //                               if (products1[index].isSelected == true) {
+  //                                 selectedProducts.add(ProductModel(
+  //                                     products1[index].name,
+  //                                     products1[index].code,
+  //                                     products1[index].color_type,
+  //                                     true));
+  //                                 selected_items.clear();
+  //                                 for (int i = 0;
+  //                                     i < selectedProducts.length;
+  //                                     i++) {
+  //                                   setState(() {
+  //                                     selected_items.add(
+  //                                         (selectedProducts[i].color_type)
+  //                                             .toString());
+  //                                   });
+  //                                 }
+  //                               } else if (products1[index].isSelected ==
+  //                                   false) {
+  //                                 selectedProducts.removeWhere((element) =>
+  //                                     element.name == products1[index].name);
+  //                               }
+  //                             });
+  //                           },
+  //                           child: Column(
+  //                             children: [
+  //                               Container(
+  //                                 margin: EdgeInsets.only(right: 15),
+  //                                 height: 100,
+  //                                 width: 100,
+  //                                 child: Image.network(products1[index].name,
+  //                                     fit: BoxFit.cover),
+  //                               ),
+  //                               Text(products1[index].code),
+  // clear == true
+  //     ? Container(
+  //         child: Icon(
+  //           Icons.check_circle_outline,
+  //           color: Colors.grey,
+  //         ),
+  //       )
+  //     : Container(
+  //         child: products1[index].isSelected
+  //             ? Icon(
+  //                 Icons.check_circle,
+  //                 color: Colors.green[700],
+  //               )
+  //             : Icon(
+  //                 Icons.check_circle_outline,
+  //                 color: Colors.grey,
+  //               ),
+  //       ),
+  //                               SizedBox(
+  //                                 height: 10,
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         );
+  //                       },
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ]),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Future<void> getitems(x, y) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.get_item'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res1 = await response.stream.bytesToString();
+      Mapresponse_ = await json.decode(res1);
+      setState(() {
+        Items = Mapresponse_['message']['section'];
+        Items_name = Mapresponse_['message']['items'];
+      });
+      //print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 
 //Get quotation API....

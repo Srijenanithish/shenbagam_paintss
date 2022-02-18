@@ -2,7 +2,7 @@
 class ProductModel {
   String name;
   String code;
-  String color_type;
+  String image;
   bool isSelected;
-  ProductModel(this.name, this.code, this.color_type, this.isSelected);
+  ProductModel(this.name, this.code, this.image, this.isSelected);
 }

@@ -80,6 +80,8 @@ class bankValidationState extends State<bank> {
             child: SingleChildScrollView(
                 child: Stack(children: <Widget>[
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FadeAnimation(
                     1.4,
@@ -87,6 +89,7 @@ class bankValidationState extends State<bank> {
                       padding: const EdgeInsets.only(top: 30),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             height: 150,
@@ -99,37 +102,33 @@ class bankValidationState extends State<bank> {
                               child: Card(
                                 // margin: EdgeInsets.symmetric(
                                 //     horizontal: 20.0, vertical: 5.0),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 15, 10, 8),
-                                  child: Column(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Icon(
-                                            Icons.add,
-                                            size: 22,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 7,
-                                      ),
-                                      Text(
-                                        "Add Bank account",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18.0,
+                                child: Column(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
                                         ),
+                                        Icon(
+                                          Icons.add,
+                                          size: 22,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      "Add Bank account",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18.0,
                                       ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -153,7 +152,7 @@ class bankValidationState extends State<bank> {
                                 //     horizontal: 0.0, vertical: 5.0),
                                 child: Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(30, 15, 30, 4),
+                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                   child: Column(
                                     children: [
                                       Column(

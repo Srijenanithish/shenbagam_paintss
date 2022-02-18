@@ -101,7 +101,10 @@ class ForgetpassValidationState extends State<Forgetpass> {
                                             style: GoogleFonts.raleway(
                                               textStyle: TextStyle(
                                                   color: Colors.black54,
-                                                  fontSize: 30,
+                                                  fontSize:
+                                                      ResponsiveFlutter.of(
+                                                              context)
+                                                          .fontSize(3.5),
                                                   letterSpacing: .5),
                                             ),
                                           ),

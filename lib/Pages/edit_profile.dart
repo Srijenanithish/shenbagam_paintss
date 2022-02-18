@@ -37,18 +37,9 @@ class editValidationState extends State<edit> {
 
   Future refreshNote() async {
     this.details = await NotesDatabase.instance.readAllNotes();
-    setState(() {
-      name1 = details[details.length - 1].name;
-      dob1 = details[details.length - 1].dob;
-      mobile1 = details[details.length - 1].mobile;
-      email1 = details[details.length - 1].email;
-      address1 = details[details.length - 1].address;
-      city1 = details[details.length - 1].city;
-      district1 = details[details.length - 1].district;
-      referred_by1 = details[details.length - 1].referred_by;
-      gstin1 = details[details.length - 1].gstin;
-      pincode1 = details[details.length - 1].pincode;
-    });
+
+    get_profile(details[details.length - 1].api_key,
+        details[details.length - 1].api_secret);
   }
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -68,6 +59,18 @@ class editValidationState extends State<edit> {
   String referred_by1 = '';
   String gstin1 = '';
   String pincode1 = '';
+
+  String name1_a = '';
+  String dob1_a = '';
+  String mobile1_a = '';
+  String email1_a = '';
+  String address1_a = '';
+  String city1_a = '';
+  String district1_a = '';
+  String referred_by1_a = '';
+  String gstin1_a = '';
+  String pincode1_a = '';
+  Map profileres = {};
   String? validatePassword(String value) {
     if (value.isEmpty) {
       return "* Required";
@@ -148,7 +151,9 @@ class editValidationState extends State<edit> {
                                     style: GoogleFonts.raleway(
                                       textStyle: TextStyle(
                                           color: Colors.black54,
-                                          fontSize: 35,
+                                          fontSize:
+                                              ResponsiveFlutter.of(context)
+                                                  .fontSize(3.5),
                                           letterSpacing: .5),
                                     ),
                                   ),
@@ -236,7 +241,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: name1,
+                                                labelText: name1_a == ''
+                                                    ? name1
+                                                    : name1_a,
                                                 hintText: 'Enter your Name'),
                                           )
                                         : TextFormField(
@@ -247,7 +254,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: name1,
+                                                labelText: name1_a == ''
+                                                    ? name1
+                                                    : name1_a,
                                                 hintText: 'Enter your Name'),
                                             onChanged: (value) {
                                               setState(() {
@@ -283,7 +292,9 @@ class editValidationState extends State<edit> {
                                                       UnderlineInputBorder(),
                                                   contentPadding:
                                                       EdgeInsets.all(16),
-                                                  labelText: dob1,
+                                                  labelText: dob1_a == ''
+                                                      ? dob1
+                                                      : dob1_a,
                                                   hintText:
                                                       'Enter your DOB'), //set it true, so that user will not able to edit text
                                               onTap: () async {
@@ -327,7 +338,9 @@ class editValidationState extends State<edit> {
                                                       UnderlineInputBorder(),
                                                   contentPadding:
                                                       EdgeInsets.all(16),
-                                                  labelText: dob1,
+                                                  labelText: dob1_a == ''
+                                                      ? dob1
+                                                      : dob1_a,
                                                   hintText: 'Enter your DOB'),
                                               onChanged: (value) {
                                                 setState(() {
@@ -388,7 +401,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: mobile1,
+                                                labelText: mobile1_a == ''
+                                                    ? mobile1
+                                                    : mobile1_a,
                                                 hintText:
                                                     'Enter your Mobile Number'),
                                           )
@@ -401,7 +416,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: mobile1,
+                                                labelText: mobile1_a == ''
+                                                    ? mobile1
+                                                    : mobile1_a,
                                                 hintText:
                                                     'Enter your Mobile Number'),
                                             onChanged: (value) {
@@ -433,7 +450,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: email1,
+                                                labelText: email1_a == ''
+                                                    ? email1
+                                                    : email1_a,
                                                 hintText:
                                                     'Enter your Email ID'),
                                           )
@@ -446,7 +465,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: email1,
+                                                labelText: email1_a == ''
+                                                    ? email1
+                                                    : email1_a,
                                                 hintText:
                                                     'Enter your Email ID'),
                                             onChanged: (value) {
@@ -473,7 +494,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: address1,
+                                                labelText: address1_a == ''
+                                                    ? address1
+                                                    : address1_a,
                                                 hintText: 'Enter your Address'),
                                           )
                                         : TextFormField(
@@ -485,7 +508,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: address1,
+                                                labelText: address1_a == ''
+                                                    ? address1
+                                                    : address1_a,
                                                 hintText: 'Enter your Address'),
                                             onChanged: (value) {
                                               setState(() {
@@ -516,7 +541,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: city1,
+                                                labelText: city1_a == ''
+                                                    ? city1
+                                                    : city1_a,
                                                 hintText: 'Enter your City'),
                                           )
                                         : TextFormField(
@@ -527,7 +554,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: city1,
+                                                labelText: city1_a == ''
+                                                    ? city1
+                                                    : city1_a,
                                                 hintText: 'Enter your City'),
                                             onChanged: (value) {
                                               setState(() {
@@ -557,7 +586,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: district1,
+                                                labelText: district1_a == ''
+                                                    ? district1
+                                                    : district1_a,
                                                 hintText:
                                                     'Enter your District'),
                                           )
@@ -569,7 +600,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: district1,
+                                                labelText: district1_a == ''
+                                                    ? district1
+                                                    : district1_a,
                                                 hintText:
                                                     'Enter your District'),
                                             onChanged: (value) {
@@ -597,7 +630,9 @@ class editValidationState extends State<edit> {
                                       decoration: InputDecoration(
                                         prefixIcon:
                                             prefixIcon ?? Icon(Icons.person),
-                                        labelText: referred_by1,
+                                        labelText: referred_by1_a == ''
+                                            ? referred_by1
+                                            : referred_by1_a,
                                       ),
                                     ),
                                   ),
@@ -619,7 +654,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: gstin1,
+                                                labelText: gstin1_a == ''
+                                                    ? gstin1
+                                                    : gstin1_a,
                                                 hintText: 'Enter your GSTIN'),
                                           )
                                         : TextFormField(
@@ -632,7 +669,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: gstin1,
+                                                labelText: gstin1_a == ''
+                                                    ? gstin1
+                                                    : gstin1_a,
                                                 hintText: 'Enter your GSTIN'),
                                             onChanged: (value) {
                                               setState(() {
@@ -663,7 +702,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: pincode1,
+                                                labelText: pincode1_a == ''
+                                                    ? pincode1
+                                                    : pincode1_a,
                                                 hintText: 'Enter your Pincode'),
                                           )
                                         : TextFormField(
@@ -675,7 +716,9 @@ class editValidationState extends State<edit> {
                                                 border: UnderlineInputBorder(),
                                                 contentPadding:
                                                     EdgeInsets.all(16),
-                                                labelText: pincode1,
+                                                labelText: pincode1_a == ''
+                                                    ? pincode1
+                                                    : pincode1_a,
                                                 hintText: 'Enter your Pincode'),
                                             onChanged: (value) {
                                               setState(() {
@@ -843,9 +886,59 @@ class editValidationState extends State<edit> {
       ));
       Navigator.pop(context);
 
-      print(await response.stream.bytesToString());
+      //print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
+    }
+  }
+
+  Future<void> get_profile(x, y) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.get_profile'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res2 = await response.stream.bytesToString();
+
+      profileres = await json.decode(res2);
+      setState(() {
+        name1_a = profileres['message']['name'];
+        dob1_a = profileres['message']['dob'];
+        mobile1_a = profileres['message']['mobile_no'];
+        email1_a = profileres['message']['email'];
+        address1_a = profileres['message']['address'];
+        city1_a = profileres['message']['city'];
+        district1_a = profileres['message']['district'];
+        referred_by1_a = profileres['message']['referes_by'];
+        gstin1_a = profileres['message']['gstin'];
+        pincode1_a = profileres['message']['pincode'];
+      });
+      // print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+      setState(() {
+        name1 = details[details.length - 1].name;
+        dob1 = details[details.length - 1].dob;
+        mobile1 = details[details.length - 1].mobile;
+        email1 = details[details.length - 1].email;
+        address1 = details[details.length - 1].address;
+        city1 = details[details.length - 1].city;
+        district1 = details[details.length - 1].district;
+        referred_by1 = details[details.length - 1].referred_by;
+        gstin1 = details[details.length - 1].gstin;
+        pincode1 = details[details.length - 1].pincode;
+      });
     }
   }
 }

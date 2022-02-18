@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shenbagam_paints/Pages/bank_details.dart';
+import 'package:shenbagam_paints/Pages/e_products.dart';
 import 'package:shenbagam_paints/utils/constants.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
 import 'package:shenbagam_paints/Pages/explore_products.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
           home.routeName: (context) => home(),
           my_partners.routeName: (context) => my_partners(),
           ExplorePage.routeName: (context) => ExplorePage(),
+          explorePage.routeName: (context) => explorePage(),
           wallet.routeName: (context) => wallet(),
           profile.routeName: (context) => profile(),
           qr_page.routeName: (context) => qr_page(),

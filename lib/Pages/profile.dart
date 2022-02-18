@@ -37,16 +37,14 @@ class profileValidationState extends State<profile> {
 
   Future refreshNote() async {
     this.details = await NotesDatabase.instance.readAllNotes();
-    setState(() {
-      name = details[details.length - 1].name;
-      city = details[details.length - 1].city;
-      district = details[details.length - 1].district;
-      pincode = details[details.length - 1].pincode;
-    });
+
+    get_profile(details[details.length - 1].api_key,
+        details[details.length - 1].api_secret);
   }
 
   Map Mapresponse = {};
   Map Mapresponse_ = {};
+  Map profileres = {};
   String dataResponse = '';
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -66,6 +64,11 @@ class profileValidationState extends State<profile> {
   String city = '';
   String district = '';
   String pincode = '';
+
+  String name1 = '';
+  String city1 = '';
+  String district1 = '';
+  String pincode1 = '';
 
   void _shareContent() {
     showDialog(
@@ -273,42 +276,69 @@ class profileValidationState extends State<profile> {
             ),
             FadeAnimation(
               1.4,
-              Text(
-                name,
-                style: TextStyle(
-                    fontSize: 25.0,
-                    color: Colors.blueGrey,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.w400),
-              ),
+              name1 == ''
+                  ? Text(
+                      name,
+                      style: TextStyle(
+                          fontSize: 25.0,
+                          color: Colors.blueGrey,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w400),
+                    )
+                  : Text(
+                      name1,
+                      style: TextStyle(
+                          fontSize: 25.0,
+                          color: Colors.blueGrey,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w400),
+                    ),
             ),
             SizedBox(
               height: 10,
             ),
             FadeAnimation(
               1.4,
-              Text(
-                city + "  ,  " + district,
-                style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.black45,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.w300),
-              ),
+              city1 == ''
+                  ? Text(
+                      city + "  ,  " + district,
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.black45,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w300),
+                    )
+                  : Text(
+                      city1 + "  ,  " + district1,
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.black45,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w300),
+                    ),
             ),
             SizedBox(
               height: 10,
             ),
             FadeAnimation(
               1.4,
-              Text(
-                pincode,
-                style: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.black45,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.w300),
-              ),
+              pincode1 == ''
+                  ? Text(
+                      pincode,
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.black45,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w300),
+                    )
+                  : Text(
+                      pincode1,
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.black45,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w300),
+                    ),
             ),
             SizedBox(
               height: 30,
@@ -682,6 +712,44 @@ class profileValidationState extends State<profile> {
       //  print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
+    }
+  }
+
+  Future<void> get_profile(x, y) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.get_profile'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var res2 = await response.stream.bytesToString();
+
+      profileres = await json.decode(res2);
+      setState(() {
+        name1 = profileres['message']['name'];
+        city1 = profileres['message']['city'];
+        district1 = profileres['message']['district'];
+        pincode1 = profileres['message']['pincode'];
+      });
+      // print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+      setState(() {
+        name = details[details.length - 1].name;
+        city = details[details.length - 1].city;
+        district = details[details.length - 1].district;
+        pincode = details[details.length - 1].pincode;
+      });
     }
   }
 }

@@ -127,7 +127,7 @@ class SignupValidationState extends State<SignUp> {
                                           color: Colors.black54,
                                           fontSize:
                                               ResponsiveFlutter.of(context)
-                                                  .fontSize(4.5),
+                                                  .fontSize(3.5),
                                           letterSpacing: .5),
                                     ),
                                   ),
