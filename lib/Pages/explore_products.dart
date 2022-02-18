@@ -951,6 +951,27 @@ class _ExplorePageState extends State<ExplorePage>
                                       Items_name[index][index1]['item_name'],
                                       textAlign: TextAlign.center),
                                 ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Items_name[index][index1]['show_price'] == 0
+                                    ? Text("")
+                                    : Row(
+                                        children: [
+                                          Text(
+                                            "Price =",
+                                            style: TextStyle(
+                                                color: Colors.red.shade300),
+                                          ),
+                                          Text(
+                                            (Items_name[index][index1]['price'])
+                                                .toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.red.shade300),
+                                          ),
+                                        ],
+                                      ),
                                 clear == true
                                     ? Container(
                                         child: Icon(
@@ -1179,6 +1200,7 @@ class _ExplorePageState extends State<ExplorePage>
         Items = Mapresponse_['message']['section'];
         Items_name = Mapresponse_['message']['items'];
       });
+      // print(Items_name);
       //print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
