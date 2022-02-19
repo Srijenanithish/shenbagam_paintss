@@ -285,6 +285,8 @@ class walletValidationState extends State<wallet> {
                                       ),
                                     ),
                                     content: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [

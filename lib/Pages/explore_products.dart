@@ -938,13 +938,15 @@ class _ExplorePageState extends State<ExplorePage>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(right: 10),
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.network(
-                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvVmaCIuus40EIkFJdltxAOODXGl_QPnm8tA&usqp=CAU",
-                                      fit: BoxFit.cover),
-                                ),
+                                    margin: EdgeInsets.only(right: 10),
+                                    height: 100,
+                                    width: 100,
+                                    child: Items_name[index][index1]['image'] ==
+                                            null
+                                        ? Image.network(
+                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvVmaCIuus40EIkFJdltxAOODXGl_QPnm8tA&usqp=CAU",
+                                            fit: BoxFit.cover)
+                                        : Items_name[index][index1]['image']),
                                 Container(
                                   width: 70,
                                   child: Text(
