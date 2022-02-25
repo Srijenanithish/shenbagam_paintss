@@ -401,7 +401,7 @@ class ForgetpassValidationState extends State<Forgetpass> {
                               : Icons.visibility_off),
                         ),
                         contentPadding: EdgeInsets.all(16),
-                        labelText: 'Password',
+                        labelText: 'New Password',
                         hintText: 'Enter secure password'),
                     onChanged: (val) => password = val,
                     validator: Validators.compose([

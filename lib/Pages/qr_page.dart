@@ -37,12 +37,13 @@ class qr_pageState extends State<qr_page> {
   String result = "Scan For Rewards !";
   String qrResult = '';
   bool pressed = true;
-  bool pressed_ = true;
+  bool pressed_ = false;
   Future _scanQR() async {
     try {
       qrResult = await BarcodeScanner.scan();
       setState(() {
         pressed = false;
+        pressed_ = true;
         result = " Wow! Claim Your Rewards !";
       });
     } on PlatformException catch (ex) {

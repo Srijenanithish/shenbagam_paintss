@@ -45,6 +45,7 @@ class _ExplorePageState extends State<ExplorePage>
   Map Mapresponse_ = {};
   List Items = [];
   List Items_name = [];
+
   List<ProductModel> products1 = [
     ProductModel(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvVmaCIuus40EIkFJdltxAOODXGl_QPnm8tA&usqp=CAU",
@@ -883,121 +884,147 @@ class _ExplorePageState extends State<ExplorePage>
                     1.4,
                     ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: Items_name.length,
+                      itemCount:
+                          Items_name.length == 0 ? 3 : Items_name[index].length,
                       itemBuilder: (context, index1) {
                         //print(Items_name.length);
-                        return InkWell(
-                          onTap: () {
-                            setState(() {
-                              if (clear == true) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Colors.black26,
-                                  content: Text(
-                                    "Please try after some time of your previous quotation.",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  margin: EdgeInsets.only(
-                                      bottom:
-                                          MediaQuery.of(context).size.height -
-                                              200,
-                                      right: 20,
-                                      left: 20),
-                                ));
-                              }
-                              Items_name[index][index1]['selected'] == 0
-                                  ? Items_name[index][index1]['selected'] = 1
-                                  : Items_name[index][index1]['selected'] = 0;
-                              if (Items_name[index][index1]['selected'] == 1) {
-                                selectedProducts.add(ProductModel(
-                                    Items_name[index][index1]['item_name'],
-                                    Items_name[index][index1]['item_code'],
-                                    Items_name[index][index1]['image'],
-                                    true));
-                                selected_items.clear();
-                                for (int i = 0;
-                                    i < selectedProducts.length;
-                                    i++) {
+                        return Items_name.length == 0
+                            ? Text(".......................................")
+                            : InkWell(
+                                onTap: () {
                                   setState(() {
-                                    selected_items.add(
-                                        (selectedProducts[i].code).toString());
-                                  });
-                                }
-                              } else if (Items_name[index][index1]
-                                      ['selected'] ==
-                                  0) {
-                                selectedProducts.removeWhere((element) =>
-                                    element.name ==
-                                    Items_name[index][index1]['item_name']);
-                              }
-                            });
-                          },
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                    margin: EdgeInsets.only(right: 10),
-                                    height: 100,
-                                    width: 100,
-                                    child: Items_name[index][index1]['image'] ==
-                                            null
-                                        ? Image.network(
-                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvVmaCIuus40EIkFJdltxAOODXGl_QPnm8tA&usqp=CAU",
-                                            fit: BoxFit.cover)
-                                        : Items_name[index][index1]['image']),
-                                Container(
-                                  width: 70,
-                                  child: Text(
-                                      Items_name[index][index1]['item_name'],
-                                      textAlign: TextAlign.center),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Items_name[index][index1]['show_price'] == 0
-                                    ? Text("")
-                                    : Row(
-                                        children: [
-                                          Text(
-                                            "Price =",
-                                            style: TextStyle(
-                                                color: Colors.red.shade300),
-                                          ),
-                                          Text(
-                                            (Items_name[index][index1]['price'])
-                                                .toString(),
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.red.shade300),
-                                          ),
-                                        ],
-                                      ),
-                                clear == true
-                                    ? Container(
-                                        child: Icon(
-                                          Icons.check_circle_outline,
-                                          color: Colors.grey,
+                                    if (clear == true) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.black26,
+                                        content: Text(
+                                          "Please try after some time of your previous quotation.",
+                                          style: TextStyle(color: Colors.white),
                                         ),
-                                      )
-                                    : Container(
+                                        margin: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                    .size
+                                                    .height -
+                                                200,
+                                            right: 20,
+                                            left: 20),
+                                      ));
+                                    }
+                                    Items_name[index][index1]['selected'] == 0
+                                        ? Items_name[index][index1]
+                                            ['selected'] = 1
+                                        : Items_name[index][index1]
+                                            ['selected'] = 0;
+                                    if (Items_name[index][index1]['selected'] ==
+                                        1) {
+                                      selectedProducts.add(ProductModel(
+                                          Items_name[index][index1]
+                                              ['item_name'],
+                                          Items_name[index][index1]
+                                              ['item_code'],
+                                          Items_name[index][index1]['image'],
+                                          true));
+                                      selected_items.clear();
+                                      for (int i = 0;
+                                          i < selectedProducts.length;
+                                          i++) {
+                                        setState(() {
+                                          selected_items.add(
+                                              (selectedProducts[i].code)
+                                                  .toString());
+                                        });
+                                      }
+                                    } else if (Items_name[index][index1]
+                                            ['selected'] ==
+                                        0) {
+                                      selectedProducts.removeWhere((element) =>
+                                          element.name ==
+                                          Items_name[index][index1]
+                                              ['item_name']);
+                                    }
+                                  });
+                                },
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(right: 10),
+                                        height: 100,
+                                        width: 100,
                                         child: Items_name[index][index1]
-                                                    ['selected'] ==
-                                                1
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green[700],
+                                                    ['image'] ==
+                                                null
+                                            ? Image.network(
+                                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvVmaCIuus40EIkFJdltxAOODXGl_QPnm8tA&usqp=CAU",
+                                                fit: BoxFit.cover)
+                                            : Image.network(Items_name[index]
+                                                [index1]['image']),
+                                      ),
+                                      Container(
+                                        width: 70,
+                                        child: Items_name.length == 0
+                                            ? Text(
+                                                "Loading...",
+                                                style: TextStyle(fontSize: 19),
                                               )
-                                            : Icon(
+                                            : Text(
+                                                Items_name[index][index1]
+                                                    ['item_name'],
+                                                textAlign: TextAlign.center),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Items_name[index][index1]['show_price'] ==
+                                              0
+                                          ? Text("")
+                                          : Row(
+                                              children: [
+                                                Text(
+                                                  "Price =",
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.red.shade300),
+                                                ),
+                                                Text(
+                                                  (Items_name[index][index1]
+                                                          ['price'])
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.red.shade300),
+                                                ),
+                                              ],
+                                            ),
+                                      clear == true
+                                          ? Container(
+                                              child: Icon(
                                                 Icons.check_circle_outline,
                                                 color: Colors.grey,
                                               ),
-                                      ),
-                              ],
-                            ),
-                          ),
-                        );
+                                            )
+                                          : Container(
+                                              child: Items_name[index][index1]
+                                                          ['selected'] ==
+                                                      1
+                                                  ? Icon(
+                                                      Icons.check_circle,
+                                                      color: Colors.green[700],
+                                                    )
+                                                  : Icon(
+                                                      Icons
+                                                          .check_circle_outline,
+                                                      color: Colors.grey,
+                                                    ),
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                              );
                       },
                     ),
                   ),
@@ -1202,7 +1229,8 @@ class _ExplorePageState extends State<ExplorePage>
         Items = Mapresponse_['message']['section'];
         Items_name = Mapresponse_['message']['items'];
       });
-      // print(Items_name);
+
+      print(Items_name);
       //print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);

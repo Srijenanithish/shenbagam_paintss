@@ -610,7 +610,7 @@ class profileValidationState extends State<profile> {
                               height: 7,
                             ),
                             Text(
-                              "Feeb Back",
+                              "Feed Back",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18.0,
