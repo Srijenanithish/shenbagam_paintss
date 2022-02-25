@@ -69,7 +69,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter_icons:
-  image_path: "assets/login/logo.png"
+  image_path: "images/logo.png"
   android: true
   ios: true
 
