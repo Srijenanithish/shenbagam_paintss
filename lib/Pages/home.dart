@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
+import 'package:shenbagam_paints/Pages/about.dart';
 import 'package:shenbagam_paints/Pages/e_products.dart';
 import 'package:shenbagam_paints/db/database_helper.dart';
 import 'package:shenbagam_paints/Pages/edit_profile.dart';
@@ -201,7 +202,7 @@ class homeValidationState extends State<home> {
                 elevation: 0,
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: ListTile(
-                  leading: Icon(Icons.feedback),
+                  leading: Icon(Icons.feedback_outlined),
                   title: const Text('Feedback'),
                   onTap: () {
                     showDialog(
@@ -315,8 +316,28 @@ class homeValidationState extends State<home> {
                 elevation: 0,
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: const Text('About Us'),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(about.routeName)
+                        .then((result) async {
+                      print(result);
+                    });
+                  },
+                ),
+              ),
+              Card(
+                color: Colors.white,
+                shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+                borderOnForeground: true,
+                elevation: 0,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: ListTile(
                   leading: Icon(Icons.settings),
-                  title: const Text('Sign Out'),
+                  title: const Text('Log Out'),
                   onTap: () {
                     Constants.prefs!.setBool("isLoggedIn", false);
                     logout(details[details.length - 1].api_key,

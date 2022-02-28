@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shenbagam_paints/Pages/about.dart';
 import 'package:shenbagam_paints/Pages/bank_details.dart';
 import 'package:shenbagam_paints/Pages/e_products.dart';
 import 'package:shenbagam_paints/utils/constants.dart';
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
           profile.routeName: (context) => profile(),
           qr_page.routeName: (context) => qr_page(),
           edit.routeName: (context) => edit(),
-          bank.routeName: (context) => bank()
+          bank.routeName: (context) => bank(),
+          about.routeName: (context) => about()
         },
         title: 'Senbagam Paints',
         theme: ThemeData(
