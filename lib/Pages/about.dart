@@ -82,31 +82,38 @@ class aboutValidationState extends State<about> {
             height: double.infinity,
             child: SingleChildScrollView(
                 child: Stack(children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FadeAnimation(
-                      1.4,
-                      Text(
-                        Company,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.black, fontSize: 18),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FadeAnimation(
-                      1.4,
-                      Text(
-                        textt,
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(color: Colors.black54),
-                      )),
-                ],
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width / 10,
+                    0,
+                    MediaQuery.of(context).size.width / 10,
+                    0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    FadeAnimation(
+                        1.4,
+                        Text(
+                          Company,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(color: Colors.black, fontSize: 18),
+                        )),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    FadeAnimation(
+                        1.4,
+                        Text(
+                          textt,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(color: Colors.black54),
+                        )),
+                  ],
+                ),
               ),
             ]))));
   }

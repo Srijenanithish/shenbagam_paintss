@@ -879,7 +879,7 @@ class _ExplorePageState extends State<ExplorePage>
                 padding: EdgeInsets.fromLTRB(
                     MediaQuery.of(context).size.width / 30, 0, 0, 0),
                 child: Container(
-                  height: 200,
+                  height: 230,
                   child: FadeAnimation(
                     1.4,
                     ListView.builder(
