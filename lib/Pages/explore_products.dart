@@ -841,7 +841,7 @@ class _ExplorePageState extends State<ExplorePage>
               left: MediaQuery.of(context).size.width / 30,
               right: MediaQuery.of(context).size.width / 25,
             ),
-            height: MediaQuery.of(context).size.height / 2.3,
+            height: MediaQuery.of(context).size.height / 2.1,
             child: Column(children: [
               Items.length == 0
                   ? Text(
@@ -950,6 +950,27 @@ class _ExplorePageState extends State<ExplorePage>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
+                                      clear == true
+                                          ? Container(
+                                              child: Icon(
+                                                Icons.check_circle_outline,
+                                                color: Colors.grey,
+                                              ),
+                                            )
+                                          : Container(
+                                              child: Items_name[index][index1]
+                                                          ['selected'] ==
+                                                      1
+                                                  ? Icon(
+                                                      Icons.check_circle,
+                                                      color: Colors.green[700],
+                                                    )
+                                                  : Icon(
+                                                      Icons
+                                                          .check_circle_outline,
+                                                      color: Colors.grey,
+                                                    ),
+                                            ),
                                       Container(
                                         margin: EdgeInsets.only(right: 10),
                                         height: 100,
@@ -999,27 +1020,6 @@ class _ExplorePageState extends State<ExplorePage>
                                                           Colors.red.shade300),
                                                 ),
                                               ],
-                                            ),
-                                      clear == true
-                                          ? Container(
-                                              child: Icon(
-                                                Icons.check_circle_outline,
-                                                color: Colors.grey,
-                                              ),
-                                            )
-                                          : Container(
-                                              child: Items_name[index][index1]
-                                                          ['selected'] ==
-                                                      1
-                                                  ? Icon(
-                                                      Icons.check_circle,
-                                                      color: Colors.green[700],
-                                                    )
-                                                  : Icon(
-                                                      Icons
-                                                          .check_circle_outline,
-                                                      color: Colors.grey,
-                                                    ),
                                             ),
                                     ],
                                   ),
