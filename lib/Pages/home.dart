@@ -49,6 +49,9 @@ class homeValidationState extends State<home> {
   TextEditingController feed = TextEditingController();
   Map Mapresponse_ = {};
   String dataResponse = '';
+  Map about_response = {};
+  String about_text = '';
+  String company = '';
   bool form_active1 = true;
   String name = '';
   String email = '';
@@ -66,6 +69,8 @@ class homeValidationState extends State<home> {
       name = details[details.length - 1].name;
       email = details[details.length - 1].email;
     });
+    about_(details[details.length - 1].api_key,
+        details[details.length - 1].api_secret);
   }
 
   Widget build(BuildContext context) {
@@ -319,9 +324,11 @@ class homeValidationState extends State<home> {
                   leading: Icon(Icons.info_outline),
                   title: const Text('About Us'),
                   onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(about.routeName)
-                        .then((result) async {
+                    Navigator.of(context).pushNamed(about.routeName,
+                        arguments: {
+                          'company': company,
+                          'text': about_text
+                        }).then((result) async {
                       print(result);
                     });
                   },
@@ -412,6 +419,37 @@ class homeValidationState extends State<home> {
         form_active1 = true;
       });
       //  print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  Future<void> about_(x, y) async {
+    var headers = {
+      'Authorization': 'token ' + x.toString() + ':' + y.toString(),
+      'Content-Type': "application/json",
+      'Accept': "*/*",
+      'Connection': "keep-alive"
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.get_about'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var re = await response.stream.bytesToString();
+
+      about_response = await json.decode(re);
+      setState(() {
+        about_text = about_response['message']['about'];
+        company = about_response['message']['company'];
+      });
+
+      // print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
     }

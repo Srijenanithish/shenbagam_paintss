@@ -54,6 +54,10 @@ class aboutValidationState extends State<about> {
 
   @override
   Widget build(BuildContext context) {
+    final routes =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    String textt = routes['text'];
+    String Company = routes['company'];
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -81,7 +85,28 @@ class aboutValidationState extends State<about> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [],
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  FadeAnimation(
+                      1.4,
+                      Text(
+                        Company,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  FadeAnimation(
+                      1.4,
+                      Text(
+                        textt,
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(color: Colors.black54),
+                      )),
+                ],
               ),
             ]))));
   }

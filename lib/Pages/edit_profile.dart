@@ -767,6 +767,20 @@ class editValidationState extends State<edit> {
                                                       district1,
                                                       gstin1,
                                                       pincode1);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    backgroundColor:
+                                                        Colors.black26,
+                                                    duration: const Duration(
+                                                        seconds: 6),
+                                                    content: Text(
+                                                      "Please Wait while Loading .....",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ));
                                                 }
                                               },
                                         disabledColor: Colors.black12,
@@ -878,7 +892,7 @@ class editValidationState extends State<edit> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.black26,
-        duration: const Duration(seconds: 12),
+        duration: const Duration(seconds: 6),
         content: Text(
           Mapresponse['message']['message'],
           style: TextStyle(color: Colors.white),
@@ -888,6 +902,16 @@ class editValidationState extends State<edit> {
 
       //print(await response.stream.bytesToString());
     } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.black26,
+        duration: const Duration(seconds: 6),
+        content: Text(
+          "Try again later .....",
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
+      Navigator.pop(context);
       print(response.reasonPhrase);
     }
   }
