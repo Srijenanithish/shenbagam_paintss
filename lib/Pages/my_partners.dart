@@ -79,7 +79,6 @@ class my_partnersValidationState extends State<my_partners> {
     for (var i = 0; i < data[key].length; i++) {
       String temp_title = data[key][i];
       List<Entry> temp = get_entry(data, data[key][i]);
-      print(key);
       if (temp.length != 0 && temp[0].title != "null") {
         ret_data.add(Entry(temp_title, temp));
       } else {

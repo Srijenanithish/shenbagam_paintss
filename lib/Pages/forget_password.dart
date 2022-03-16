@@ -154,7 +154,8 @@ class ForgetpassValidationState extends State<Forgetpass> {
                                               0),
                                           clipBehavior: Clip.antiAlias,
                                           child: Form(
-                                            autovalidate: true,
+                                            autovalidateMode:
+                                                AutovalidateMode.always,
                                             key: formkey,
                                             child: Column(
                                               children: <Widget>[

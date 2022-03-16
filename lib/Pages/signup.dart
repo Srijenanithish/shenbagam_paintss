@@ -35,7 +35,7 @@ class SignupValidationState extends State<SignUp> {
 
   String? validatePassword(String value) {
     RegExp regex =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\&*~]).{8,}$');
     if (value.isEmpty) {
       return "* Required";
     } else if (value.length < 4) {
@@ -53,6 +53,7 @@ class SignupValidationState extends State<SignUp> {
   @override
   bool button_active = true;
   bool form_active = true;
+  bool mobile_ref = true;
   Map Mapresponse_ref = {};
   Map Mapresponse = {};
   List dataResponse = [];
@@ -158,8 +159,8 @@ class SignupValidationState extends State<SignUp> {
                           FadeAnimation(
                             1.4,
                             Form(
-                              autovalidate: true,
                               key: formkey,
+                              autovalidateMode: AutovalidateMode.always,
                               child: Column(
                                 children: <Widget>[
                                   SizedBox(
@@ -352,6 +353,11 @@ class SignupValidationState extends State<SignUp> {
                                                 labelText: 'Mobile Number',
                                                 hintText:
                                                     'Enter your Mobile Number'),
+                                            onChanged: (text) {
+                                              setState(() {
+                                                mobile_ref = false;
+                                              });
+                                            },
                                             validator: MultiValidator([
                                               RequiredValidator(
                                                   errorText: "* Required"),
@@ -441,7 +447,7 @@ class SignupValidationState extends State<SignUp> {
                                                   errorText: "* Required"),
                                               MinLengthValidator(4,
                                                   errorText:
-                                                      "Username should be atleast 4 characters"),
+                                                      "Address should be atleast 4 characters"),
                                             ])),
                                   ),
                                   Padding(
@@ -484,7 +490,7 @@ class SignupValidationState extends State<SignUp> {
                                                   errorText: "* Required"),
                                               MinLengthValidator(4,
                                                   errorText:
-                                                      "Username should be atleast 4 characters"),
+                                                      "City should be atleast 4 characters"),
                                             ])),
                                   ),
                                   Padding(
@@ -529,40 +535,81 @@ class SignupValidationState extends State<SignUp> {
                                                   errorText: "* Required"),
                                               MinLengthValidator(4,
                                                   errorText:
-                                                      "Username should be atleast 4 characters"),
+                                                      "District should be atleast 4 characters"),
                                             ])),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                        MediaQuery.of(context).size.width / 10,
-                                        MediaQuery.of(context).size.width / 15,
-                                        MediaQuery.of(context).size.width / 10,
-                                        0),
-                                    child: FlatButton(
-                                      disabledColor: Colors.black12,
-                                      disabledTextColor: Colors.blueGrey,
-                                      color: Colors.purple.shade100,
-                                      child: Text(
-                                        'Get Referrals',
-                                        style: TextStyle(
-                                          //fontSize: 18,
-                                          color: Colors.black,
-                                          wordSpacing: 4,
+                                  mobile_ref == false
+                                      ? Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  10,
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  15,
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  10,
+                                              0),
+                                          child: FlatButton(
+                                            disabledColor: Colors.black12,
+                                            disabledTextColor: Colors.blueGrey,
+                                            color: Colors.purple.shade100,
+                                            child: Text(
+                                              'Get Referrals',
+                                              style: TextStyle(
+                                                //fontSize: 18,
+                                                color: Colors.black,
+                                                wordSpacing: 4,
+                                              ),
+                                            ),
+                                            onPressed: button_active
+                                                ? () {
+                                                    items.clear();
+                                                    dataResponse.clear();
+                                                    Referral(Mobilenum);
+                                                    setState(() {
+                                                      button_active = false;
+                                                    });
+                                                  }
+                                                : null,
+                                            textColor: Colors.blueGrey,
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  10,
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  15,
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  10,
+                                              0),
+                                          child: FlatButton(
+                                            disabledColor: Colors.black12,
+                                            disabledTextColor: Colors.blueGrey,
+                                            color: Colors.purple.shade100,
+                                            child: Text(
+                                              'Get Referrals',
+                                              style: TextStyle(
+                                                //fontSize: 18,
+                                                color: Colors.black,
+                                                wordSpacing: 4,
+                                              ),
+                                            ),
+                                            onPressed: null,
+                                            textColor: Colors.blueGrey,
+                                          ),
                                         ),
-                                      ),
-                                      onPressed: button_active
-                                          ? () {
-                                              items.clear();
-                                              dataResponse.clear();
-                                              Referral(Mobilenum);
-                                              setState(() {
-                                                button_active = false;
-                                              });
-                                            }
-                                          : null,
-                                      textColor: Colors.blueGrey,
-                                    ),
-                                  ),
                                   Padding(
                                       padding: EdgeInsets.fromLTRB(
                                           MediaQuery.of(context).size.width /
@@ -573,7 +620,7 @@ class SignupValidationState extends State<SignUp> {
                                               10,
                                           0),
                                       child: button_active
-                                          ? TextField(
+                                          ? TextFormField(
                                               enabled: false,
                                               controller: _controller,
                                               decoration: InputDecoration(
@@ -603,7 +650,7 @@ class SignupValidationState extends State<SignUp> {
                                               ),
                                             )
                                           : !form_active
-                                              ? TextField(
+                                              ? TextFormField(
                                                   enabled: false,
                                                   controller: _controller,
                                                   decoration: InputDecoration(
@@ -633,8 +680,12 @@ class SignupValidationState extends State<SignUp> {
                                                       },
                                                     ),
                                                   ),
-                                                )
-                                              : TextField(
+                                                  validator: MultiValidator([
+                                                    RequiredValidator(
+                                                        errorText:
+                                                            "* Required"),
+                                                  ]))
+                                              : TextFormField(
                                                   controller: _controller,
                                                   decoration: InputDecoration(
                                                     prefixIcon: prefixIcon ??
@@ -663,7 +714,14 @@ class SignupValidationState extends State<SignUp> {
                                                       },
                                                     ),
                                                   ),
-                                                )),
+                                                  validator: MultiValidator([
+                                                    RequiredValidator(
+                                                        errorText:
+                                                            "* Required"),
+                                                    MinLengthValidator(4,
+                                                        errorText:
+                                                            "District should be atleast 4 characters"),
+                                                  ]))),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(
                                         MediaQuery.of(context).size.width / 10,
@@ -684,13 +742,7 @@ class SignupValidationState extends State<SignUp> {
                                                     EdgeInsets.all(16),
                                                 labelText: 'GSTIN',
                                                 hintText: 'Enter your GSTIN'),
-                                            validator: MultiValidator([
-                                              RequiredValidator(
-                                                  errorText: "* Required"),
-                                              MinLengthValidator(4,
-                                                  errorText:
-                                                      "Username should be atleast 4 characters"),
-                                            ]))
+                                          )
                                         : TextFormField(
                                             controller: gstn,
                                             keyboardType: TextInputType.number,
@@ -703,11 +755,7 @@ class SignupValidationState extends State<SignUp> {
                                                     EdgeInsets.all(16),
                                                 labelText: 'GSTIN',
                                                 hintText: 'Enter your GSTIN'),
-                                            validator: MultiValidator([
-                                              MinLengthValidator(4,
-                                                  errorText:
-                                                      "Username should be atleast 4 characters"),
-                                            ])),
+                                          ),
                                   ),
                                   Padding(
                                       padding: EdgeInsets.fromLTRB(
@@ -760,7 +808,7 @@ class SignupValidationState extends State<SignUp> {
                                                     errorText: "* Required"),
                                                 MinLengthValidator(6,
                                                     errorText:
-                                                        "Username should be atleast 6 characters"),
+                                                        "Pincode should be atleast 6 characters"),
                                               ]))),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(
@@ -974,6 +1022,9 @@ class SignupValidationState extends State<SignUp> {
                                                                 context)
                                                             .showSnackBar(
                                                                 SnackBar(
+                                                          behavior:
+                                                              SnackBarBehavior
+                                                                  .floating,
                                                           backgroundColor:
                                                               Colors.black26,
                                                           duration:
@@ -1125,6 +1176,16 @@ class SignupValidationState extends State<SignUp> {
           form_active = true;
         });
       }
+    } else if (response.statusCode == 417) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.black26,
+        duration: const Duration(seconds: 12),
+        content: Text(
+          "Password is not Strong..",
+          style: TextStyle(color: Colors.white),
+        ),
+      ));
     } else {
       print(response.reasonPhrase);
     }

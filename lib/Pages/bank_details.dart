@@ -254,7 +254,7 @@ class bankValidationState extends State<bank> {
   Widget getAdd() {
     if (_hasBeenPressed_add == false) {
       return Form(
-          autovalidate: true,
+          autovalidateMode: AutovalidateMode.always,
           key: formkey,
           child: Column(
             children: <Widget>[

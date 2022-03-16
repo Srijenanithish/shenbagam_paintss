@@ -216,7 +216,7 @@ class homeValidationState extends State<home> {
                           return AlertDialog(
                             scrollable: true,
                             content: Form(
-                              autovalidate: true,
+                              autovalidateMode: AutovalidateMode.always,
                               key: formkey,
                               child: Column(
                                 children: <Widget>[

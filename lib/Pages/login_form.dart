@@ -171,7 +171,7 @@ class LoginFormValidationState extends State<LoginForm> {
                             ),
                           ),
                           Form(
-                              autovalidate: true,
+                              autovalidateMode: AutovalidateMode.always,
                               key: formkey,
                               child: Column(children: <Widget>[
                                 FadeAnimation(

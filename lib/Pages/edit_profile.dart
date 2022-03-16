@@ -183,7 +183,7 @@ class editValidationState extends State<edit> {
                           FadeAnimation(
                             1.4,
                             Form(
-                              autovalidate: true,
+                              autovalidateMode: AutovalidateMode.always,
                               key: formkey,
                               child: Column(
                                 children: <Widget>[

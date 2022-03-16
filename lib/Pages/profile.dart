@@ -77,7 +77,7 @@ class profileValidationState extends State<profile> {
           return AlertDialog(
             scrollable: true,
             content: Form(
-              autovalidate: true,
+              // autovalidate: true,
               key: formkey,
               child: Column(
                 children: <Widget>[
@@ -494,7 +494,7 @@ class profileValidationState extends State<profile> {
                             return AlertDialog(
                               scrollable: true,
                               content: Form(
-                                autovalidate: true,
+                                autovalidateMode: AutovalidateMode.always,
                                 key: formkey,
                                 child: Column(
                                   children: <Widget>[
