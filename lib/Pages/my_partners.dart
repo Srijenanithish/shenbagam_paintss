@@ -50,7 +50,7 @@ class my_partnersValidationState extends State<my_partners> {
     var request = http.Request(
         'GET',
         Uri.parse(
-            'http://test_senbagam.aerele.in/app/referral-tree/view/tree'));
+            'http://test_senbagam.aerele.in/api/method/senbagam_api.api.get_referral_tree'));
 
     request.headers.addAll(headers);
 
