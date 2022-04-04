@@ -45,6 +45,7 @@ class _ExplorePageState extends State<ExplorePage>
   Map Mapresponse_ = {};
   List Items = [];
   List Items_name = [];
+  var Map_q={};
 
   List<ProductModel> products1 = [
     ProductModel(
@@ -750,7 +751,9 @@ class _ExplorePageState extends State<ExplorePage>
   bool clear = false;
 
   List<ProductModel> selectedProducts = [];
-  List<String> selected_items = [];
+  var selected_items = {};
+  var controller;
+
 
   @override
   Widget build(BuildContext context) {
@@ -789,6 +792,7 @@ class _ExplorePageState extends State<ExplorePage>
                     1.4,
                     InkWell(
                       onTap: () {
+                        
                         print(selected_items);
                         if (selected_items.length == 0) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -807,12 +811,124 @@ class _ExplorePageState extends State<ExplorePage>
                         } else {
                           setState(() {
                             clear = true;
+                            Map_q.clear();
                           });
 
-                          getquotation(
-                              selected_items,
+                          _row(int index) {
+
+                              return  SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                                
+                                child: Row(
+                            
+                                  children: [
+                                    
+                                    Expanded(
+                                      
+                                      
+                                      child: 
+                                    
+                                    
+                                    Text('${selectedProducts[index].name}',
+                                    style: TextStyle(fontSize:15),
+                                    )
+                                    ),
+                                  
+                                    
+                                    
+                                     SizedBox(height: 70,width: 30,),
+                                   
+                                    Expanded(
+                                      
+                                      child:   
+                                         TextFormField(
+                                        
+                                        
+                                       decoration: (InputDecoration(hintText: 'quantity'.trimLeft())
+                                     ),
+                                        keyboardType: TextInputType.number,
+                                        onChanged: (text){
+                                          Map_q['${selectedProducts[index].code}']=text;
+
+                                        },
+                                        )
+                                     
+                                      )
+                                    
+                                     
+                                  ],
+                              )
+                              );
+                              
+                              
+                            }
+
+                          
+                          showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                 
+                                    return AlertDialog(
+                                      scrollable: true,
+                                      title: Text("Quotation"  
+                                      ),
+                                      
+                                      content: Column(
+                                        children: [
+                                           Text(
+                                                'products : ',
+                                                style: TextStyle(fontSize: 19),
+                                              ),
+                                              SizedBox(height: 10,),
+                                          Row(
+                                            
+                                           
+                                         
+                                            children: [
+                                             
+                                              Flexible(
+                                                
+                                              
+                              child:SingleChildScrollView(
+                              
+                              child:SizedBox(
+      height: 200, // constrain height
+      child: 
+    
+                              ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: selected_items.length,
+                              itemBuilder: (context, index) {
+                                  
+                                  return _row(index);
+                              },
+                            ),
+                              ),
+                              ),
+                                              )
+                          
+                                              
+                                            ],
+                                            
+                                          ),
+                                          
+                                        RaisedButton(onPressed: () {
+                                            
+                                            print("\n\n\n @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                                            print(Map_q);
+                                            getquotation(
+                              Map_q,
                               details[details.length - 1].api_key,
                               details[details.length - 1].api_secret);
+                              Navigator.pop(context);
+                                          }, color: Colors.purple,textColor: Colors.white,child: Text("Get"))
+                                          
+                                        ],
+                                      ),
+                                    );
+                                  });
+
+                          
                         }
                       },
                       child: Column(
@@ -930,9 +1046,9 @@ class _ExplorePageState extends State<ExplorePage>
                                           i < selectedProducts.length;
                                           i++) {
                                         setState(() {
-                                          selected_items.add(
+                                          selected_items[
                                               (selectedProducts[i].code)
-                                                  .toString());
+                                                  .toString()]=(selectedProducts[i].name).toString();
                                         });
                                       }
                                     } else if (Items_name[index][index1]
@@ -1079,7 +1195,7 @@ class _ExplorePageState extends State<ExplorePage>
         Uri.parse(
             'http://test_senbagam.aerele.in/api/method/senbagam_api.api.add_quotation'));
     request.body = json.encode({
-      "args": [selected_items]
+      "args": selected_items
     });
     request.headers.addAll(headers);
 
