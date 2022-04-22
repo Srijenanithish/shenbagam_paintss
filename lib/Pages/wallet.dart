@@ -9,6 +9,8 @@ import 'package:shenbagam_paints/Pages/profile.dart';
 
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 
+import 'package:shenbagam_paints/Pages/login_form.dart';
+
 class wallet extends StatefulWidget {
   static const String routeName = "/wallet";
 
@@ -493,6 +495,20 @@ class walletValidationState extends State<wallet> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();

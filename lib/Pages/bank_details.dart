@@ -12,6 +12,8 @@ import 'package:shenbagam_paints/Pages/profile.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:shenbagam_paints/db/database_helper.dart';
 
+import 'package:shenbagam_paints/Pages/login_form.dart';
+
 class bank extends StatefulWidget {
   static const String routeName = "/bank";
 
@@ -225,6 +227,7 @@ class bankValidationState extends State<bank> {
             FlatButton.icon(
               icon: Icon(Icons.camera),
               onPressed: () {
+                print("hellll");
                 takePhoto(ImageSource.camera);
               },
               label: Text("Camera"),
@@ -232,6 +235,7 @@ class bankValidationState extends State<bank> {
             FlatButton.icon(
               icon: Icon(Icons.image),
               onPressed: () {
+                print("hellooo");
                 takePhoto(ImageSource.gallery);
               },
               label: Text("Gallery"),
@@ -246,6 +250,7 @@ class bankValidationState extends State<bank> {
     final pickedFile = await _picker.getImage(
       source: source,
     );
+    print(pickedFile);
     setState(() {
       _imageFile = PickedFile as PickedFile;
     });
@@ -305,8 +310,8 @@ class bankValidationState extends State<bank> {
                     onChanged: (val) => value = val,
                     validator: MultiValidator([
                       RequiredValidator(errorText: "* Required"),
-                      MinLengthValidator(16,
-                          errorText: "Mobile Number should be 16 characters"),
+                      // MinLengthValidator(16,
+                      //     errorText: "Account Number should be 16 characters"),
                     ])),
               ),
               Padding(
@@ -323,8 +328,8 @@ class bankValidationState extends State<bank> {
                       hintText: 'Enter your Account Number'),
                   validator: MultiValidator([
                     RequiredValidator(errorText: "* Required"),
-                    MinLengthValidator(16,
-                        errorText: "Mobile Number should be 16 characters"),
+                    // MinLengthValidator(16,
+                    //     errorText: "Account Number should be 16 characters"),
                   ]),
                 ),
               ),
@@ -495,6 +500,20 @@ class bankValidationState extends State<bank> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
@@ -519,6 +538,20 @@ class bankValidationState extends State<bank> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();

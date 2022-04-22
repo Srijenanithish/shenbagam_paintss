@@ -16,6 +16,8 @@ import 'package:shenbagam_paints/Pages/products.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:shenbagam_paints/models/products.dart';
 
+import 'package:shenbagam_paints/Pages/login_form.dart';
+
 class ExplorePage extends StatefulWidget {
   static const String routeName = "/login";
 
@@ -1166,6 +1168,20 @@ class _ExplorePageState extends State<ExplorePage>
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       var res1 = await response.stream.bytesToString();
@@ -1200,6 +1216,20 @@ class _ExplorePageState extends State<ExplorePage>
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();

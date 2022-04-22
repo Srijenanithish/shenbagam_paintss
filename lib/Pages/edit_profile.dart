@@ -16,6 +16,8 @@ import 'dart:convert';
 
 import 'package:wc_form_validators/wc_form_validators.dart';
 
+import 'package:shenbagam_paints/Pages/login_form.dart';
+
 class edit extends StatefulWidget {
   static const String routeName = "/edit";
 
@@ -202,25 +204,31 @@ class editValidationState extends State<edit> {
                                               radius: 80.0,
                                               backgroundColor: Colors.white,
                                               backgroundImage: AssetImage(
-                                                  "assets/login/usericonn.png")),
-                                          Positioned(
-                                            bottom: 20.0,
-                                            right: 20.0,
-                                            child: InkWell(
-                                              onTap: () {
-                                                showModalBottomSheet(
-                                                  context: context,
-                                                  builder: ((builder) =>
-                                                      bottomSheet()),
-                                                );
-                                              },
-                                              child: Icon(
-                                                Icons.camera_alt,
-                                                color: Colors.teal,
-                                                size: 28.0,
+                                                "assets/login/usericonn.png")
+
+                                              //  backgroundImage: (_imageFile != null) ? FileImage(File(_imageFile!.path)) as ImageProvider : AssetImage("assets/login/usericonn.png")
+
+                                              // backgroundImage: _imageFile == null ? AssetImage("assets/login/usericonn.png") : FileImage(File(_imageFile.path )
+                                              // ),
                                               ),
-                                            ),
-                                          ),
+                                          // Positioned(
+                                          //   bottom: 20.0,
+                                          //   right: 20.0,
+                                          //   child: InkWell(
+                                          //     onTap: () {
+                                          //       showModalBottomSheet(
+                                          //         context: context,
+                                          //         builder: ((builder) =>
+                                          //             bottomSheet()),
+                                          //       );
+                                          //     },
+                                          //     child: Icon(
+                                          //       Icons.camera_alt,
+                                          //       color: Colors.teal,
+                                          //       size: 28.0,
+                                          //     ),
+                                          //   ),
+                                          // ),
                                         ]),
                                       ),
                                     ),
@@ -831,6 +839,7 @@ class editValidationState extends State<edit> {
             FlatButton.icon(
               icon: Icon(Icons.camera),
               onPressed: () {
+                print("object");
                 takePhoto(ImageSource.camera);
               },
               label: Text("Camera"),
@@ -838,6 +847,7 @@ class editValidationState extends State<edit> {
             FlatButton.icon(
               icon: Icon(Icons.image),
               onPressed: () {
+                print("hello");
                 takePhoto(ImageSource.gallery);
               },
               label: Text("Gallery"),
@@ -852,10 +862,16 @@ class editValidationState extends State<edit> {
     final pickedFile = await _picker.getImage(
       source: source,
     );
+    print(pickedFile!.path);
     setState(() {
       _imageFile = PickedFile as PickedFile;
+      // List<int> imageBytes =
+      //                   _imageFile.readAsBytesSync();
+      // String base64Image = base64Encode(
+      //                   _imageFile);
     });
   }
+  
 
   Future<void> edit_profile(x, y, name11, dob11, mobile11, address11, city11,
       district11, gstin11, pincode11) async {
@@ -884,6 +900,21 @@ class editValidationState extends State<edit> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
+
 
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
@@ -931,6 +962,20 @@ class editValidationState extends State<edit> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       var res2 = await response.stream.bytesToString();

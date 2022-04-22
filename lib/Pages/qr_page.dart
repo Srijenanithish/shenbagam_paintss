@@ -9,6 +9,8 @@ import 'package:shenbagam_paints/animation/fadeanimation.dart';
 import 'package:shenbagam_paints/db/database_helper.dart';
 import 'package:shenbagam_paints/db/model/data.dart';
 
+import 'login_form.dart';
+
 class qr_page extends StatefulWidget {
   @override
   static const String routeName = "/qr_page";
@@ -212,6 +214,20 @@ class qr_pageState extends State<qr_page> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       var res1 = await response.stream.bytesToString();

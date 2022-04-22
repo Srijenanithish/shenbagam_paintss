@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'dart:io';
 import 'dart:async';
+// import 'package:firebase_messaging/firebase_messaging.dart';//LASTWORK
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,11 +22,43 @@ import 'package:shenbagam_paints/Pages/profile.dart';
 import 'package:shenbagam_paints/Pages/qr_page.dart';
 import 'package:shenbagam_paints/Pages/signup.dart';
 import 'package:shenbagam_paints/Pages/wallet.dart';
+// import 'package:firebase_core/firebase_core.dart';//LASTWORK
+// import 'package:firebase_messaging_web/firebase_messaging_web.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'dart:html';
 
+
+// const AndroidNotificationChannel channel = AndroidNotificationChannel(
+//   "high_importance_channel",//id
+//   'high importance notification',//title
+//   description: 'this channel is used for important notification',//discription
+//   importance: Importance.high,
+//   playSound: true);
+
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+// Future<void>_firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp();
+//   print("A bg message just showed up: ${message.messageId}");
+// }//LASTWORK
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //sharedpreferences initialised....
   Constants.prefs = await SharedPreferences.getInstance();
+  // await Firebase.initializeApp();//LASTWORK
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // await flutterLocalNotificationsPlugin
+  // .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+  // ?.createNotificationChannel(channel);
+
+  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+  //   alert: true,
+  //   badge: true,
+  //   sound: true,
+  // );//LASTWORK
+
+
   var status = (Constants.prefs.getBool('isLoggedIn') ?? false).toString();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
@@ -93,9 +126,59 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
   @override
   void initState() {
     super.initState();
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message){//LASTWORK
+    //   RemoteNotification notification =message.notification;
+    //   AndroidNotification android = message.notification?.android;
+    //   if (notification != null && android != null) {
+    //     flutterLocalNotificationsPlugin.show(
+    //       notification.hashCode,
+    //       notification.title,
+    //       notification.body,
+    //       NotificationDetails(
+    //         android: AndroidNotificationDetails(
+    //           channel.id,
+    //           channel.name,
+    //           channelDescription: "discription",
+    //           color: Colors.blue,
+    //           playSound: true,
+              
+ 
+    //         )
+    //       )
+    //     );
+    //   }
+    
+    // });
+
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   print("A new onMessageOpenedApp event was published!");
+    //   RemoteNotification notification = message.notification;
+    //   AndroidNotification android = message.notification?.android;
+    //   if (notification != null && android!= null) {
+    //     showDialog(context: context,
+    //     builder: (_) {
+    //       return AlertDialog(
+    //         title: Text(notification.title),
+    //         content:  SingleChildScrollView(
+    //           child: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: [
+    //               Text(notification.body)
+    //             ],
+
+    //           ),
+    //         ),
+
+    //       ); 
+    //     });
+    //   }
+    //  });//LASTWORK
+     
+
 //splashscreen ....
     Timer(
         Duration(seconds: 4),
@@ -113,3 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Image.asset("assets/login/Splash_screen1.gif"));
   }
 }
+
+
+
+  

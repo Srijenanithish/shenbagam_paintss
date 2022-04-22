@@ -5,6 +5,9 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
+import 'package:shenbagam_paints/Pages/home.dart';
+import 'package:shenbagam_paints/Pages/login_form.dart';
+// import 'package:shenbagam_paints/Pages/login_form.dart';
 import 'package:shenbagam_paints/db/database_helper.dart';
 import 'package:shenbagam_paints/db/model/data.dart';
 import 'package:shenbagam_paints/animation/fadeanimation.dart';
@@ -319,6 +322,20 @@ class HomepageValidationState extends State<Homepage> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       var res = await response.stream.bytesToString();
@@ -350,6 +367,20 @@ class HomepageValidationState extends State<Homepage> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    if (response.statusCode == 403)
+{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black26,
+          duration: const Duration(seconds: 6),
+          content: Text(
+            "Session Expired",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+                                   Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginForm()));
+                                  }
 
     if (response.statusCode == 200) {
       var res_ = await response.stream.bytesToString();
